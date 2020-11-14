@@ -17,7 +17,7 @@ import { server } from '../start';
 @ClassMiddleware([cors()])
 export class ExampleController {
   @Get('items')
-  private async getItems(req: Request, res: Response) {
+  private getItems(req: Request, res: Response) {
     const db = server.mongoClient.db('ConfigurationModule');
     const collection = db.collection('Applications');
 
