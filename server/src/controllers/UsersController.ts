@@ -11,7 +11,9 @@ export class UsersController extends AbstractController {
 
   @Get('/')
   private async getUsers(req: any, res: Response) {
-    let users = await this.getCollection().find().toArray();
+    let users = await this.getCollection()
+      .find({ ...req.paras })
+      .toArray();
 
     users = users.filter((user: any) => user.email !== req.user.email);
 

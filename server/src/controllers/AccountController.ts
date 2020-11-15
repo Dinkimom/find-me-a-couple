@@ -48,6 +48,7 @@ export class AccountController extends AbstractController {
   @Post('register')
   @Middleware([
     check('name', 'Name is a required field').not().isEmpty(),
+    check('phone').isMobilePhone('ru-RU'),
     check('email').isEmail(),
     check('password', 'Password is a required field').not().isEmpty(),
   ])
