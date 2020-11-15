@@ -1,14 +1,14 @@
-import { server } from '../../src/start';
+import { EntityEnum } from 'src/enums/EntityEnum';
+import { getCollection } from '../utils/getCollection';
 
 export class AbstractController {
-  private collectionName: string;
+  private collectionName: EntityEnum;
 
-  constructor(collection: string) {
+  constructor(collection: EntityEnum) {
     this.collectionName = collection;
   }
 
   protected getCollection() {
-    const db = server.mongoClient.db('ConfigurationModule');
-    return db.collection(this.collectionName);
+    return getCollection(this.collectionName);
   }
 }

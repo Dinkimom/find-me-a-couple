@@ -1,28 +1,18 @@
-import {
-  ClassMiddleware,
-  Controller,
-  Get,
-  Middleware,
-  Post,
-  Put,
-} from '@overnightjs/core';
+import { Controller, Get, Middleware, Post, Put } from '@overnightjs/core';
 import { JwtManager } from '@overnightjs/jwt';
-import * as cors from 'cors';
 import { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator';
-import { server } from '../start';
+import { EntityEnum } from '../enums/EntityEnum';
 import { LoginDto } from '../dtos/LoginDto';
 import { RegisterDto } from '../dtos/RegisterDto';
 import { AbstractController } from './AbstractController';
+import { secret } from '../constants/secret';
 const jwt = require('jsonwebtoken');
 
-const bearerToken = require('express-bearer-token');
-
 @Controller('api/account')
-@ClassMiddleware([cors()])
 export class AccountController extends AbstractController {
   constructor() {
-    super('Users');
+    super(EntityEnum.Users);
   }
 
   @Put('login')
@@ -42,17 +32,15 @@ export class AccountController extends AbstractController {
       const collection = this.getCollection();
 
       collection.findOne({ ...req.body }, (err, result) => {
-        if (err) {
-          return res.status(400).json({ err });
-        }
-
         if (result) {
-          const token = jwt.sign({ ...req.body }, 'shhhhh');
+          const token = jwt.sign({ ...req.body }, secret);
 
           return res.status(200).send({ result: { token } });
         }
 
-        return res.status(401).send({ errorMessage: 'Invalid credentials' });
+        return res
+          .status(401)
+          .send({ errorMessage: 'Invalid email or password' });
       });
     }
   }
@@ -74,39 +62,25 @@ export class AccountController extends AbstractController {
     } else {
       const collection = this.getCollection();
 
-      collection.insertOne({ ...req.body }, (err, result) => {
-        if (err) {
-          return res.status(400).json({ err });
+      collection.findOne({ email: req.body.email }, (err, result) => {
+        if (result) {
+          return res.status(403).send({
+            errorMessage: 'Invalid form data',
+            errors: [{ msg: 'Email must be unique', param: 'name' }],
+          });
         }
 
-        const token = JwtManager.jwt({ ...req.body });
+        collection.insertOne({ ...req.body }, () => {
+          const token = JwtManager.jwt({ ...req.body });
 
-        return res.status(200).send({ result: { token } });
+          return res.status(200).send({ result: { token } });
+        });
       });
     }
   }
 
   @Get('info')
-  @Middleware([bearerToken()])
   private getInfo(req: any, res: Response) {
-    if (req.token) {
-      const collection = this.getCollection();
-
-      const { email, password } = jwt.verify(req.token, 'shhhhh');
-
-      collection.findOne({ email, password }, (err, result) => {
-        if (err) {
-          return res.status(400).json({ err });
-        }
-
-        if (result) {
-          return res.status(200).json({ result });
-        }
-
-        return res.status(401).send({ errorMessage: 'Invalid credentials' });
-      });
-    } else {
-      return res.status(401).send({ errorMessage: 'Invalid credentials' });
-    }
+    return res.status(200).send({ result: { user: req.user } });
   }
 }
