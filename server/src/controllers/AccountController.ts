@@ -83,4 +83,13 @@ export class AccountController extends AbstractController {
   private getInfo(req: any, res: Response) {
     return res.status(200).send({ result: { user: req.user } });
   }
+
+  @Get('users')
+  private async getUsers(req: any, res: Response) {
+    let users = await this.getCollection().find().toArray();
+
+    users = users.filter((user: any) => user.email !== req.user.email);
+
+    return res.status(200).send({ result: users });
+  }
 }
