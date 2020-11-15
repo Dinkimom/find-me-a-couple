@@ -12,7 +12,7 @@ export class UsersController extends AbstractController {
   @Get('/')
   private async getUsers(req: any, res: Response) {
     let users = await this.getCollection()
-      .find({ ...req.paras })
+      .find({ ...req.body, age: { $gte: req.body.age || 18 } })
       .toArray();
 
     users = users.filter((user: any) => user.email !== req.user.email);
