@@ -106,6 +106,9 @@ export const accountSlice = createSlice({
       state.isLogged = false;
       state.isChecked = true;
     },
+    logout: (state) => {
+      state = { ...initialState };
+    },
   },
 });
 
