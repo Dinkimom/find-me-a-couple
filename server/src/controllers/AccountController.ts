@@ -35,11 +35,13 @@ export class AccountController extends AbstractController {
         if (result) {
           const token = jwt.sign({ ...req.body }, secret);
 
-          return res.status(200).send({ result: { token } });
+          delete result.password;
+
+          return res.status(200).send({ result: { token, user: result } });
         }
 
         return res
-          .status(401)
+          .status(403)
           .send({ errorMessage: 'Invalid email or password' });
       });
     }

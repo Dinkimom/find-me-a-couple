@@ -1,0 +1,72 @@
+import axios, {
+  AxiosResponse,
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+} from 'axios';
+import { serverEntryPoint } from '../constants/serverEntryPoint';
+import { ErrorDto } from '../dtos/ErrorDto';
+import { EntityEnum } from '../enums/EntityEnum';
+
+export class AbstractClient {
+  protected axios: AxiosInstance;
+
+  public constructor(entity: EntityEnum) {
+    this.axios = axios.create({
+      baseURL: `${serverEntryPoint}/${entity}`,
+      timeout: 20000,
+    });
+    this.axios.interceptors.request.use(
+      (req: AxiosRequestConfig) => req,
+      this.useRequestToken
+    );
+    this.axios.interceptors.response.use(
+      (res: AxiosResponse) => res,
+      this.handleError
+    );
+    this.axios.interceptors.response.use(
+      (res: AxiosResponse) => res,
+      this.useResponseToken
+    );
+  }
+
+  private handleError = (error: AxiosError<ErrorDto>) => {
+    if (error.response) {
+      return this.handleErrorResponse(error.response);
+    } else if (error.request) {
+      console.log(error.request);
+      throw new Error('No response from the server');
+    } else {
+      console.log('Error', error.message);
+      throw new Error(error.message);
+    }
+  };
+
+  private handleErrorResponse = (res: AxiosResponse) => {
+    console.log(res);
+    switch (res.status) {
+      case 404:
+        window.location.href = '/not-found';
+        break;
+
+      case 401:
+        window.location.href = '/account/form';
+        break;
+
+      default:
+        throw res.data;
+    }
+  };
+
+  private useRequestToken = (req: AxiosRequestConfig) => {
+    req.headers['Authorization'] = `Basic ${localStorage.getItem('token')}`;
+
+    return req;
+  };
+
+  private useResponseToken = (req: AxiosResponse) => {
+    localStorage.setItem('token', req.data.result.token);
+
+    return req;
+  };
+}
