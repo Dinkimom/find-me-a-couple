@@ -56,13 +56,21 @@ export class AbstractClient {
   };
 
   private useRequestToken = (config: AxiosRequestConfig) => {
-    config.headers['Authorization'] = `Basic ${localStorage.getItem('token')}`;
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
 
     return config;
   };
 
   private useResponseToken = (res: AxiosResponse) => {
-    localStorage.setItem('token', res.data.result.token);
+    const { token } = res.data.result;
+
+    if (token) {
+      localStorage.setItem('token', res.data.result.token);
+    }
 
     return res;
   };

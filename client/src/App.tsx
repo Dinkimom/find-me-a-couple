@@ -1,8 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import { PrivateRoute } from './components/PrivateRoute';
 import { AccountForm } from './features/account/AccountForm';
 import { AccountInfo } from './features/account/AccountInfo';
+import { Users } from './features/account/users/Users';
 import { AccountControl } from './services/AccountControl';
 import { UsersControl } from './services/UsersControl';
 
@@ -16,6 +18,9 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/account/info" component={AccountInfo} />
           <Route path="/account/form" component={AccountForm} />
+          <PrivateRoute exact path="/">
+            <Users />
+          </PrivateRoute>
         </Switch>
       </Router>
     </div>

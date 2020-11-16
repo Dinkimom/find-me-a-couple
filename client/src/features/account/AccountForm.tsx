@@ -1,6 +1,7 @@
 import { Tabs } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import styles from './AccountForm.module.css';
 import { login, register } from './accountSlice';
@@ -19,7 +20,7 @@ export const AccountForm = () => {
     AccountFormState.Login
   );
 
-  const { loginForm, registerForm } = useSelector(
+  const { loginForm, registerForm, isLogged } = useSelector(
     (state: RootState) => state.account
   );
 
@@ -42,6 +43,10 @@ export const AccountForm = () => {
     },
     [dispatch, currentForm]
   );
+
+  if (isLogged) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Tabs

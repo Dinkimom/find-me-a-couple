@@ -17,7 +17,7 @@ export class AccountControl extends AbstractClient {
     return this.axios.post('/register', data);
   };
 
-  public getInfo = () => {
-    return this.axios.get('info');
+  public check = () => {
+    return this.axios.get('/info');
   };
 }

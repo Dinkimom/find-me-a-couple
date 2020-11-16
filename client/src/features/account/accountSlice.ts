@@ -10,7 +10,7 @@ interface AccountState {
   user: UserDto | null;
   isFetching: boolean;
   isLogged: boolean;
-
+  isChecked: boolean;
   loginForm: {
     error: null | ErrorDto;
     isFetching: boolean;
@@ -25,6 +25,7 @@ const initialState: AccountState = {
   user: null,
   isFetching: false,
   isLogged: false,
+  isChecked: false,
   loginForm: {
     error: null,
     isFetching: false,
@@ -43,6 +44,7 @@ export const accountSlice = createSlice({
       state.user = null;
       state.isFetching = true;
       state.isLogged = false;
+      state.isChecked = false;
       state.loginForm.error = null;
       state.loginForm.isFetching = true;
     },
@@ -50,13 +52,15 @@ export const accountSlice = createSlice({
       state.user = action.payload;
       state.isFetching = false;
       state.isLogged = true;
+      state.isChecked = true;
       state.loginForm.error = null;
       state.loginForm.isFetching = false;
     },
-    loginFailed: (state, actionPayload: PayloadAction<ErrorDto>) => {
+    loginFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
       state.user = null;
       state.isFetching = false;
       state.isLogged = false;
+      state.isChecked = true;
       state.loginForm.error = actionPayload.payload;
       state.loginForm.isFetching = false;
     },
@@ -64,6 +68,7 @@ export const accountSlice = createSlice({
       state.user = null;
       state.isFetching = true;
       state.isLogged = false;
+      state.isChecked = false;
       state.registerForm.error = null;
       state.registerForm.isFetching = true;
     },
@@ -71,15 +76,35 @@ export const accountSlice = createSlice({
       state.user = action.payload;
       state.isFetching = false;
       state.isLogged = true;
+      state.isChecked = true;
       state.registerForm.error = null;
       state.registerForm.isFetching = false;
     },
-    registerFailed: (state, actionPayload: PayloadAction<ErrorDto>) => {
+    registerFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
       state.user = null;
       state.isFetching = false;
       state.isLogged = false;
+      state.isChecked = true;
       state.registerForm.error = actionPayload.payload;
       state.registerForm.isFetching = false;
+    },
+    checkStart: (state) => {
+      state.user = null;
+      state.isFetching = true;
+      state.isLogged = false;
+      state.isChecked = false;
+    },
+    checkSuccess: (state, action: PayloadAction<UserDto>) => {
+      state.user = action.payload;
+      state.isFetching = false;
+      state.isLogged = true;
+      state.isChecked = true;
+    },
+    checkFailure: (state) => {
+      state.user = null;
+      state.isFetching = false;
+      state.isLogged = false;
+      state.isChecked = true;
     },
   },
 });
@@ -87,10 +112,13 @@ export const accountSlice = createSlice({
 export const {
   loginStart,
   loginSuccess,
-  loginFailed,
+  loginFailure,
   registerStart,
   registerSuccess,
-  registerFailed,
+  registerFailure,
+  checkStart,
+  checkSuccess,
+  checkFailure,
 } = accountSlice.actions;
 
 export const login = (data: LoginDto): AppThunk => async (dispatch) => {
@@ -101,7 +129,7 @@ export const login = (data: LoginDto): AppThunk => async (dispatch) => {
 
     dispatch(loginSuccess(response.data.result));
   } catch (error) {
-    dispatch(loginFailed(error));
+    dispatch(loginFailure(error));
   }
 };
 
@@ -113,7 +141,19 @@ export const register = (data: RegisterDto): AppThunk => async (dispatch) => {
 
     dispatch(registerSuccess(response.data.result.user));
   } catch (error) {
-    dispatch(registerFailed(error));
+    dispatch(registerFailure(error));
+  }
+};
+
+export const check = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch(checkStart());
+
+    const response = await accountControl.check();
+
+    dispatch(checkSuccess(response.data.result));
+  } catch {
+    dispatch(checkFailure());
   }
 };
 
