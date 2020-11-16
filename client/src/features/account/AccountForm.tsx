@@ -2,9 +2,8 @@ import { Tabs } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { register } from '../../serviceWorker';
 import styles from './AccountForm.module.css';
-import { login } from './accountSlice';
+import { login, register } from './accountSlice';
 import { LoginForm } from './components/LoginForm';
 import { RegisterForm } from './components/RegisterForm';
 

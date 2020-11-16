@@ -16,17 +16,11 @@ export class AbstractClient {
       baseURL: `${serverEntryPoint}/${entity}`,
       timeout: 20000,
     });
-    this.axios.interceptors.request.use(
-      (req: AxiosRequestConfig) => req,
-      this.useRequestToken
-    );
+    this.axios.interceptors.request.use(this.useRequestToken);
+    this.axios.interceptors.response.use(this.useResponseToken);
     this.axios.interceptors.response.use(
       (res: AxiosResponse) => res,
       this.handleError
-    );
-    this.axios.interceptors.response.use(
-      (res: AxiosResponse) => res,
-      this.useResponseToken
     );
   }
 
@@ -43,7 +37,6 @@ export class AbstractClient {
   };
 
   private handleErrorResponse = (res: AxiosResponse) => {
-    console.log(res);
     switch (res.status) {
       case 404:
         window.location.href = '/not-found';
@@ -53,20 +46,24 @@ export class AbstractClient {
         window.location.href = '/account/form';
         break;
 
+      case 403:
+        localStorage.clear();
+        break;
+
       default:
         throw res.data;
     }
   };
 
-  private useRequestToken = (req: AxiosRequestConfig) => {
-    req.headers['Authorization'] = `Basic ${localStorage.getItem('token')}`;
+  private useRequestToken = (config: AxiosRequestConfig) => {
+    config.headers['Authorization'] = `Basic ${localStorage.getItem('token')}`;
 
-    return req;
+    return config;
   };
 
-  private useResponseToken = (req: AxiosResponse) => {
-    localStorage.setItem('token', req.data.result.token);
+  private useResponseToken = (res: AxiosResponse) => {
+    localStorage.setItem('token', res.data.result.token);
 
-    return req;
+    return res;
   };
 }

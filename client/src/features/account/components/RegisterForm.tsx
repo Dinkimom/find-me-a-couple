@@ -1,5 +1,6 @@
 import { Button, Divider, Form, Input, InputNumber, Select } from 'antd';
 import React, { useRef } from 'react';
+import { phoneRegex } from '../../../constants/phoneRegex';
 import { useFormErrors } from '../../../hooks/useFormErrors';
 import { BaseFormProps } from '../../../types/BaseForm';
 
@@ -44,6 +45,17 @@ export const RegisterForm: React.FC<BaseFormProps> = ({
       </Form.Item>
 
       <Divider />
+
+      <Form.Item
+        label="Phone"
+        name="phone"
+        rules={[
+          { required: true, message: 'Please input your phone!' },
+          { pattern: phoneRegex, message: 'Please input valid phone' },
+        ]}
+      >
+        <Input />
+      </Form.Item>
 
       <Form.Item
         label="Email"
