@@ -1,6 +1,4 @@
 .layout {
-  display: grid;
-  grid-template-rows: 64px 1fr 64px;
   min-height: 100vh;
 }
 
@@ -25,12 +23,12 @@
 .content {
   padding: 0 50px;
   margin-top: 84px;
+  min-height: calc(100vh -128px);
 }
 
 .footer {
   height: 64px;
   text-align: center;
-  position: absolute;
-  bottom: 0;
+
   width: 100%;
 }
