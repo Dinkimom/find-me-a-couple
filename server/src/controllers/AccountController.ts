@@ -68,8 +68,7 @@ export class AccountController extends AbstractController {
       collection.findOne({ email: req.body.email }, (err, result) => {
         if (result) {
           return res.status(403).send({
-            errorMessage: 'Invalid form data',
-            errors: [{ msg: 'Email must be unique', param: 'name' }],
+            errors: [{ msg: 'Email must be unique', param: 'email' }],
           });
         }
 

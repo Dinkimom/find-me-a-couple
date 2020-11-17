@@ -108,6 +108,7 @@ export const accountSlice = createSlice({
     },
     logout: (state) => {
       state = { ...initialState };
+      localStorage.clear();
     },
   },
 });

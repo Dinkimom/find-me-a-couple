@@ -48,7 +48,7 @@ export class AbstractClient {
 
       case 403:
         localStorage.clear();
-        break;
+        throw res.data;
 
       default:
         throw res.data;

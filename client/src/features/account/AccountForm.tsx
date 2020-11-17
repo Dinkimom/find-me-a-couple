@@ -20,7 +20,7 @@ export const AccountForm = () => {
     AccountFormState.Login
   );
 
-  const { loginForm, registerForm, isLogged } = useSelector(
+  const { loginForm, registerForm } = useSelector(
     (state: RootState) => state.account
   );
 
@@ -43,10 +43,6 @@ export const AccountForm = () => {
     },
     [dispatch, currentForm]
   );
-
-  if (isLogged) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <Tabs
