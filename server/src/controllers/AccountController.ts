@@ -72,10 +72,12 @@ export class AccountController extends AbstractController {
           });
         }
 
-        collection.insertOne({ ...req.body }, () => {
+        collection.insertOne({ ...req.body }, (err, result) => {
           const token = JwtManager.jwt({ ...req.body });
 
-          return res.status(200).send({ result: { token } });
+          return res
+            .status(200)
+            .send({ result: { token, user: result.ops[0] } });
         });
       });
     }
