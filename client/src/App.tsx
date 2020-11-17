@@ -4,7 +4,7 @@ import './App.css';
 import { PrivateRoute } from './components/PrivateRoute';
 import { AccountForm } from './features/account/AccountForm';
 import { AccountInfo } from './features/account/AccountInfo';
-import { Users } from './features/account/users/Users';
+import { Users } from './features/users/Users';
 import { AccountControl } from './services/AccountControl';
 import { UsersControl } from './services/UsersControl';
 

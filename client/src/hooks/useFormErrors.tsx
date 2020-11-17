@@ -32,7 +32,5 @@ export const useFormErrors = (error: ErrorDto | null, ref: any) => {
     return null;
   }, [error]);
 
-  console.log(error);
-
   return errorMessage;
 };
