@@ -2,6 +2,7 @@ import { Controller, Get } from '@overnightjs/core';
 import { Response } from 'express';
 import { EntityEnum } from '../enums/EntityEnum';
 import { AbstractController } from './AbstractController';
+import { Request } from 'express';
 
 @Controller('api/users')
 export class UsersController extends AbstractController {
@@ -10,12 +11,16 @@ export class UsersController extends AbstractController {
   }
 
   @Get('/')
-  private async getUsers(req: any, res: Response) {
+  private async getUsers(req: Request, res: Response) {
     let users = await this.getCollection()
-      .find({ ...req.body, age: { $gte: req.body.age || 18 } })
+      .find(
+        req.query
+          ? { ...req.query, age: { $gte: Number(req.query.age) || 18 } }
+          : undefined
+      )
       .toArray();
 
-    users = users.filter((user: any) => user.email !== req.user.email);
+    users = users.filter((user: any) => user.email !== (req as any).user.email);
 
     users.forEach((user) => {
       delete user.password;

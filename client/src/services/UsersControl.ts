@@ -8,6 +8,6 @@ export class UsersControl extends AbstractClient {
   }
 
   public getUsers = (filter?: Filter) => {
-    return this.axios.get(`/`, { data: filter });
+    return this.axios.get(`/`, { params: filter });
   };
 }

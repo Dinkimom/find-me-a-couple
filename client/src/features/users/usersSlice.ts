@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { accountControl } from '../../App';
+import { accountControl, usersControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { ErrorDto } from '../../dtos/ErrorDto';
 import { LoginDto } from '../../dtos/LoginDto';
 import { RegisterDto } from '../../dtos/RegisterDto';
 import { UserDto } from '../../dtos/UserDto';
+import { Filter } from '../../types/Filter';
 
 interface UsersState {
   list: UserDto[];
@@ -42,7 +43,14 @@ export const usersSlice = createSlice({
 
 export const { fetchStart, fetchSuccess, fetchFailure } = usersSlice.actions;
 
-export const fetch = (): AppThunk => async (dispatch) => {
+export const fetch = (filter?: Filter): AppThunk => async (dispatch) => {
   try {
+    dispatch(fetchStart());
+
+    const response = await usersControl.getUsers(filter);
+
+    dispatch(fetchSuccess(response.data.result));
   } catch (error) {}
 };
+
+export const usersReducer = usersSlice.reducer;

@@ -33,7 +33,7 @@ export class AccountController extends AbstractController {
 
       collection.findOne({ ...req.body }, (err, result) => {
         if (result) {
-          const token = jwt.sign({ ...req.body }, secret);
+          const token = jwt.sign({ ...result }, secret);
 
           delete result.password;
 
@@ -73,7 +73,7 @@ export class AccountController extends AbstractController {
         }
 
         collection.insertOne({ ...req.body }, (err, result) => {
-          const token = JwtManager.jwt({ ...req.body });
+          const token = jwt.sign({ ...result.ops[0] }, secret);
 
           return res
             .status(200)

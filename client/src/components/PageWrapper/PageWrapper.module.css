@@ -1,6 +1,7 @@
 .layout {
   display: grid;
   grid-template-rows: 64px 1fr 64px;
+  min-height: 100vh;
 }
 
 .header {
@@ -23,7 +24,7 @@
 
 .content {
   padding: 0 50px;
-  margin-top: 64px;
+  margin-top: 84px;
 }
 
 .footer {

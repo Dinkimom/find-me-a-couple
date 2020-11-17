@@ -13,6 +13,8 @@ export const checkAuth = (req: Request, res: Response, next: Function) => {
   }
 
   if (token) {
+    console.log(token);
+
     const { email, password } = jwt.verify(token, secret);
 
     const users = getCollection(EntityEnum.Users);

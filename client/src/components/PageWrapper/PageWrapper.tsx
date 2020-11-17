@@ -45,8 +45,6 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
     );
   }, [user]);
 
-  console.log(user);
-
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
