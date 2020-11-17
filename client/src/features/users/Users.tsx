@@ -61,7 +61,7 @@ export const Users: React.FC = () => {
         loading={isFetching}
         renderItem={(item) => (
           <List.Item>
-            <Card title={item.name}>
+            <Card>
               <div className={styles.cardContent}>
                 <img
                   src={
@@ -73,6 +73,7 @@ export const Users: React.FC = () => {
                   className={styles.cardImage}
                 />
                 <div>
+                  <h3>{item.name}</h3>
                   <p>Sex: {SexTypeEnum[item.sex]}</p>
                   <p>Age: {item.age}</p>
                   <p>Phone: {item.phone}</p>
