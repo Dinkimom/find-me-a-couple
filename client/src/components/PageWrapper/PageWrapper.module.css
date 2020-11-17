@@ -6,12 +6,19 @@
 .header {
   position: fixed;
   z-index: 1;
+  font-size: 1.5rem;
   width: 100%;
-  display: flex;
-  font-size: 1.3rem;
 }
 
-.userPopover {
+.headerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userIcon {
+  color: white;
 }
 
 .content {

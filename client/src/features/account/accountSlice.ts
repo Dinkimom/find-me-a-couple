@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { accountControl } from '../../App';
-import { AppThunk, RootState } from '../../app/store';
+import { AppThunk } from '../../app/store';
 import { ErrorDto } from '../../dtos/ErrorDto';
 import { LoginDto } from '../../dtos/LoginDto';
 import { RegisterDto } from '../../dtos/RegisterDto';
@@ -107,7 +107,10 @@ export const accountSlice = createSlice({
       state.isChecked = true;
     },
     logout: (state) => {
-      state = { ...initialState };
+      state.user = null;
+      state.isFetching = false;
+      state.isLogged = false;
+      state.isChecked = true;
       localStorage.clear();
     },
   },
@@ -123,6 +126,7 @@ export const {
   checkStart,
   checkSuccess,
   checkFailure,
+  logout,
 } = accountSlice.actions;
 
 export const login = (data: LoginDto): AppThunk => async (dispatch) => {
@@ -131,7 +135,7 @@ export const login = (data: LoginDto): AppThunk => async (dispatch) => {
 
     const response = await accountControl.login(data);
 
-    dispatch(loginSuccess(response.data.result));
+    dispatch(loginSuccess(response.data.result.user));
   } catch (error) {
     dispatch(loginFailure(error));
   }
@@ -155,7 +159,7 @@ export const check = (): AppThunk => async (dispatch) => {
 
     const response = await accountControl.check();
 
-    dispatch(checkSuccess(response.data.result));
+    dispatch(checkSuccess(response.data.result.user));
   } catch {
     dispatch(checkFailure());
   }
