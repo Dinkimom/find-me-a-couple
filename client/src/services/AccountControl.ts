@@ -1,7 +1,6 @@
 import { LoginDto } from '../dtos/LoginDto';
 import { RegisterDto } from '../dtos/RegisterDto';
 import { EntityEnum } from '../enums/EntityEnum';
-import { Filter } from '../types/Filter';
 import { AbstractClient } from './AbstractControl';
 
 export class AccountControl extends AbstractClient {
@@ -17,7 +16,15 @@ export class AccountControl extends AbstractClient {
     return this.axios.post('/register', data);
   };
 
+  public update = (id: string, data: RegisterDto) => {
+    return this.axios.put(`/update/${id}`, data);
+  };
+
+  public remove = (id: string) => {
+    return this.axios.delete(`/delete/${id}`);
+  };
+
   public check = () => {
-    return this.axios.get('/info');
+    return this.axios.get('/');
   };
 }

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import { logout } from '../../features/account/accountSlice';
+import { UpdateForm } from '../../features/account/components/UpdateForm';
 import { Container } from '../Container/Container';
 import styles from './PageWrapper.module.css';
 
@@ -38,6 +39,7 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
         </h3>
 
         <p>{user.phone}</p>
+        <UpdateForm />
         <Button block onClick={handleLogout}>
           Logout
         </Button>
@@ -51,8 +53,10 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
         <Container className={styles.headerContainer}>
           <Link to="/">Home</Link>
 
-          <Popover content={PopoverContent} trigger="click">
-            <UserOutlined className={styles.userIcon} />
+          <Popover content={PopoverContent} trigger="focus">
+            <Button type="primary">
+              <UserOutlined />
+            </Button>
           </Popover>
         </Container>
       </Header>

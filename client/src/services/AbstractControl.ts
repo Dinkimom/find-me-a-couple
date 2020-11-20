@@ -66,10 +66,12 @@ export class AbstractClient {
   };
 
   private useResponseToken = (res: AxiosResponse) => {
-    const { token } = res.data.result;
+    if (res.data) {
+      const { token } = res.data.result;
 
-    if (token) {
-      localStorage.setItem('token', res.data.result.token);
+      if (token) {
+        localStorage.setItem('token', res.data.result.token);
+      }
     }
 
     return res;

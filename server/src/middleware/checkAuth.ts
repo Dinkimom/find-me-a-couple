@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ObjectID } from 'mongodb';
 import { noCheckPaths } from '../constants/noCheckPaths';
 import { secret } from '../constants/secret';
 import { EntityEnum } from '../enums/EntityEnum';
@@ -13,14 +14,14 @@ export const checkAuth = (req: Request, res: Response, next: Function) => {
   }
 
   if (token) {
-    console.log(token);
-
-    const { email, password } = jwt.verify(token, secret);
+    const { _id } = jwt.verify(token, secret);
 
     const users = getCollection(EntityEnum.Users);
 
-    return users.findOne({ email, password }, (err, result) => {
+    return users.findOne({ _id: new ObjectID(_id) }, (err, result) => {
       if (result) {
+        delete result.password;
+
         (req as any).user = result;
         next();
       }

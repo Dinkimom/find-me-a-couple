@@ -1,23 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { notification } from 'antd';
 import { accountControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { ErrorDto } from '../../dtos/ErrorDto';
 import { LoginDto } from '../../dtos/LoginDto';
 import { RegisterDto } from '../../dtos/RegisterDto';
 import { UserDto } from '../../dtos/UserDto';
+import { FormState } from '../../types/FormState';
 
 interface AccountState {
   user: UserDto | null;
   isFetching: boolean;
   isLogged: boolean;
   isChecked: boolean;
-  loginForm: {
-    error: null | ErrorDto;
-    isFetching: boolean;
-  };
-  registerForm: {
-    error: null | ErrorDto;
-    isFetching: boolean;
+  loginForm: FormState;
+  registerForm: FormState;
+  updateForm: FormState & {
+    opened: boolean;
   };
 }
 
@@ -33,6 +32,11 @@ const initialState: AccountState = {
   registerForm: {
     error: null,
     isFetching: false,
+  },
+  updateForm: {
+    error: null,
+    isFetching: false,
+    opened: false,
   },
 };
 
@@ -113,6 +117,46 @@ export const accountSlice = createSlice({
       state.isChecked = true;
       localStorage.clear();
     },
+    toggleUpdateForm: (state) => {
+      state.updateForm.opened = !state.updateForm.opened;
+    },
+    updateStart: (state) => {
+      state.isFetching = true;
+      state.isLogged = true;
+      state.isChecked = true;
+      state.updateForm.error = null;
+      state.updateForm.isFetching = true;
+    },
+    updateSuccess: (state, action: PayloadAction<UserDto>) => {
+      state.user = action.payload;
+      state.isFetching = false;
+      state.isLogged = true;
+      state.isChecked = true;
+      state.updateForm.error = null;
+      state.updateForm.isFetching = false;
+      state.updateForm.opened = false;
+    },
+    updateFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
+      state.isFetching = false;
+      state.isChecked = true;
+      state.isLogged = true;
+      state.updateForm.error = actionPayload.payload;
+      state.updateForm.isFetching = false;
+    },
+    removeStart: (state) => {
+      state.isFetching = true;
+    },
+    removeSuccess: (state) => {
+      state.user = null;
+      state.isFetching = false;
+      state.isLogged = false;
+      state.isChecked = true;
+    },
+    removeFailure: (state) => {
+      state.isFetching = false;
+      state.isLogged = true;
+      state.isChecked = true;
+    },
   },
 });
 
@@ -127,6 +171,13 @@ export const {
   checkSuccess,
   checkFailure,
   logout,
+  toggleUpdateForm,
+  updateStart,
+  updateSuccess,
+  updateFailure,
+  removeStart,
+  removeSuccess,
+  removeFailure,
 } = accountSlice.actions;
 
 export const login = (data: LoginDto): AppThunk => async (dispatch) => {
@@ -150,6 +201,41 @@ export const register = (data: RegisterDto): AppThunk => async (dispatch) => {
     dispatch(registerSuccess(response.data.result.user));
   } catch (error) {
     dispatch(registerFailure(error));
+  }
+};
+
+export const update = (id: string, data: RegisterDto): AppThunk => async (
+  dispatch
+) => {
+  try {
+    dispatch(updateStart());
+
+    const response = await accountControl.update(id, data);
+
+    dispatch(updateSuccess(response.data.result.user));
+
+    notification.success({
+      message: 'User data was successfully updated!',
+    });
+  } catch (error) {
+    dispatch(updateFailure(error));
+  }
+};
+
+export const remove = (id: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(removeStart());
+
+    await accountControl.remove(id);
+
+    dispatch(removeSuccess());
+  } catch (error) {
+    console.error(error);
+    notification.error({
+      message: 'User delete fail! Try operation later',
+    });
+
+    dispatch(removeFailure());
   }
 };
 

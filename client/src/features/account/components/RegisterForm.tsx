@@ -1,22 +1,13 @@
-import { Button, Divider, Form, Input, InputNumber, Select } from 'antd';
-import React, { useRef } from 'react';
+import { Divider, Form, Input, InputNumber, Select } from 'antd';
+import React from 'react';
+import { BaseForm, BaseFormProps } from '../../../components/BaseForm';
 import { phoneRegex } from '../../../constants/phoneRegex';
-import { useFormErrors } from '../../../hooks/useFormErrors';
-import { BaseFormProps } from '../../../types/BaseForm';
 
 const { Option } = Select;
 
-export const RegisterForm: React.FC<BaseFormProps> = ({
-  onSubmit,
-  isFetching,
-  error,
-}) => {
-  const formRef: any = useRef();
-
-  const errorMessage = useFormErrors(error, formRef);
-
+export const RegisterForm: React.FC<BaseFormProps> = (props) => {
   return (
-    <Form layout="vertical" name="basic" onFinish={onSubmit} ref={formRef}>
+    <BaseForm {...props}>
       <Form.Item
         label="Name"
         name="name"
@@ -75,14 +66,6 @@ export const RegisterForm: React.FC<BaseFormProps> = ({
       >
         <Input.Password />
       </Form.Item>
-
-      {errorMessage}
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={isFetching}>
-          Register
-        </Button>
-      </Form.Item>
-    </Form>
+    </BaseForm>
   );
 };
