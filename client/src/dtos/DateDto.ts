@@ -3,7 +3,7 @@ import { UserDto } from './UserDto';
 
 export interface DateDto {
   _id: string;
-  inviter: string;
+  inviter: UserDto;
   receiver: UserDto;
   date: number;
   status: DateStatusEnum;

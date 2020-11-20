@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { DateDto } from '../dtos/DateDto';
 import { ObjectID } from 'mongodb';
 import { DateStatusEnum } from '../enums/DateStatusEnum';
+import { getCollection } from '../utils/getCollection';
 
 @Controller('api/dates')
 export class DatesController extends AbstractController {
@@ -16,9 +17,23 @@ export class DatesController extends AbstractController {
   private async getDates(req: any, res: Response) {
     const collection = this.getCollection();
 
-    let list = await collection.find().toArray();
+    const dates = await getCollection(EntityEnum.Dates).find().toArray();
+
+    let list = dates.filter(
+      (item) => item.inviter == req.user._id || item.receiver == req.user._id
+    );
+
+    const users = await getCollection(EntityEnum.Users).find().toArray();
 
     list.filter((item) => item.inviter == req.user._id);
+
+    users.forEach((item) => delete item.password);
+
+    list = list.map((item) => ({
+      ...item,
+      inviter: users.filter((user) => item.inviter == user._id)[0],
+      receiver: users.filter((user) => item.receiver == user._id)[0],
+    }));
 
     return res.status(200).send({ result: list });
   }
@@ -32,13 +47,13 @@ export class DatesController extends AbstractController {
     });
   }
 
-  @Put('/:_id')
+  @Put(':_id')
   private async updateDate(req: Request<Partial<DateDto>>, res: Response) {
     const _id = new ObjectID(req.params._id);
 
     const collection = this.getCollection();
 
-    collection.findOneAndUpdate({ _id }, { ...req.body }, () => {
+    collection.findOneAndUpdate({ _id }, { $set: { ...req.body } }, () => {
       return res.status(200).send();
     });
   }

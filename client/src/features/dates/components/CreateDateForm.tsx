@@ -60,7 +60,16 @@ export const CreateDateForm: React.FC = () => {
           {receiver && <UserCard user={receiver} />}
         </div>
 
-        <Form.Item name="date">
+        <Form.Item
+          name="date"
+          rules={[
+            {
+              type: 'date',
+              min: Number(new Date()),
+              message: 'Selected date must be valid',
+            },
+          ]}
+        >
           <DatePicker placeholder="Select date" />
         </Form.Item>
       </BaseForm>
