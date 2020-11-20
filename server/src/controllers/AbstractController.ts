@@ -1,4 +1,4 @@
-import { EntityEnum } from 'src/enums/EntityEnum';
+import { EntityEnum } from '../enums/EntityEnum';
 import { getCollection } from '../utils/getCollection';
 
 export class AbstractController {

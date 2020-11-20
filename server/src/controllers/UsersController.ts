@@ -1,8 +1,9 @@
 import { Controller, Get } from '@overnightjs/core';
-import { Response } from 'express';
+import { response, Response } from 'express';
 import { EntityEnum } from '../enums/EntityEnum';
 import { AbstractController } from './AbstractController';
 import { Request } from 'express';
+import { ObjectID } from 'mongodb';
 
 @Controller('api/users')
 export class UsersController extends AbstractController {
@@ -27,5 +28,22 @@ export class UsersController extends AbstractController {
     });
 
     return res.status(200).send({ result: users });
+  }
+
+  @Get('/:_id')
+  private async getUser(req: Request, res: Response) {
+    const _id = new ObjectID(req.params._id);
+
+    const collection = this.getCollection();
+
+    collection.findOne({ _id }, (err, result) => {
+      if (result) {
+        return res.status(422).send({
+          errors: [{ msg: 'Email must be unique', param: 'email' }],
+        });
+      }
+
+      return res.status(200).send({ result: { [result._id]: result } });
+    });
   }
 }
