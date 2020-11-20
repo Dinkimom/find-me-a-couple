@@ -3,17 +3,17 @@ import { datesControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { DateDto } from '../../dtos/DateDto';
 import { ErrorDto } from '../../dtos/ErrorDto';
+import { NewDateDto } from '../../dtos/NewDateDto';
+import { UserDto } from '../../dtos/UserDto';
 import { ModalFormState } from '../../types/ModalFormState';
+import { fetch as fetchUsers } from '../users/usersSlice';
 
 interface DatesState {
   list: DateDto[];
   isFetching: boolean;
   error: ErrorDto | null;
   createForm: ModalFormState & {
-    current: Partial<DateDto> | null;
-  };
-  updateForm: ModalFormState & {
-    current: DateDto | null;
+    receiver: UserDto | null;
   };
 }
 
@@ -25,13 +25,7 @@ const initialState: DatesState = {
     opened: false,
     isFetching: false,
     error: null,
-    current: null,
-  },
-  updateForm: {
-    opened: false,
-    isFetching: false,
-    error: null,
-    current: null,
+    receiver: null,
   },
 };
 
@@ -54,8 +48,8 @@ const datesSlice = createSlice({
       state.isFetching = false;
       state.error = action.payload;
     },
-    toggleCreateForm: (state, action?: PayloadAction<Partial<DateDto>>) => {
-      state.createForm.current = action?.payload || null;
+    toggleCreateForm: (state, action: PayloadAction<UserDto | null>) => {
+      state.createForm.receiver = action.payload;
       state.createForm.opened = !state.createForm.opened;
       state.createForm.error = null;
       state.createForm.isFetching = false;
@@ -65,7 +59,7 @@ const datesSlice = createSlice({
       state.createForm.isFetching = true;
     },
     createSuccess: (state) => {
-      state.createForm.current = null;
+      state.createForm.receiver = null;
       state.createForm.opened = false;
       state.createForm.isFetching = false;
       state.createForm.error = null;
@@ -74,25 +68,17 @@ const datesSlice = createSlice({
       state.createForm.isFetching = false;
       state.createForm.error = action.payload;
     },
-    toggleUpdateForm: (state, action?: PayloadAction<DateDto>) => {
-      state.updateForm.current = action?.payload || null;
-      state.updateForm.opened = !state.updateForm.opened;
-      state.updateForm.isFetching = false;
-      state.updateForm.error = null;
-    },
     updateStart: (state) => {
-      state.updateForm.isFetching = true;
-      state.updateForm.error = null;
+      state.isFetching = true;
+      state.error = null;
     },
     updateSuccess: (state) => {
-      state.updateForm.current = null;
-      state.updateForm.opened = false;
-      state.updateForm.isFetching = false;
-      state.updateForm.error = null;
+      state.isFetching = false;
+      state.error = null;
     },
     updateFailure: (state, action: PayloadAction<ErrorDto>) => {
-      state.updateForm.isFetching = false;
-      state.updateForm.error = action.payload;
+      state.isFetching = false;
+      state.error = action.payload;
     },
   },
 });
@@ -105,7 +91,6 @@ export const {
   createStart,
   createSuccess,
   createFailure,
-  toggleUpdateForm,
   updateStart,
   updateSuccess,
   updateFailure,
@@ -113,17 +98,17 @@ export const {
 
 export const fetch = (): AppThunk => async (dispatch) => {
   try {
-    dispatch(fetchStart);
+    dispatch(fetchStart());
 
     const response = await datesControl.getDates();
 
-    dispatch(response.data.result.list);
+    dispatch(fetchSuccess(response.data.result));
   } catch (error) {
     dispatch(fetchFailure(error));
   }
 };
 
-export const create = (data: DateDto): AppThunk => async (dispatch) => {
+export const create = (data: NewDateDto): AppThunk => async (dispatch) => {
   try {
     dispatch(createStart());
 
@@ -131,7 +116,7 @@ export const create = (data: DateDto): AppThunk => async (dispatch) => {
 
     dispatch(createSuccess());
 
-    dispatch(fetch());
+    dispatch(fetchUsers());
   } catch (error) {
     dispatch(createFailure(error));
   }
@@ -150,3 +135,5 @@ export const update = (id: string, data: Partial<DateDto>): AppThunk => async (
     dispatch(updateFailure(error));
   }
 };
+
+export const datesReducer = datesSlice.reducer;

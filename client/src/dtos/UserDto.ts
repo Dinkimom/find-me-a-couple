@@ -7,4 +7,5 @@ export interface UserDto {
   age: number;
   phone: string;
   email: string;
+  isInvited?: boolean;
 }

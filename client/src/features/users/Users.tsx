@@ -1,15 +1,13 @@
-import { List, Card, Input, Button, Form, Select, InputNumber } from 'antd';
+import { Button, Card, Form, InputNumber, List, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import { UserCard } from '../../components/UserCard/UserCard';
+import { UserDto } from '../../dtos/UserDto';
 import { Filter } from '../../types/Filter';
-import { fetch } from './usersSlice';
-
+import { toggleCreateForm } from '../dates/datesSlice';
 import styles from './Users.module.css';
-import { SexTypeEnum } from '../../enums/SexTypeEnum';
-
-import maleImage from './assets/male.png';
-import femaleImage from './assets/female.png';
+import { fetch } from './usersSlice';
 
 const { Option } = Select;
 
@@ -26,6 +24,10 @@ export const Users: React.FC = () => {
 
   const handleSearch = (filter: Filter) => {
     setFilter(filter);
+  };
+
+  const handleInvite = (receiver: UserDto) => {
+    dispatch(toggleCreateForm(receiver));
   };
 
   return (
@@ -62,23 +64,15 @@ export const Users: React.FC = () => {
         renderItem={(item) => (
           <List.Item>
             <Card>
-              <div className={styles.cardContent}>
-                <img
-                  src={
-                    Number(item.sex) === SexTypeEnum.Male
-                      ? maleImage
-                      : femaleImage
-                  }
-                  alt={item.name}
-                  className={styles.cardImage}
-                />
-                <div>
-                  <h3>{item.name}</h3>
-                  <p>Sex: {SexTypeEnum[item.sex]}</p>
-                  <p>Age: {item.age}</p>
-                  <p>Phone: {item.phone}</p>
-                </div>
-              </div>
+              <UserCard user={item} />
+              <Button
+                type="primary"
+                block
+                onClick={() => handleInvite(item)}
+                disabled={item.isInvited}
+              >
+                {item.isInvited ? 'Invited' : 'Invite'}
+              </Button>
             </Card>
           </List.Item>
         )}

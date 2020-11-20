@@ -1,10 +1,9 @@
 import { DateStatusEnum } from '../enums/DateStatusEnum';
-import { UserDto } from './UserDto';
 
-export interface DateDto {
+export interface NewDateDto {
   _id: string;
   inviter: string;
-  receiver: UserDto;
+  receiver: string;
   date: number;
   status: DateStatusEnum;
 }

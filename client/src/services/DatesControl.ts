@@ -1,4 +1,5 @@
 import { DateDto } from '../dtos/DateDto';
+import { NewDateDto } from '../dtos/NewDateDto';
 import { EntityEnum } from '../enums/EntityEnum';
 import { AbstractControl } from './AbstractControl';
 
@@ -11,7 +12,7 @@ export class DatesControl extends AbstractControl {
     return this.axios.get('/');
   };
 
-  public create = (data: DateDto) => {
+  public create = (data: NewDateDto) => {
     return this.axios.post('/', data);
   };
 

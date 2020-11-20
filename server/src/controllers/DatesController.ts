@@ -2,8 +2,9 @@ import { Controller, Get, Post, Put } from '@overnightjs/core';
 import { EntityEnum } from '../enums/EntityEnum';
 import { AbstractController } from './AbstractController';
 import { Request, Response } from 'express';
-import { DateDto } from 'src/dtos/DateDto';
+import { DateDto } from '../dtos/DateDto';
 import { ObjectID } from 'mongodb';
+import { DateStatusEnum } from '../enums/DateStatusEnum';
 
 @Controller('api/dates')
 export class DatesController extends AbstractController {
@@ -15,25 +16,9 @@ export class DatesController extends AbstractController {
   private async getDates(req: any, res: Response) {
     const collection = this.getCollection();
 
-    let list = await collection
-      .find({ participants: { $all: [req.user._id] } })
-      .toArray();
+    let list = await collection.find().toArray();
 
-    list = list.map((item) => {
-      const users = collection.find({
-        _id: {
-          $all: [
-            new ObjectID(item.participants[0]),
-            new ObjectID(item.participants[1]),
-          ],
-        },
-      });
-
-      return {
-        ...item,
-        users,
-      };
-    });
+    list.filter((item) => item.inviter == req.user._id);
 
     return res.status(200).send({ result: list });
   }
@@ -42,7 +27,7 @@ export class DatesController extends AbstractController {
   private async createDate(req: Request<DateDto>, res: Response) {
     const collection = this.getCollection();
 
-    collection.insertOne({ ...req.body }, (err, result) => {
+    collection.insertOne({ ...req.body, status: DateStatusEnum.Opened }, () => {
       return res.status(200).send();
     });
   }
@@ -53,7 +38,7 @@ export class DatesController extends AbstractController {
 
     const collection = this.getCollection();
 
-    collection.findOneAndUpdate({ _id }, { ...req.body }, (err, result) => {
+    collection.findOneAndUpdate({ _id }, { ...req.body }, () => {
       return res.status(200).send();
     });
   }

@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { accountControl, usersControl } from '../../App';
+import { usersControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { ErrorDto } from '../../dtos/ErrorDto';
-import { LoginDto } from '../../dtos/LoginDto';
-import { RegisterDto } from '../../dtos/RegisterDto';
 import { UserDto } from '../../dtos/UserDto';
 import { Filter } from '../../types/Filter';
 

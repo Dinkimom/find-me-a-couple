@@ -4,6 +4,7 @@ import { EntityEnum } from '../enums/EntityEnum';
 import { AbstractController } from './AbstractController';
 import { Request } from 'express';
 import { ObjectID } from 'mongodb';
+import { getCollection } from '../utils/getCollection';
 
 @Controller('api/users')
 export class UsersController extends AbstractController {
@@ -12,8 +13,9 @@ export class UsersController extends AbstractController {
   }
 
   @Get('/')
-  private async getUsers(req: Request, res: Response) {
-    let users = await this.getCollection()
+  private async getUsers(req: any, res: Response) {
+    const collection = this.getCollection();
+    let users = await collection
       .find(
         req.query
           ? { ...req.query, age: { $gte: Number(req.query.age) || 18 } }
@@ -23,8 +25,16 @@ export class UsersController extends AbstractController {
 
     users = users.filter((user: any) => user.email !== (req as any).user.email);
 
-    users.forEach((user) => {
+    const dates = await getCollection(EntityEnum.Dates).find().toArray();
+
+    users.forEach(async (user) => {
       delete user.password;
+
+      user.isInvited = Boolean(
+        dates.filter(
+          (item) => item.inviter == req.user._id && item.receiver == user._id
+        ).length
+      );
     });
 
     return res.status(200).send({ result: users });
