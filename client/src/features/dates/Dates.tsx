@@ -107,8 +107,10 @@ export const Dates: React.FC = () => {
 
               {item.status === DateStatusEnum.Accepted && (
                 <>
-                  <p>{userData.email}</p>
-                  <p>{userData.phone}</p>
+                  <h3>Contact info</h3>
+                  <p>
+                    {userData.email}, {userData.phone}
+                  </p>
                 </>
               )}
 
