@@ -1,9 +1,9 @@
 import { LoginDto } from '../dtos/LoginDto';
 import { RegisterDto } from '../dtos/RegisterDto';
 import { EntityEnum } from '../enums/EntityEnum';
-import { AbstractClient } from './AbstractControl';
+import { AbstractControl } from './AbstractControl';
 
-export class AccountControl extends AbstractClient {
+export class AccountControl extends AbstractControl {
   constructor() {
     super(EntityEnum.Account);
   }

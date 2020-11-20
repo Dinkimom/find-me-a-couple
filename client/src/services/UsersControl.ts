@@ -1,13 +1,13 @@
 import { EntityEnum } from '../enums/EntityEnum';
 import { Filter } from '../types/Filter';
-import { AbstractClient } from './AbstractControl';
+import { AbstractControl } from './AbstractControl';
 
-export class UsersControl extends AbstractClient {
+export class UsersControl extends AbstractControl {
   constructor() {
     super(EntityEnum.Users);
   }
 
   public getUsers = (filter?: Filter) => {
-    return this.axios.get(`/`, { params: filter });
+    return this.axios.get('/', { params: filter });
   };
 }

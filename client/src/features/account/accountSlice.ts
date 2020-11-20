@@ -7,6 +7,7 @@ import { LoginDto } from '../../dtos/LoginDto';
 import { RegisterDto } from '../../dtos/RegisterDto';
 import { UserDto } from '../../dtos/UserDto';
 import { FormState } from '../../types/FormState';
+import { ModalFormState } from '../../types/ModalFormState';
 
 interface AccountState {
   user: UserDto | null;
@@ -15,9 +16,7 @@ interface AccountState {
   isChecked: boolean;
   loginForm: FormState;
   registerForm: FormState;
-  updateForm: FormState & {
-    opened: boolean;
-  };
+  updateForm: ModalFormState;
 }
 
 const initialState: AccountState = {

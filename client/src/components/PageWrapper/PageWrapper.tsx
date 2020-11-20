@@ -53,11 +53,19 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
         <Container className={styles.headerContainer}>
           <Link to="/">Home</Link>
 
-          <Popover content={PopoverContent} trigger="focus">
-            <Button type="primary">
-              <UserOutlined />
-            </Button>
-          </Popover>
+          <div>
+            <Link to="/dates">My dates</Link>
+
+            <Popover content={PopoverContent} trigger="focus">
+              <Button
+                type="primary"
+                shape="circle"
+                className={styles.userButton}
+              >
+                <UserOutlined />
+              </Button>
+            </Popover>
+          </div>
         </Container>
       </Header>
       <Content className={styles.content}>

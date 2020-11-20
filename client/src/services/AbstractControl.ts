@@ -8,7 +8,7 @@ import { serverEntryPoint } from '../constants/serverEntryPoint';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { EntityEnum } from '../enums/EntityEnum';
 
-export class AbstractClient {
+export class AbstractControl {
   protected axios: AxiosInstance;
 
   public constructor(entity: EntityEnum) {
