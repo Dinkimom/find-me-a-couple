@@ -83,7 +83,7 @@ export const Dates: React.FC = () => {
                       }}
                     >
                       Decline
-                    </Button>{' '}
+                    </Button>
                   </>
                 );
               }

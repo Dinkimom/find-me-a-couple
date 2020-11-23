@@ -39,7 +39,7 @@ export class AbstractControl {
   private handleErrorResponse = (res: AxiosResponse) => {
     switch (res.status) {
       case 404:
-        // window.location.href = '/not-found';
+        window.location.href = '/not-found';
         break;
 
       case 401:
