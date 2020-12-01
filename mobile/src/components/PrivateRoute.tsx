@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Redirect, Route, RouteProps } from 'react-router-native';
 import { RootState } from '../app/store';
 import { check } from '../features/account/accountSlice';
 import { PageWrapper } from './PageWrapper/PageWrapper';

@@ -1,17 +1,26 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 import { Provider } from 'react-redux';
-import { NativeRouter } from 'react-router-native';
+import { NativeRouter, Route } from 'react-router-native';
 import { store } from './src/app/store';
+import { PrivateRoute } from './src/components/PrivateRoute';
+import { AccountForm } from './src/features/account/AccountForm';
+import { CreateDateForm } from './src/features/dates/components/CreateDateForm';
+import { Dates } from './src/features/dates/Dates';
+import { Users } from './src/features/users/Users';
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
       <NativeRouter>
-        <View>
-          <Text>What's upppppp</Text>
-          <Text>What's upppppp</Text>
-        </View>
+        <Route path="/account/form" component={AccountForm} />
+        <PrivateRoute exact path="/">
+          <Users />
+        </PrivateRoute>
+        <PrivateRoute exact path="/dates">
+          <Dates />
+        </PrivateRoute>
+
+        <CreateDateForm />
       </NativeRouter>
     </Provider>
   );

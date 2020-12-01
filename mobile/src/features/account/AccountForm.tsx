@@ -1,11 +1,12 @@
 import { Tabs } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-native';
 import { RootState } from '../../app/store';
 import { login, register } from './accountSlice';
 import { LoginForm } from './components/LoginForm';
 import { RegisterForm } from './components/RegisterForm';
+import { Text } from 'react-native';
 
 const { TabPane } = Tabs;
 
