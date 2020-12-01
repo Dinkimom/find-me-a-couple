@@ -47,6 +47,7 @@ export class AbstractControl {
       //   break;
 
       // case 403:
+      //   localStorage.clear();
       //   throw res.data;
 
       default:
@@ -55,22 +56,21 @@ export class AbstractControl {
   };
 
   private useRequestToken = (config: AxiosRequestConfig) => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
+    // if (token) {
+    //   config.headers['Authorization'] = `Bearer ${token}`;
+    // }
 
     return config;
   };
 
   private useResponseToken = (res: AxiosResponse) => {
     if (res.data) {
-      const { token } = res.data.result;
-
-      if (token) {
-        // localStorage.setItem('token', res.data.result.token);
-      }
+      // const { token } = res.data.result;
+      // if (token) {
+      //   localStorage.setItem('token', res.data.result.token);
+      // }
     }
 
     return res;
