@@ -10,6 +10,7 @@ const App: React.FC = () => {
       <NativeRouter>
         <View>
           <Text>What's upppppp</Text>
+          <Text>What's upppppp</Text>
         </View>
       </NativeRouter>
     </Provider>

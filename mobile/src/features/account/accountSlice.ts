@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { notification } from 'antd';
 import { accountControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { ErrorDto } from '../../dtos/ErrorDto';
@@ -211,10 +210,6 @@ export const update = (id: string, data: RegisterDto): AppThunk => async (
     const response = await accountControl.update(id, data);
 
     dispatch(updateSuccess(response.data.result.user));
-
-    notification.success({
-      message: 'User data was successfully updated!',
-    });
   } catch (error) {
     dispatch(updateFailure(error));
   }
@@ -228,11 +223,6 @@ export const remove = (id: string): AppThunk => async (dispatch) => {
 
     dispatch(removeSuccess());
   } catch (error) {
-    console.error(error);
-    notification.error({
-      message: 'User delete fail! Try operation later',
-    });
-
     dispatch(removeFailure());
   }
 };
