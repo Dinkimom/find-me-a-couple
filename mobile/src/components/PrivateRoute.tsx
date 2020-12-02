@@ -1,4 +1,3 @@
-import { Spin } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps } from 'react-router-native';
@@ -19,6 +18,8 @@ export const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
     }
   }, [dispatch, isChecked]);
 
+  console.log(isLogged, isChecked);
+
   return (
     <Route
       {...rest}
@@ -28,14 +29,7 @@ export const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
             return <PageWrapper>{children}</PageWrapper>;
           }
 
-          return (
-            <Redirect
-              to={{
-                pathname: 'account/form',
-                state: { from: location },
-              }}
-            />
-          );
+          return <Redirect to="/login" />;
         }
 
         return (

@@ -1,14 +1,11 @@
-import { Button, Card, Form, InputNumber, List, Select } from 'antd';
+import { Text } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { UserCard } from '../../components/UserCard/UserCard';
 import { UserDto } from '../../dtos/UserDto';
 import { Filter } from '../../types/Filter';
 import { toggleCreateForm } from '../dates/datesSlice';
 import { fetch } from './usersSlice';
-
-const { Option } = Select;
 
 export const Users: React.FC = () => {
   const { list, isFetching } = useSelector((state: RootState) => state).users;
@@ -31,6 +28,7 @@ export const Users: React.FC = () => {
 
   return (
     <>
+      <Text>Users</Text>
       {/* <Form layout="inline" onFinish={handleSearch}>
         <Form.Item label="Sex" name="sex">
           <Select style={{ width: 100 }}>

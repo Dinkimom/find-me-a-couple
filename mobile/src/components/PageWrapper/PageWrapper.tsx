@@ -1,15 +1,6 @@
-import { UserOutlined } from '@ant-design/icons';
-import { Button, Layout, Popover } from 'antd';
-import { Footer } from 'antd/lib/layout/layout';
 import React, { ReactNode, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { RootState } from '../../app/store';
-import { logout } from '../../features/account/accountSlice';
-import { UpdateForm } from '../../features/account/components/UpdateForm';
-import { Container } from '../Container/Container';
-
-const { Header, Content } = Layout;
 
 interface Props {
   children: ReactNode;
@@ -20,11 +11,11 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
 
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    if (window.confirm('Do you want to logout?')) {
-      dispatch(logout());
-    }
-  };
+  // const handleLogout = () => {
+  //   if (window.confirm('Do you want to logout?')) {
+  //     dispatch(logout());
+  //   }
+  // };
 
   const PopoverContent = useMemo(() => {
     if (!user) {
@@ -50,6 +41,7 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
 
   return (
     <>
+      {children}
       {/* <Layout className={styles.layout}>
       <Header className={styles.header}>
         <Container className={styles.headerContainer}>

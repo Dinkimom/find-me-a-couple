@@ -1,17 +1,17 @@
-import { Input, Text } from '@ui-kitten/components';
-import { Button } from '../../../components/Button';
+import { Icon, Input, Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
-import { BaseFormProps } from '../../../components/BaseForm';
+import { RootState } from '../../../app/store';
+import { Button } from '../../../components/Button';
+import { emailRegex } from '../../../constants/emailRegex';
 import { useField } from '../../../hooks/useField';
 import { login } from '../accountSlice';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
 
 export const LoginForm: React.FC = () => {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, errors } = useForm();
   const { handler } = useField(setValue);
 
   const { isFetching } = useSelector(
@@ -19,25 +19,35 @@ export const LoginForm: React.FC = () => {
   );
 
   useEffect(() => {
-    register('email');
-    register('password');
+    register('email', { required: true, pattern: emailRegex });
+    register('password', { required: true });
   }, []);
 
   const onSubmit = (data: any) => {
     login(data);
   };
 
+  // move error display into hook
+
   return (
-    <View>
+    <View style={styles.root}>
+      <Text style={styles.title} category="h6">
+        Please, login
+      </Text>
+
       <Input
         label="Email"
         style={styles.input}
         onChangeText={handler('email')}
+        status={errors.email ? 'danger' : 'undefined'}
       />
+
       <Input
         label="Password"
         style={styles.input}
         onChangeText={handler('password')}
+        secureTextEntry={true}
+        status={errors.password ? 'danger' : 'undefined'}
       />
 
       <Button
@@ -45,14 +55,14 @@ export const LoginForm: React.FC = () => {
         onPress={handleSubmit(onSubmit)}
         loading={isFetching}
       >
-        Submit
+        LOGIN
       </Button>
 
       <View style={styles.caption}>
         <Text appearance="hint" style={styles.hint}>
           Don't have account?
         </Text>
-        <Link to="/register">
+        <Link to="/register" style={styles.link}>
           <Text status="primary" style={styles.hint}>
             Register
           </Text>
@@ -66,6 +76,9 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 16,
   },
+  formButton: {
+    marginTop: 24,
+  },
   caption: {
     marginTop: 16,
   },
@@ -73,6 +86,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   link: {
-    marginBottom: 16,
+    marginTop: 8,
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: 32,
+  },
+  root: {
+    justifyContent: 'center',
+    height: '100%',
+    margin: 16,
   },
 });
