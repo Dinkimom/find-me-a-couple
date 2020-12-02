@@ -1,13 +1,13 @@
-import { Divider, Form, Input, InputNumber, Select } from 'antd';
+import { Text } from '@ui-kitten/components';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { BaseForm, BaseFormProps } from '../../../components/BaseForm';
-import { phoneRegex } from '../../../constants/phoneRegex';
-
-const { Option } = Select;
 
 export const RegisterForm: React.FC<BaseFormProps> = (props) => {
   return (
     <>
+      <BaseForm {...props}></BaseForm>
+
       {/* <BaseForm {...props}>
       <Form.Item
         label="Name"

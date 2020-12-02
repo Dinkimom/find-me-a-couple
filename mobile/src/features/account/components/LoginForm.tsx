@@ -1,30 +1,78 @@
-import { Form, Input } from 'antd';
-import React from 'react';
-import { BaseForm, BaseFormProps } from '../../../components/BaseForm';
+import { Input, Text } from '@ui-kitten/components';
+import { Button } from '../../../components/Button';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { StyleSheet, View } from 'react-native';
+import { Link } from 'react-router-native';
+import { BaseFormProps } from '../../../components/BaseForm';
+import { useField } from '../../../hooks/useField';
+import { login } from '../accountSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
 
-export const LoginForm: React.FC<BaseFormProps> = (props) => {
+export const LoginForm: React.FC = () => {
+  const { register, handleSubmit, setValue } = useForm();
+  const { handler } = useField(setValue);
+
+  const { isFetching } = useSelector(
+    (state: RootState) => state.account.loginForm
+  );
+
+  useEffect(() => {
+    register('email');
+    register('password');
+  }, []);
+
+  const onSubmit = (data: any) => {
+    login(data);
+  };
+
   return (
-    <>
-      {/* <BaseForm {...props}>
-      <Form.Item
+    <View>
+      <Input
         label="Email"
-        name="email"
-        rules={[
-          { required: true, message: 'Please input your email!' },
-          { type: 'email', message: 'Please input real email' },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
+        style={styles.input}
+        onChangeText={handler('email')}
+      />
+      <Input
         label="Password"
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
+        style={styles.input}
+        onChangeText={handler('password')}
+      />
+
+      <Button
+        style={styles.formButton}
+        onPress={handleSubmit(onSubmit)}
+        loading={isFetching}
       >
-        <Input.Password />
-      </Form.Item>
-    </BaseForm> */}
-    </>
+        Submit
+      </Button>
+
+      <View style={styles.caption}>
+        <Text appearance="hint" style={styles.hint}>
+          Don't have account?
+        </Text>
+        <Link to="/register">
+          <Text status="primary" style={styles.hint}>
+            Register
+          </Text>
+        </Link>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    marginBottom: 16,
+  },
+  caption: {
+    marginTop: 16,
+  },
+  hint: {
+    textAlign: 'center',
+  },
+  link: {
+    marginBottom: 16,
+  },
+});

@@ -1,18 +1,22 @@
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout } from '@ui-kitten/components';
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { NativeRouter, Route } from 'react-router-native';
 import { store } from './src/app/store';
-import { PrivateRoute } from './src/components/PrivateRoute';
-import { AccountForm } from './src/features/account/AccountForm';
-import { CreateDateForm } from './src/features/dates/components/CreateDateForm';
-import { Dates } from './src/features/dates/Dates';
-import { Users } from './src/features/users/Users';
+import { LoginForm } from './src/features/account/components/LoginForm';
+import { RegisterForm } from './src/features/account/components/RegisterForm';
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <NativeRouter>
-        <Route path="/account/form" component={AccountForm} />
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Provider store={store}>
+        <NativeRouter>
+          <Layout style={styles.layout}>
+            <Route path="/" component={LoginForm} />
+            <Route path="/register" component={RegisterForm} />
+            {/* <Route path="/account/form" component={AccountForm} />
         <PrivateRoute exact path="/">
           <Users />
         </PrivateRoute>
@@ -20,10 +24,19 @@ const App: React.FC = () => {
           <Dates />
         </PrivateRoute>
 
-        <CreateDateForm />
-      </NativeRouter>
-    </Provider>
+        <CreateDateForm /> */}
+          </Layout>
+        </NativeRouter>
+      </Provider>
+    </ApplicationProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  layout: {
+    margin: 16,
+    marginTop: 108,
+  },
+});
 
 export default App;

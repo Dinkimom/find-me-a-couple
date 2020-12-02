@@ -1,7 +1,8 @@
-import { Button, Form } from 'antd';
 import React, { ReactNode, useRef } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { useFormErrors } from '../hooks/useFormErrors';
+import { Avatar, Button, Divider, Text } from '@ui-kitten/components';
 
 export interface BaseFormProps {
   isFetching: boolean;
@@ -26,15 +27,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
 
   const renderFooter = () => {
     if (footer === undefined) {
-      return (
-        <>
-          {/* <Form.Item>
-          <Button type="primary" htmlType="submit" loading={isFetching}>
-            Submit
-          </Button>
-        </Form.Item> */}
-        </>
-      );
+      return <></>;
     }
 
     return footer;
@@ -42,19 +35,28 @@ export const BaseForm: React.FC<BaseFormProps> = ({
 
   return (
     <>
-      {/* <Form
-      layout="vertical"
-      name="basic"
-      onFinish={onSubmit}
-      initialValues={defaultValues as any}
-      ref={formRef}
-    >
-      {children}
-
-      {errorMessage}
-
-      {renderFooter()}
-    </Form> */}
+      <View style={styles.formContent}>
+        {children}
+        {errorMessage}
+        {renderFooter()}
+      </View>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  formContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  form: {
+    width: 300,
+    marginTop: 32,
+  },
+  formFooter: {
+    marginTop: 32,
+  },
+  formButton: {
+    width: '100%',
+  },
+});
