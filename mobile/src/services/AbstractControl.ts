@@ -7,6 +7,7 @@ import axios, {
 import { serverEntryPoint } from '../constants/serverEntryPoint';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { EntityEnum } from '../enums/EntityEnum';
+import { AsyncStorage } from 'react-native';
 
 export class AbstractControl {
   protected axios: AxiosInstance;
@@ -36,41 +37,41 @@ export class AbstractControl {
     }
   };
 
-  private handleErrorResponse = (res: AxiosResponse) => {
+  private handleErrorResponse = async (res: AxiosResponse) => {
     switch (res.status) {
       // case 404:
       //   window.location.href = '/not-found';
       //   break;
 
-      // case 401:
-      //   window.location.href = '/account/form';
-      //   break;
+      case 401:
+        window.location.href = '/login';
+        break;
 
-      // case 403:
-      //   localStorage.clear();
-      //   throw res.data;
+      case 403:
+        await AsyncStorage.clear();
+        throw res.data;
 
       default:
         throw res.data;
     }
   };
 
-  private useRequestToken = (config: AxiosRequestConfig) => {
-    // const token = localStorage.getItem('token');
+  private useRequestToken = async (config: AxiosRequestConfig) => {
+    const token = await AsyncStorage.getItem('token');
 
-    // if (token) {
-    //   config.headers['Authorization'] = `Bearer ${token}`;
-    // }
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
 
     return config;
   };
 
-  private useResponseToken = (res: AxiosResponse) => {
+  private useResponseToken = async (res: AxiosResponse) => {
     if (res.data) {
-      // const { token } = res.data.result;
-      // if (token) {
-      //   localStorage.setItem('token', res.data.result.token);
-      // }
+      const { token } = res.data.result;
+      if (token) {
+        await AsyncStorage.setItem('token', res.data.result.token);
+      }
     }
 
     return res;

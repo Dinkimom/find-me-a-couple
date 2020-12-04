@@ -8,7 +8,7 @@ import { RootState } from '../../../app/store';
 import { Button } from '../../../components/Button';
 import { emailRegex } from '../../../constants/emailRegex';
 import { useField } from '../../../hooks/useField';
-import { login } from '../accountSlice';
+import { check, login } from '../accountSlice';
 
 export const LoginForm: React.FC = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
@@ -17,14 +17,22 @@ export const LoginForm: React.FC = () => {
   const { isFetching, error } = useSelector(
     (state: RootState) => state.account.loginForm
   );
-  const { isLogged } = useSelector((state: RootState) => state.account);
+  const { isLogged, isChecked } = useSelector(
+    (state: RootState) => state.account
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!isChecked) {
+      dispatch(check());
+    }
+  }, [dispatch, isChecked]);
 
   useEffect(() => {
     register('email', { required: true, pattern: emailRegex });
     register('password', { required: true });
   }, []);
-
-  const dispatch = useDispatch();
 
   const onSubmit = (data: any) => {
     dispatch(login(data));
