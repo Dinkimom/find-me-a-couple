@@ -32,6 +32,7 @@ export const DateModal = () => {
     setValue,
     register,
     watch,
+    reset,
   } = useForm();
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export const DateModal = () => {
   const dispatch = useDispatch();
 
   const handleToggle = () => {
+    reset();
     dispatch(toggleCreateForm(null));
   };
 
