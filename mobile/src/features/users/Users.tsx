@@ -7,29 +7,30 @@ import { UserDto } from '../../dtos/UserDto';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import { Filter } from '../../types/Filter';
 import { toggleCreateForm } from '../dates/datesSlice';
+import { DateModal } from './components/DateModal';
 import { fetch } from './usersSlice';
 
 export const Users: React.FC = () => {
   const { list, isFetching } = useSelector((state: RootState) => state).users;
 
-  const [filter, setFilter] = useState<Filter>();
-
   const dispatch = useDispatch();
 
   const handleFetch = () => {
-    dispatch(fetch(filter));
+    dispatch(fetch());
   };
 
   useEffect(() => {
     handleFetch();
-  }, [filter]);
+  }, []);
 
   const handleInvite = (receiver: UserDto) => {
     dispatch(toggleCreateForm(receiver));
   };
 
-  const renderItemAccessory = (isInvited?: boolean) => (
-    <Button disabled={isInvited}>Invite</Button>
+  const renderItemAccessory = (receiver: UserDto, isInvited?: boolean) => (
+    <Button disabled={isInvited} onPress={() => handleInvite(receiver)}>
+      Invite
+    </Button>
   );
 
   const renderItemIcon = (props) => <Icon {...props} name="person" />;
@@ -40,7 +41,7 @@ export const Users: React.FC = () => {
         title={`${item.name}`}
         description={`${SexTypeEnum[Number(item.sex)]}, ${item.age} years`}
         accessoryLeft={renderItemIcon}
-        accessoryRight={() => renderItemAccessory(item.isInvited)}
+        accessoryRight={() => renderItemAccessory(item, item.isInvited)}
       />
     );
   };
@@ -57,6 +58,7 @@ export const Users: React.FC = () => {
         onRefresh={handleFetch}
         refreshing={isFetching}
       />
+      <DateModal />
     </>
   );
 };
