@@ -33,12 +33,6 @@ export const Users: React.FC = () => {
   return (
     <>
       <Form layout="inline" className={styles.controls} onFinish={handleSearch}>
-        <Form.Item label="Sex" name="sex">
-          <Select style={{ width: 100 }}>
-            <Option value="0">Male</Option>
-            <Option value="1">Female</Option>
-          </Select>
-        </Form.Item>
         <Form.Item label="Age from" name="age">
           <InputNumber min={18} style={{ width: 100 }} />
         </Form.Item>

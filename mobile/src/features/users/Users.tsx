@@ -1,8 +1,10 @@
-import { Text } from '@ui-kitten/components';
+import { Button, Icon, List, ListItem, Text } from '@ui-kitten/components';
 import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { UserDto } from '../../dtos/UserDto';
+import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import { Filter } from '../../types/Filter';
 import { toggleCreateForm } from '../dates/datesSlice';
 import { fetch } from './usersSlice';
@@ -14,68 +16,54 @@ export const Users: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  const handleFetch = () => {
     dispatch(fetch(filter));
-  }, [filter]);
-
-  const handleSearch = (filter: Filter) => {
-    setFilter(filter);
   };
+
+  useEffect(() => {
+    handleFetch();
+  }, [filter]);
 
   const handleInvite = (receiver: UserDto) => {
     dispatch(toggleCreateForm(receiver));
   };
 
-  console.log(list);
+  const renderItemAccessory = (isInvited?: boolean) => (
+    <Button disabled={isInvited}>Invite</Button>
+  );
+
+  const renderItemIcon = (props) => <Icon {...props} name="person" />;
+
+  const renderItem = ({ item }: { item: UserDto }) => {
+    return (
+      <ListItem
+        title={`${item.name}`}
+        description={`${SexTypeEnum[Number(item.sex)]}, ${item.age} years`}
+        accessoryLeft={renderItemIcon}
+        accessoryRight={() => renderItemAccessory(item.isInvited)}
+      />
+    );
+  };
 
   return (
     <>
-      <Text>Users</Text>
-      {/* <Form layout="inline" onFinish={handleSearch}>
-        <Form.Item label="Sex" name="sex">
-          <Select style={{ width: 100 }}>
-            <Option value="0">Male</Option>
-            <Option value="1">Female</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="Age from" name="age">
-          <InputNumber min={18} style={{ width: 100 }} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Search
-          </Button>
-        </Form.Item>
-      </Form>
-
+      <Text category="h5" style={styles.title}>
+        Users
+      </Text>
       <List
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 2,
-          md: 4,
-          lg: 4,
-          xl: 6,
-          xxl: 3,
-        }}
-        dataSource={list}
-        loading={isFetching}
-        renderItem={(item) => (
-          <List.Item>
-            <Card>
-              <UserCard user={item} />
-              <Button
-                type="primary"
-                block
-                onClick={() => handleInvite(item)}
-                disabled={item.isInvited}
-              >
-                {item.isInvited ? 'Invited' : 'Invite'}
-              </Button>
-            </Card>
-          </List.Item>
-        )}
-      /> */}
+        data={list}
+        renderItem={renderItem}
+        style={styles.list}
+        onRefresh={handleFetch}
+        refreshing={isFetching}
+      />
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  title: {
+    marginBottom: 16,
+  },
+  list: {},
+});

@@ -45,6 +45,7 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
 
   return (
     <View style={styles.root}>
+      <View style={styles.header}></View>
       {children}
 
       <View style={styles.bottomBar}>
@@ -101,6 +102,9 @@ const styles = StyleSheet.create({
   root: {
     height: '100%',
     margin: 16,
+  },
+  header: {
+    height: 80,
   },
   bottomBar: {
     position: 'absolute',

@@ -9,6 +9,7 @@ import { store } from './src/app/store';
 import { PrivateRoute } from './src/components/PrivateRoute';
 import { LoginForm } from './src/features/account/components/LoginForm';
 import { RegisterForm } from './src/features/account/components/RegisterForm';
+import { Dates } from './src/features/dates/Dates';
 import { Users } from './src/features/users/Users';
 
 const App: React.FC = () => {
@@ -33,7 +34,7 @@ const App: React.FC = () => {
                 <Users />
               </PrivateRoute>
               <PrivateRoute exact path="/dates">
-                <Users />
+                <Dates />
               </PrivateRoute>
             </Switch>
 

@@ -23,7 +23,11 @@ export class UsersController extends AbstractController {
       )
       .toArray();
 
-    users = users.filter((user: any) => user.email !== (req as any).user.email);
+    users = users.filter(
+      (user: any) =>
+        user.email !== (req as any).user.email &&
+        user.sex !== (req as any).user.sex
+    );
 
     const dates = await getCollection(EntityEnum.Dates).find().toArray();
 
