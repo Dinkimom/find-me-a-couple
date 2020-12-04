@@ -75,7 +75,6 @@ export const DateModal = () => {
           <Text style={styles.description} category="h6">
             {SexTypeEnum[Number(receiver.sex)]}, {receiver.age} years
           </Text>
-          {/* {console.log(getValues())} */}
 
           <Datepicker
             label="Choose date"

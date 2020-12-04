@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AsyncStorage } from 'react-native';
 import { AppThunk } from '../../app/store';
 import { ErrorDto } from '../../dtos/ErrorDto';
 import { LoginDto } from '../../dtos/LoginDto';
@@ -108,7 +109,7 @@ export const accountSlice = createSlice({
       state.isLogged = false;
       state.isChecked = true;
     },
-    logout: (state) => {
+    startLogout: (state) => {
       state.user = null;
       state.isFetching = false;
       state.isLogged = false;
@@ -167,7 +168,7 @@ export const {
   checkStart,
   checkSuccess,
   checkFailure,
-  logout,
+  startLogout,
   toggleUpdateForm,
   updateStart,
   updateSuccess,
@@ -191,6 +192,7 @@ export const login = (data: LoginDto): AppThunk => async (dispatch) => {
 
 export const register = (data: RegisterDto): AppThunk => async (dispatch) => {
   try {
+    console.log(data);
     dispatch(registerStart());
 
     const response = await accountControl.register(data);
@@ -237,6 +239,12 @@ export const check = (): AppThunk => async (dispatch) => {
   } catch {
     dispatch(checkFailure());
   }
+};
+
+export const logout = (): AppThunk => async (dispatch) => {
+  dispatch(startLogout());
+
+  await AsyncStorage.clear();
 };
 
 export const accountReducer = accountSlice.reducer;

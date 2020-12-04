@@ -9,13 +9,6 @@ import { DateStatusEnum } from '../../enums/DateStatusEnum';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import { fetch, update } from './datesSlice';
 
-const tagsColors = {
-  0: 'primary',
-  1: 'danger',
-  2: 'ghost',
-  3: 'success',
-};
-
 export const Dates: React.FC = () => {
   const { list, isFetching } = useSelector((state: RootState) => state.dates);
 
@@ -57,7 +50,7 @@ export const Dates: React.FC = () => {
             return (
               <Button
                 onPress={() => handleStatusChange(id, DateStatusEnum.Canceled)}
-                status="ghost"
+                status="basic"
               >
                 Cancel
               </Button>
@@ -70,7 +63,6 @@ export const Dates: React.FC = () => {
                     handleStatusChange(id, DateStatusEnum.Accepted)
                   }
                   status="success"
-                  style={{ marginRight: 8 }}
                 >
                   Accept
                 </Button>
@@ -107,7 +99,6 @@ export const Dates: React.FC = () => {
             ? `Phone: ${userData.phone}, e-mail: ${userData.email}`
             : ''
         }`}
-        accessoryLeft={renderItemIcon}
         accessoryRight={() => renderStatusButton(item._id, item.status)}
       />
     );
@@ -132,6 +123,13 @@ export const Dates: React.FC = () => {
 const styles = StyleSheet.create({
   title: {
     marginBottom: 16,
+    textAlign: 'center',
   },
-  list: {},
+  list: {
+    maxHeight: '70%',
+    overflow: 'hidden',
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: 'white',
+  },
 });

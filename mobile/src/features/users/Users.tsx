@@ -66,6 +66,13 @@ export const Users: React.FC = () => {
 const styles = StyleSheet.create({
   title: {
     marginBottom: 16,
+    textAlign: 'center',
   },
-  list: {},
+  list: {
+    maxHeight: '70%',
+    overflow: 'hidden',
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: 'white',
+  },
 });

@@ -11,6 +11,7 @@ import { LoginForm } from './src/features/account/components/LoginForm';
 import { RegisterForm } from './src/features/account/components/RegisterForm';
 import { Dates } from './src/features/dates/Dates';
 import { Users } from './src/features/users/Users';
+import { Profile } from './src/features/account/Profile';
 
 const App: React.FC = () => {
   return (
@@ -31,7 +32,7 @@ const App: React.FC = () => {
                 <Users />
               </PrivateRoute>
               <PrivateRoute exact path="/profile">
-                <Users />
+                <Profile />
               </PrivateRoute>
               <PrivateRoute exact path="/dates">
                 <Dates />

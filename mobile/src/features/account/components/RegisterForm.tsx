@@ -1,27 +1,22 @@
-import {
-  Button,
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Text,
-} from '@ui-kitten/components';
+import { Divider, Input, Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-native';
 import { RootState } from '../../../app/store';
+import { Button } from '../../../components/Button';
+import { SexSelect } from '../../../components/SexSelect';
 import { emailRegex } from '../../../constants/emailRegex';
 import { phoneRegex } from '../../../constants/phoneRegex';
 import { useField } from '../../../hooks/useField';
-import { register as submitRegisterForm } from '../accountSlice';
+import { check, register as submitRegisterForm } from '../accountSlice';
 
 export const RegisterForm: React.FC = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
   const { handler, status } = useField(setValue, errors);
 
-  const { isFetching } = useSelector(
+  const { isFetching, error } = useSelector(
     (state: RootState) => state.account.registerForm
   );
 
@@ -34,9 +29,25 @@ export const RegisterForm: React.FC = () => {
     register('password', { required: true });
   }, []);
 
+  const dispatch = useDispatch();
+
   const onSubmit = (data: any) => {
-    submitRegisterForm(data);
+    dispatch(submitRegisterForm(data));
   };
+
+  const { isLogged, isChecked } = useSelector(
+    (state: RootState) => state.account
+  );
+
+  useEffect(() => {
+    if (!isChecked) {
+      dispatch(check());
+    }
+  }, [dispatch, isChecked]);
+
+  if (isLogged) {
+    return <Redirect to="/users" />;
+  }
 
   return (
     <View style={styles.root}>
@@ -58,15 +69,7 @@ export const RegisterForm: React.FC = () => {
         status={status('age')}
       />
 
-      <Select
-        label="Sex"
-        style={styles.input}
-        onSelect={handler('sex')}
-        status={status('sex')}
-      >
-        <SelectItem title="Male" />
-        <SelectItem title="Female" />
-      </Select>
+      <SexSelect onChange={handler('sex')} />
 
       <Input
         label="Phone"
@@ -92,6 +95,12 @@ export const RegisterForm: React.FC = () => {
         status={status('password')}
         secureTextEntry={true}
       />
+
+      {error && (
+        <Text status="danger" style={styles.hint}>
+          {error.errorMessage}
+        </Text>
+      )}
 
       <Button
         style={styles.formButton}

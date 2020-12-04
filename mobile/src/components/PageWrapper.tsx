@@ -2,8 +2,7 @@ import { Icon } from '@ui-kitten/components';
 import React, { ReactNode, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouteMatch } from 'react-router-dom';
-import { Link } from 'react-router-native';
+import { Link, useRouteMatch } from 'react-router-native';
 import { RootState } from '../app/store';
 
 interface Props {
@@ -11,38 +10,6 @@ interface Props {
 }
 
 export const PageWrapper: React.FC<Props> = ({ children }) => {
-  const { user } = useSelector((state: RootState) => state.account);
-
-  const dispatch = useDispatch();
-
-  // const handleLogout = () => {
-  //   if (window.confirm('Do you want to logout?')) {
-  //     dispatch(logout());
-  //   }
-  // };
-
-  const PopoverContent = useMemo(() => {
-    if (!user) {
-      return null;
-    }
-
-    return (
-      <>
-        {/* <div>
-        <h3>
-          {user.name}: {user.email}
-        </h3>
-
-        <p>{user.phone}</p>
-        <UpdateForm />
-        <Button block onClick={handleLogout}>
-          Logout
-        </Button>
-      </div> */}
-      </>
-    );
-  }, [user]);
-
   return (
     <View style={styles.root}>
       <View style={styles.header}></View>
@@ -67,33 +34,6 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
           </Link>
         ))}
       </View>
-      {/* <Layout className={styles.layout}>
-      <Header className={styles.header}>
-        <Container className={styles.headerContainer}>
-          <Link to="/">Home</Link>
-
-          <div>
-            <Link to="/dates">My dates</Link>
-
-            <Popover content={PopoverContent} trigger="focus">
-              <Button
-                type="primary"
-                shape="circle"
-                className={styles.userButton}
-              >
-                <UserOutlined />
-              </Button>
-            </Popover>
-          </div>
-        </Container>
-      </Header>
-      <Content className={styles.content}>
-        <Container>{children}</Container>
-      </Content>
-      <Footer className={styles.footer}>
-        <Container>Web Maker ©2020 Created by Nikita Dmitriev</Container>
-      </Footer>
-    </Layout> */}
     </View>
   );
 };
