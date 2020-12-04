@@ -1,9 +1,8 @@
-import { Button, DatePicker, Form, Modal } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { BaseForm } from '../../../components/BaseForm';
-import { UserCard } from '../../../components/UserCard/UserCard';
+import { UserCard } from '../../../components/UserCard';
 import { NewDateDto } from '../../../dtos/NewDateDto';
 import { SexTypeEnum } from '../../../enums/SexTypeEnum';
 import { create, toggleCreateForm } from '../datesSlice';

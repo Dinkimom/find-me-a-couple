@@ -1,10 +1,10 @@
 import {
-  Text,
-  Input,
-  Divider,
   Button,
-  SelectItem,
+  Divider,
+  Input,
   Select,
+  SelectItem,
+  Text,
 } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -19,7 +19,7 @@ import { register as submitRegisterForm } from '../accountSlice';
 
 export const RegisterForm: React.FC = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
-  const { handler } = useField(setValue);
+  const { handler, status } = useField(setValue, errors);
 
   const { isFetching } = useSelector(
     (state: RootState) => state.account.registerForm
@@ -44,11 +44,26 @@ export const RegisterForm: React.FC = () => {
         Please, follow the form to register
       </Text>
 
-      <Input label="Name" style={styles.input} onChangeText={handler('name')} />
+      <Input
+        label="Name"
+        style={styles.input}
+        onChangeText={handler('name')}
+        status={status('name')}
+      />
 
-      <Input label="Age" style={styles.input} onChangeText={handler('age')} />
+      <Input
+        label="Age"
+        style={styles.input}
+        onChangeText={handler('age')}
+        status={status('age')}
+      />
 
-      <Select label="Sex" style={styles.input} onSelect={handler('sex')}>
+      <Select
+        label="Sex"
+        style={styles.input}
+        onSelect={handler('sex')}
+        status={status('sex')}
+      >
         <SelectItem title="Male" />
         <SelectItem title="Female" />
       </Select>
@@ -57,6 +72,7 @@ export const RegisterForm: React.FC = () => {
         label="Phone"
         style={styles.input}
         onChangeText={handler('phone')}
+        status={status('phone')}
         keyboardType="phone-pad"
       />
 
@@ -66,12 +82,14 @@ export const RegisterForm: React.FC = () => {
         label="Email"
         style={styles.input}
         onChangeText={handler('email')}
+        status={status('email')}
       />
 
       <Input
         label="Password"
         style={styles.input}
         onChangeText={handler('password')}
+        status={status('password')}
         secureTextEntry={true}
       />
 

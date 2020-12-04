@@ -114,6 +114,7 @@ export const accountSlice = createSlice({
       state.isFetching = false;
       state.isLogged = false;
       state.isChecked = true;
+      localStorage.clear();
     },
     toggleUpdateForm: (state) => {
       state.updateForm.opened = !state.updateForm.opened;

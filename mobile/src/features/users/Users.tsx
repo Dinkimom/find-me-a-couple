@@ -26,6 +26,8 @@ export const Users: React.FC = () => {
     dispatch(toggleCreateForm(receiver));
   };
 
+  console.log(list);
+
   return (
     <>
       <Text>Users</Text>

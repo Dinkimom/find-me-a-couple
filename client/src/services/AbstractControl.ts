@@ -38,16 +38,16 @@ export class AbstractControl {
 
   private handleErrorResponse = (res: AxiosResponse) => {
     switch (res.status) {
-      // case 404:
-      //   window.location.href = '/not-found';
-      //   break;
+      case 404:
+        window.location.href = '/not-found';
+        break;
 
-      // case 401:
-      //   window.location.href = '/account/form';
-      //   break;
+      case 401:
+        window.location.href = '/account/form';
+        break;
 
-      // case 403:
-      //   throw res.data;
+      case 403:
+        throw res.data;
 
       default:
         throw res.data;
@@ -69,7 +69,7 @@ export class AbstractControl {
       const { token } = res.data.result;
 
       if (token) {
-        // localStorage.setItem('token', res.data.result.token);
+        localStorage.setItem('token', res.data.result.token);
       }
     }
 

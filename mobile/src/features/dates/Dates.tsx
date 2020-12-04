@@ -2,7 +2,7 @@ import { Button, Card, Divider, List, Tag } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { UserCard } from '../../components/UserCard/UserCard';
+import { UserCard } from '../../components/UserCard';
 import { DateStatusEnum } from '../../enums/DateStatusEnum';
 import { fetch, update } from './datesSlice';
 

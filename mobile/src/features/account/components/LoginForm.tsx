@@ -1,9 +1,9 @@
-import { Icon, Input, Text } from '@ui-kitten/components';
+import { Input, Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-native';
 import { RootState } from '../../../app/store';
 import { Button } from '../../../components/Button';
 import { emailRegex } from '../../../constants/emailRegex';
@@ -12,22 +12,27 @@ import { login } from '../accountSlice';
 
 export const LoginForm: React.FC = () => {
   const { register, handleSubmit, setValue, errors } = useForm();
-  const { handler } = useField(setValue);
+  const { handler, status } = useField(setValue, errors);
 
-  const { isFetching } = useSelector(
+  const { isFetching, error } = useSelector(
     (state: RootState) => state.account.loginForm
   );
+  const { isLogged } = useSelector((state: RootState) => state.account);
 
   useEffect(() => {
     register('email', { required: true, pattern: emailRegex });
     register('password', { required: true });
   }, []);
 
+  const dispatch = useDispatch();
+
   const onSubmit = (data: any) => {
-    login(data);
+    dispatch(login(data));
   };
 
-  // move error display into hook
+  if (isLogged) {
+    return <Redirect to="/users" />;
+  }
 
   return (
     <View style={styles.root}>
@@ -39,7 +44,7 @@ export const LoginForm: React.FC = () => {
         label="Email"
         style={styles.input}
         onChangeText={handler('email')}
-        status={errors.email ? 'danger' : 'undefined'}
+        status={status('email')}
       />
 
       <Input
@@ -47,8 +52,14 @@ export const LoginForm: React.FC = () => {
         style={styles.input}
         onChangeText={handler('password')}
         secureTextEntry={true}
-        status={errors.password ? 'danger' : 'undefined'}
+        status={status('password')}
       />
+
+      {error && (
+        <Text status="danger" style={styles.hint}>
+          {error.errorMessage}
+        </Text>
+      )}
 
       <Button
         style={styles.formButton}
