@@ -35,6 +35,8 @@ export class DatesController extends AbstractController {
       receiver: users.filter((user) => item.receiver == user._id)[0],
     }));
 
+    list = list.filter((item) => item.receiver && item.inviter);
+
     return res.status(200).send({ result: list });
   }
 

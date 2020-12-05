@@ -1,10 +1,9 @@
-import { Button, Icon, List, ListItem, Text } from '@ui-kitten/components';
+import { Button, List, ListItem, Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { DateDto } from '../../dtos/DateDto';
-import { UserDto } from '../../dtos/UserDto';
 import { DateStatusEnum } from '../../enums/DateStatusEnum';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import { fetch, update } from './datesSlice';
@@ -23,12 +22,6 @@ export const Dates: React.FC = () => {
   useEffect(() => {
     handleFetch();
   }, []);
-
-  const renderItemAccessory = (isInvited?: boolean) => (
-    <Button disabled={isInvited}>Invite</Button>
-  );
-
-  const renderItemIcon = (props) => <Icon {...props} name="person" />;
 
   const renderItem = ({ item }: { item: DateDto }) => {
     const isInviter = user?._id === item.inviter._id;
