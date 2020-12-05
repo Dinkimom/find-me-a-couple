@@ -86,7 +86,7 @@ export const Profile: React.FC = () => {
       <Input
         label="Name"
         style={styles.input}
-        onChangeText={handler('age')}
+        onChangeText={handler('name')}
         status={status('name')}
         defaultValue={user?.name}
       />
