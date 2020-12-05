@@ -1,25 +1,17 @@
-import {
-  Button,
-  Card,
-  Datepicker,
-  Icon,
-  Modal,
-  Text,
-} from '@ui-kitten/components';
+import { Button, Card, Icon, Modal, Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
+import { DatePicker } from '../../../components/DatePicker';
 import { NewDateDto } from '../../../dtos/NewDateDto';
 import { SexTypeEnum } from '../../../enums/SexTypeEnum';
 import { useField } from '../../../hooks/useField';
 import { create, toggleCreateForm } from '../../dates/datesSlice';
 
 export const DateModal = () => {
-  const { opened, ...formState } = useSelector(
-    (state: RootState) => state.dates.createForm
-  );
+  const { opened } = useSelector((state: RootState) => state.dates.createForm);
   const { receiver } = useSelector(
     (state: RootState) => state.dates.createForm
   );
@@ -63,7 +55,7 @@ export const DateModal = () => {
         backdropStyle={styles.backdrop}
         onBackdropPress={handleToggle}
       >
-        <Card disabled={true} style={styles.card}>
+        <Card disabled style={styles.card}>
           <Text category="h5" style={styles.title} appearance="hint">
             Invite {receiver.name}
           </Text>
@@ -76,11 +68,10 @@ export const DateModal = () => {
             {SexTypeEnum[Number(receiver.sex)]}, {receiver.age} years
           </Text>
 
-          <Datepicker
+          <DatePicker
             label="Choose date"
             min={new Date()}
-            date={getValues().date}
-            onSelect={(date) => setValue('date', date)}
+            onSelect={handler('date')}
             status={status('date')}
             style={styles.input}
           />
