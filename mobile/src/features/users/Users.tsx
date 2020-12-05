@@ -1,11 +1,10 @@
-import { Button, Icon, List, ListItem, Text } from '@ui-kitten/components';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Button, Icon, ListItem } from '@ui-kitten/components';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import { BaseList } from '../../components/BaseList';
 import { UserDto } from '../../dtos/UserDto';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
-import { Filter } from '../../types/Filter';
 import { toggleCreateForm } from '../dates/datesSlice';
 import { DateModal } from './components/DateModal';
 import { fetch } from './usersSlice';
@@ -48,13 +47,9 @@ export const Users: React.FC = () => {
 
   return (
     <>
-      <Text category="h5" style={styles.title}>
-        Users
-      </Text>
-      <List
+      <BaseList
         data={list}
         renderItem={renderItem}
-        style={styles.list}
         onRefresh={handleFetch}
         refreshing={isFetching}
       />
@@ -62,17 +57,3 @@ export const Users: React.FC = () => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  list: {
-    maxHeight: '70%',
-    overflow: 'hidden',
-    paddingLeft: 16,
-    paddingRight: 16,
-    backgroundColor: 'white',
-  },
-});

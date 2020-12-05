@@ -79,10 +79,6 @@ export const Profile: React.FC = () => {
 
   return (
     <>
-      <Text category="h5" style={styles.title}>
-        Profile
-      </Text>
-
       <Input
         label="Name"
         style={styles.input}
@@ -151,10 +147,6 @@ export const Profile: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
   input: {
     marginBottom: 16,
   },

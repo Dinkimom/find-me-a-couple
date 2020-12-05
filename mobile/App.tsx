@@ -28,26 +28,16 @@ const App: React.FC = () => {
               />
               <Route exact path="/login" component={LoginForm} />
               <Route exact path="/register" component={RegisterForm} />
-              <PrivateRoute exact path="/users">
+              <PrivateRoute exact path="/users" title="Users">
                 <Users />
               </PrivateRoute>
-              <PrivateRoute exact path="/profile">
+              <PrivateRoute exact path="/profile" title="Profile">
                 <Profile />
               </PrivateRoute>
-              <PrivateRoute exact path="/dates">
+              <PrivateRoute exact path="/dates" title="Dates">
                 <Dates />
               </PrivateRoute>
             </Switch>
-
-            {/* <Route path="/account/form" component={AccountForm} />
-        <PrivateRoute exact path="/">
-          <Users />
-        </PrivateRoute>
-        <PrivateRoute exact path="/dates">
-          <Dates />
-        </PrivateRoute>
-
-        <CreateDateForm /> */}
           </NativeRouter>
         </Provider>
       </ApplicationProvider>

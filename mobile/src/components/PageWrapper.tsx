@@ -1,18 +1,20 @@
-import { Icon } from '@ui-kitten/components';
-import React, { ReactNode, useMemo } from 'react';
+import { Icon, Text } from '@ui-kitten/components';
+import React, { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-native';
-import { RootState } from '../app/store';
 
 interface Props {
   children: ReactNode;
+  title: String;
 }
 
-export const PageWrapper: React.FC<Props> = ({ children }) => {
+export const PageWrapper: React.FC<Props> = ({ children, title }) => {
   return (
     <View style={styles.root}>
       <View style={styles.header}></View>
+      <Text category="h5" style={styles.title}>
+        {title}
+      </Text>
       {children}
 
       <View style={styles.bottomBar}>
@@ -45,6 +47,10 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 80,
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: 16,
   },
   bottomBar: {
     position: 'absolute',

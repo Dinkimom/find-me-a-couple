@@ -1,8 +1,8 @@
-import { Button, List, ListItem, Text } from '@ui-kitten/components';
+import { Button, ListItem, Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
-import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import { BaseList } from '../../components/BaseList';
 import { DateDto } from '../../dtos/DateDto';
 import { DateStatusEnum } from '../../enums/DateStatusEnum';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
@@ -98,31 +98,11 @@ export const Dates: React.FC = () => {
   };
 
   return (
-    <>
-      <Text category="h5" style={styles.title}>
-        Dates
-      </Text>
-      <List
-        data={list}
-        renderItem={renderItem}
-        style={styles.list}
-        onRefresh={handleFetch}
-        refreshing={isFetching}
-      />
-    </>
+    <BaseList
+      data={list}
+      renderItem={renderItem}
+      onRefresh={handleFetch}
+      refreshing={isFetching}
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  title: {
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  list: {
-    maxHeight: '70%',
-    overflow: 'hidden',
-    paddingLeft: 16,
-    paddingRight: 16,
-    backgroundColor: 'white',
-  },
-});

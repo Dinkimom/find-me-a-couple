@@ -5,7 +5,15 @@ import { RootState } from '../app/store';
 import { check } from '../features/account/accountSlice';
 import { PageWrapper } from './PageWrapper';
 
-export const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
+interface Props {
+  title: String;
+}
+
+export const PrivateRoute: React.FC<RouteProps & Props> = ({
+  children,
+  title,
+  ...rest
+}) => {
   const { isLogged, isChecked } = useSelector(
     (state: RootState) => state.account
   );
@@ -24,7 +32,7 @@ export const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
       render={({ location }) => {
         if (isChecked) {
           if (isLogged) {
-            return <PageWrapper>{children}</PageWrapper>;
+            return <PageWrapper title={title}>{children}</PageWrapper>;
           }
 
           return <Redirect to="/login" />;
