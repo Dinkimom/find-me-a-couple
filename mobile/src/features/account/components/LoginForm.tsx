@@ -56,7 +56,12 @@ export const LoginForm: React.FC = () => {
       >
         <FormField type="text" name="email" label="Email" />
 
-        <FormField type="text" name="password" label="Password" />
+        <FormField
+          type="text"
+          name="password"
+          label="Password"
+          secureTextEntry={true}
+        />
       </Form>
 
       <View style={styles.caption}>

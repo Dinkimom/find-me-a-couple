@@ -10,7 +10,7 @@ export interface SexSelectProps {
 
 export const SexSelect: React.FC<SexSelectProps> = ({
   onChange,
-  defaultValue = SexTypeEnum.Male,
+  defaultValue,
 }) => {
   const [current, setCurrent] = useState(Number(defaultValue));
 
@@ -49,13 +49,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   root: {
-    flex: 1,
     flexDirection: 'row',
-    maxHeight: 50,
   },
   button: {
     width: 100,
-    marginBottom: 16,
     marginRight: 4,
   },
 });

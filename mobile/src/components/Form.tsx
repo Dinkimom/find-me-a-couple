@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from '@ui-kitten/components';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { Error } from '../types/Error';
@@ -14,6 +14,9 @@ interface Props {
   children: ReactNode;
   loading: boolean;
   rules?: ValidationRules;
+  defaultValues?: {
+    [key: string]: any;
+  };
 }
 
 interface ValidationRules {
@@ -26,6 +29,7 @@ export const Form: React.FC<Props> = ({
   onSubmit,
   loading,
   rules,
+  defaultValues,
 }) => {
   const {
     control,
@@ -42,7 +46,7 @@ export const Form: React.FC<Props> = ({
         register(fieldName, rules[fieldName])
       );
     }
-  }, [rules]);
+  }, []);
 
   useEffect(() => {
     if (outerErrors?.errors) {
@@ -56,12 +60,32 @@ export const Form: React.FC<Props> = ({
   }, [outerErrors]);
 
   return (
-    <FormContext.Provider value={{ control, setValue, errors }}>
+    <FormContext.Provider value={{ control, setValue, errors, defaultValues }}>
       <View>{children}</View>
-      {outerErrors?.errorMessage && <Text>{outerErrors?.errorMessage}</Text>}
-      <Button loading={loading} onPress={handleSubmit(onSubmit)}>
+
+      <Button
+        loading={loading}
+        onPress={handleSubmit(onSubmit)}
+        style={styles.formButton}
+      >
         SUBMIT
       </Button>
+
+      {outerErrors?.errorMessage && (
+        <Text status="danger" style={styles.errorMessage}>
+          {outerErrors?.errorMessage}
+        </Text>
+      )}
     </FormContext.Provider>
   );
 };
+
+const styles = StyleSheet.create({
+  formButton: {
+    marginBottom: 16,
+  },
+  errorMessage: {
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+});

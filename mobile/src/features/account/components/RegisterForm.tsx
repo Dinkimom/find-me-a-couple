@@ -1,35 +1,19 @@
-import { Divider, Input, Text } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-native';
 import { RootState } from '../../../app/store';
-import { Button } from '../../../components/Button';
-import { SexSelect } from '../../../components/SexSelect';
+import { Form } from '../../../components/Form';
+import { FormField } from '../../../components/FormField';
 import { emailRegex } from '../../../constants/emailRegex';
 import { phoneRegex } from '../../../constants/phoneRegex';
-import { useField } from '../../../hooks/useField';
 import { check, register as submitRegisterForm } from '../accountSlice';
 
 export const RegisterForm: React.FC = () => {
-  const { register, handleSubmit, setValue, errors } = useForm();
-  const { handler, status } = useField(setValue, errors);
-
   const { isFetching, error } = useSelector(
     (state: RootState) => state.account.registerForm
   );
-
-  console.log(error);
-
-  useEffect(() => {
-    register('name', { required: true });
-    register('age', { required: true, min: 18, pattern: /\d+/ });
-    register('sex', { required: true });
-    register('phone', { required: true, pattern: phoneRegex });
-    register('email', { required: true, pattern: emailRegex });
-    register('password', { required: true });
-  }, []);
 
   const dispatch = useDispatch();
 
@@ -57,60 +41,41 @@ export const RegisterForm: React.FC = () => {
         Please, follow the form to register
       </Text>
 
-      <Input
-        label="Name"
-        style={styles.input}
-        onChangeText={handler('name')}
-        status={status('name')}
-      />
-
-      <Input
-        label="Age"
-        style={styles.input}
-        onChangeText={handler('age')}
-        status={status('age')}
-      />
-
-      <SexSelect onChange={handler('sex')} />
-
-      <Input
-        label="Phone"
-        style={styles.input}
-        onChangeText={handler('phone')}
-        status={status('phone')}
-        keyboardType="phone-pad"
-      />
-
-      <Divider style={styles.divider} />
-
-      <Input
-        label="Email"
-        style={styles.input}
-        onChangeText={handler('email')}
-        status={status('email')}
-      />
-
-      <Input
-        label="Password"
-        style={styles.input}
-        onChangeText={handler('password')}
-        status={status('password')}
-        secureTextEntry={true}
-      />
-
-      {error && (
-        <Text status="danger" style={styles.hint}>
-          {error.errorMessage}
-        </Text>
-      )}
-
-      <Button
-        style={styles.formButton}
-        onPress={handleSubmit(onSubmit)}
+      <Form
+        errors={error}
+        onSubmit={onSubmit}
         loading={isFetching}
+        rules={{
+          name: { required: true },
+          age: { required: true, min: 18, pattern: /\d+/ },
+          sex: { required: true },
+          phone: { required: true, pattern: phoneRegex },
+          email: { required: true, pattern: emailRegex },
+          password: { required: true },
+        }}
       >
-        Register
-      </Button>
+        <FormField name="name" label="Name" type="text" />
+
+        <FormField name="age" label="Age" type="text" />
+
+        <FormField name="sex" label="Sex" type="sexSelect" />
+
+        <FormField
+          name="phone"
+          label="Phone"
+          type="text"
+          keyboardType="phone-pad"
+        />
+
+        <FormField name="email" label="Email" type="text" />
+
+        <FormField
+          name="password"
+          label="Password"
+          type="text"
+          secureTextEntry={true}
+        />
+      </Form>
 
       <View style={styles.caption}>
         <Text appearance="hint" style={styles.hint}>
@@ -127,12 +92,6 @@ export const RegisterForm: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  input: {
-    marginBottom: 16,
-  },
-  formButton: {
-    marginTop: 24,
-  },
   caption: {
     marginTop: 16,
   },
