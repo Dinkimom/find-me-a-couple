@@ -41,11 +41,11 @@ export const usersSlice = createSlice({
 
 export const { fetchStart, fetchSuccess, fetchFailure } = usersSlice.actions;
 
-export const fetch = (filter?: Filter): AppThunk => async (dispatch) => {
+export const fetch = (): AppThunk => async (dispatch) => {
   try {
     dispatch(fetchStart());
 
-    const response = await usersControl.getUsers(filter);
+    const response = await usersControl.getUsers();
 
     dispatch(fetchSuccess(response.data.result));
   } catch (error) {}

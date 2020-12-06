@@ -41,7 +41,19 @@ export const Profile: React.FC = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    Alert.alert(
+      'Are you sure you want logout?',
+      '',
+      [
+        {
+          text: 'Cancel',
+
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => dispatch(logout()) },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (

@@ -9,8 +9,6 @@ import { toggleCreateForm } from '../dates/datesSlice';
 import styles from './Users.module.css';
 import { fetch } from './usersSlice';
 
-const { Option } = Select;
-
 export const Users: React.FC = () => {
   const { list, isFetching } = useSelector((state: RootState) => state).users;
 
@@ -20,7 +18,7 @@ export const Users: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetch(filter));
-  }, [filter]);
+  }, [dispatch, filter]);
 
   const handleSearch = (filter: Filter) => {
     setFilter(filter);
@@ -34,7 +32,7 @@ export const Users: React.FC = () => {
     <>
       <Form layout="inline" className={styles.controls} onFinish={handleSearch}>
         <Form.Item label="Age from" name="age">
-          <InputNumber min={18} style={{ width: 100 }} />
+          <InputNumber min={18} defaultValue={18} style={{ width: 100 }} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">

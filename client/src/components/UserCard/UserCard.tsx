@@ -17,7 +17,7 @@ export const UserCard: React.FC<Props> = ({ user }) => {
       <h3>{user.name}</h3>
 
       <img
-        src={Number(user.sex) === SexTypeEnum.Male ? maleImage : femaleImage}
+        src={user.sex === SexTypeEnum.Male ? maleImage : femaleImage}
         alt={user.name}
         className={styles.image}
       />

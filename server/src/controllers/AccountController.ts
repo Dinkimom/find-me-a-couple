@@ -80,13 +80,16 @@ export class AccountController extends AbstractController {
           });
         }
 
-        collection.insertOne({ ...req.body }, (err, result) => {
-          const token = jwt.sign({ _id: result.ops[0]._id }, secret);
+        collection.insertOne(
+          { ...req.body, sex: Number(req.body.sex) },
+          (err, result) => {
+            const token = jwt.sign({ _id: result.ops[0]._id }, secret);
 
-          return res
-            .status(200)
-            .send({ result: { token, user: result.ops[0] } });
-        });
+            return res
+              .status(200)
+              .send({ result: { token, user: result.ops[0] } });
+          }
+        );
       });
     }
   }
@@ -107,6 +110,10 @@ export class AccountController extends AbstractController {
       });
     } else {
       const collection = this.getCollection();
+
+      if (req.body.sex) {
+        req.body.sex = Number(req.body.sex);
+      }
 
       const isValid =
         (await collection

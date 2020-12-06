@@ -38,7 +38,7 @@ export const Users: React.FC = () => {
     return (
       <ListItem
         title={`${item.name}`}
-        description={`${SexTypeEnum[Number(item.sex)]}, ${item.age} years`}
+        description={`${SexTypeEnum[item.sex]}, ${item.age} years`}
         accessoryLeft={renderItemIcon}
         accessoryRight={() => renderItemAccessory(item, item.isInvited)}
       />

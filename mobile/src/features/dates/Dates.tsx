@@ -77,6 +77,12 @@ export const Dates: React.FC = () => {
         case DateStatusEnum.Canceled:
           return <Text appearance="hint">Canceled</Text>;
 
+        case DateStatusEnum.Declined:
+          return <Text status="danger">Declined</Text>;
+
+        case DateStatusEnum.Accepted:
+          return <Text status="success">Accepted</Text>;
+
         default:
           return null;
       }
@@ -85,7 +91,7 @@ export const Dates: React.FC = () => {
     return (
       <ListItem
         title={`${title}`}
-        description={`${SexTypeEnum[Number(userData.sex)]}, ${
+        description={`${SexTypeEnum[userData.sex]}, ${
           user.age
         } years\nWhen: ${new Date(item.date).toLocaleDateString()}\n${
           item.status === DateStatusEnum.Accepted

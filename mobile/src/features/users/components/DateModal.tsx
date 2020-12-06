@@ -5,40 +5,25 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { DatePicker } from '../../../components/DatePicker';
+import { Form } from '../../../components/Form';
+import { FormField } from '../../../components/FormField';
 import { NewDateDto } from '../../../dtos/NewDateDto';
 import { SexTypeEnum } from '../../../enums/SexTypeEnum';
 import { useField } from '../../../hooks/useField';
 import { create, toggleCreateForm } from '../../dates/datesSlice';
 
 export const DateModal = () => {
-  const { opened } = useSelector((state: RootState) => state.dates.createForm);
+  const { opened, isFetching, error } = useSelector(
+    (state: RootState) => state.dates.createForm
+  );
   const { receiver } = useSelector(
     (state: RootState) => state.dates.createForm
   );
   const { user } = useSelector((state: RootState) => state.account);
 
-  const {
-    handleSubmit,
-    errors,
-    getValues,
-    setValue,
-    register,
-    watch,
-    reset,
-  } = useForm();
-
-  useEffect(() => {
-    register('date', { required: true });
-  }, []);
-
-  watch('date');
-
-  const { handler, status } = useField(setValue, errors);
-
   const dispatch = useDispatch();
 
   const handleToggle = () => {
-    reset();
     dispatch(toggleCreateForm(null));
   };
 
@@ -65,18 +50,24 @@ export const DateModal = () => {
           </View>
 
           <Text style={styles.description} category="h6">
-            {SexTypeEnum[Number(receiver.sex)]}, {receiver.age} years
+            {SexTypeEnum[receiver.sex]}, {receiver.age} years
           </Text>
 
-          <DatePicker
-            label="Choose date"
-            min={new Date()}
-            onSelect={handler('date')}
-            status={status('date')}
-            style={styles.input}
-          />
-
-          <Button onPress={handleSubmit(onSubmit)}>INVITE</Button>
+          <Form
+            errors={error}
+            onSubmit={onSubmit}
+            loading={isFetching}
+            rules={{
+              date: { required: true },
+            }}
+          >
+            <FormField
+              name="date"
+              type="date"
+              label="Choose date"
+              min={new Date()}
+            />
+          </Form>
         </Card>
       </Modal>
     );
@@ -97,9 +88,6 @@ const styles = StyleSheet.create({
     width: 128,
     height: 128,
     marginLeft: 64,
-  },
-  input: {
-    marginBottom: 16,
   },
   description: {
     textAlign: 'center',
