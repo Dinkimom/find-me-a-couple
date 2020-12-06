@@ -128,6 +128,8 @@ export class AccountController extends AbstractController {
         (err, { value }) => {
           const token = jwt.sign({ _id: value._id }, secret);
 
+          delete value.password;
+
           return res.status(200).send({ result: { token, user: value } });
         }
       );
