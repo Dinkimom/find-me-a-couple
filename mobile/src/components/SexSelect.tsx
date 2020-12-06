@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SexTypeEnum } from '../enums/SexTypeEnum';
 
-interface Props {
+export interface SexSelectProps {
   onChange: (index: SexTypeEnum) => void;
   defaultValue?: SexTypeEnum;
 }
 
-export const SexSelect: React.FC<Props> = ({
+export const SexSelect: React.FC<SexSelectProps> = ({
   onChange,
   defaultValue = SexTypeEnum.Male,
 }) => {

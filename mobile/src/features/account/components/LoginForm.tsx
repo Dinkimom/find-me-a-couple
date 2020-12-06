@@ -1,19 +1,17 @@
-import { Input, Text } from '@ui-kitten/components';
+import { Text } from '@ui-kitten/components';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-native';
 import { RootState } from '../../../app/store';
-import { Button } from '../../../components/Button';
+import { Form } from '../../../components/Form';
+import { FormField } from '../../../components/FormField';
 import { emailRegex } from '../../../constants/emailRegex';
 import { useField } from '../../../hooks/useField';
 import { check, login } from '../accountSlice';
 
 export const LoginForm: React.FC = () => {
-  const { register, handleSubmit, setValue, errors } = useForm();
-  const { handler, status } = useField(setValue, errors);
-
   const { isFetching, error } = useSelector(
     (state: RootState) => state.account.loginForm
   );
@@ -29,11 +27,6 @@ export const LoginForm: React.FC = () => {
     }
   }, [dispatch, isChecked]);
 
-  useEffect(() => {
-    register('email', { required: true, pattern: emailRegex });
-    register('password', { required: true });
-  }, []);
-
   const onSubmit = (data: any) => {
     dispatch(login(data));
   };
@@ -48,34 +41,23 @@ export const LoginForm: React.FC = () => {
         Please, login
       </Text>
 
-      <Input
-        label="Email"
-        style={styles.input}
-        onChangeText={handler('email')}
-        status={status('email')}
-      />
-
-      <Input
-        label="Password"
-        style={styles.input}
-        onChangeText={handler('password')}
-        secureTextEntry={true}
-        status={status('password')}
-      />
-
-      {error && (
-        <Text status="danger" style={styles.hint}>
-          {error.errorMessage}
-        </Text>
-      )}
-
-      <Button
-        style={styles.formButton}
-        onPress={handleSubmit(onSubmit)}
+      <Form
+        errors={error}
+        onSubmit={onSubmit}
         loading={isFetching}
+        rules={{
+          email: {
+            required: true,
+            pattern: emailRegex,
+            message: 'Email is a required field',
+          },
+          password: { required: true, message: 'Password is a required field' },
+        }}
       >
-        LOGIN
-      </Button>
+        <FormField type="text" name="email" label="Email" />
+
+        <FormField type="text" name="password" label="Password" />
+      </Form>
 
       <View style={styles.caption}>
         <Text appearance="hint" style={styles.hint}>
@@ -92,12 +74,6 @@ export const LoginForm: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  input: {
-    marginBottom: 16,
-  },
-  formButton: {
-    marginTop: 24,
-  },
   caption: {
     marginTop: 16,
   },

@@ -20,6 +20,8 @@ export const RegisterForm: React.FC = () => {
     (state: RootState) => state.account.registerForm
   );
 
+  console.log(error);
+
   useEffect(() => {
     register('name', { required: true });
     register('age', { required: true, min: 18, pattern: /\d+/ });
