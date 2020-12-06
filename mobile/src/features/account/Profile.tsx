@@ -1,57 +1,24 @@
-import { Divider, Input, Text } from '@ui-kitten/components';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { StyleSheet, Alert } from 'react-native';
+import { Text } from '@ui-kitten/components';
+import React from 'react';
+import { Alert, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { Button } from '../../components/Button';
-import { SexSelect } from '../../components/SexSelect';
+import { Form } from '../../components/Form';
+import { FormField } from '../../components/FormField';
 import { emailRegex } from '../../constants/emailRegex';
 import { phoneRegex } from '../../constants/phoneRegex';
 import { RegisterDto } from '../../dtos/RegisterDto';
-import { useField } from '../../hooks/useField';
-import { logout, remove, toggleUpdateForm, update } from './accountSlice';
+import { logout, remove, update } from './accountSlice';
 
 export const Profile: React.FC = () => {
-  const { isFetching, opened, ...formState } = useSelector(
+  const { isFetching } = useSelector(
     (state: RootState) => state.account.updateForm
   );
+  const { error } = useSelector((state: RootState) => state.account.updateForm);
   const { user } = useSelector((state: RootState) => state.account);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    errors,
-    reset,
-    getValues,
-    watch,
-    control,
-  } = useForm();
-  const { handler, status } = useField(setValue, errors);
-
-  useEffect(() => {
-    if (user) {
-      reset(user);
-    }
-  }, [reset, user]);
-
-  useEffect(() => {
-    register('name', { required: true });
-    register('age', { required: true, min: 18, pattern: /\d+/ });
-    register('sex', { required: true });
-    register('phone', { required: true, pattern: phoneRegex });
-    register('email', { required: true, pattern: emailRegex });
-    register('password', { required: true });
-  }, []);
-
-  const [sex, setSex] = useState();
-
   const dispatch = useDispatch();
-
-  const handleToggle = () => {
-    dispatch(toggleUpdateForm());
-  };
 
   const onSubmit = (data: RegisterDto) => {
     dispatch(update(user?._id || '', data));
@@ -78,59 +45,35 @@ export const Profile: React.FC = () => {
   };
 
   return (
-    <>
-      <Input
-        label="Name"
-        style={styles.input}
-        onChangeText={handler('name')}
-        status={status('name')}
-        defaultValue={user?.name}
-      />
-
-      <Input
-        label="Age"
-        style={styles.input}
-        onChangeText={handler('age')}
-        status={status('age')}
-        defaultValue={String(user?.age)}
-      />
-
-      <SexSelect onChange={handler('sex')} defaultValue={user?.sex} />
-
-      <Input
-        label="Phone"
-        style={styles.input}
-        onChangeText={handler('phone')}
-        status={status('phone')}
-        defaultValue={user?.phone}
-        keyboardType="phone-pad"
-      />
-
-      <Divider style={styles.divider} />
-
-      <Input
-        label="Email"
-        style={styles.input}
-        onChangeText={handler('email')}
-        status={status('email')}
-        defaultValue={user?.email}
-      />
-
-      <Input
-        label="Password"
-        style={styles.input}
-        onChangeText={handler('password')}
-        status={status('password')}
-        secureTextEntry={true}
-      />
-
-      <Button
-        style={styles.formButton}
-        onPress={handleSubmit(onSubmit)}
+    <ScrollView style={styles.root}>
+      <Form
+        errors={error}
+        onSubmit={onSubmit}
         loading={isFetching}
+        defaultValues={user}
       >
-        UPDATE
-      </Button>
+        <FormField name="name" label="Name" type="text" />
+
+        <FormField name="age" label="Age" type="text" />
+
+        <FormField name="sex" label="Sex" type="sexSelect" />
+
+        <FormField
+          name="phone"
+          label="Phone"
+          type="text"
+          keyboardType="phone-pad"
+        />
+
+        <FormField name="email" label="Email" type="text" />
+
+        <FormField
+          name="password"
+          label="Password"
+          type="text"
+          secureTextEntry={true}
+        />
+      </Form>
 
       <Button onPress={handleLogout} status="basic" style={styles.formButton}>
         LOGOUT
@@ -142,11 +85,15 @@ export const Profile: React.FC = () => {
           delete your account
         </Text>
       </Text>
-    </>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  root: {
+    maxHeight: '70%',
+    overflow: 'hidden',
+  },
   input: {
     marginBottom: 16,
   },

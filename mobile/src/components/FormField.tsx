@@ -25,7 +25,7 @@ export const FormField: React.FC<
 
   const renderInner = useMemo(() => {
     if (context) {
-      const { control, errors } = context;
+      const { control, errors, defaultValues } = context;
 
       let errorMessage = null;
 
@@ -36,6 +36,8 @@ export const FormField: React.FC<
           </Text>
         );
       }
+
+      const defaultValue = defaultValues ? defaultValues[name] : undefined;
 
       return (
         <View style={styles.root}>
@@ -50,12 +52,25 @@ export const FormField: React.FC<
                       {...fieldProps}
                       onChangeText={onChange}
                       status={errors[name] ? 'danger' : undefined}
+                      defaultValue={defaultValue}
                     />
                   );
                 case 'date':
-                  return <DatePicker {...fieldProps} onSelect={onChange} />;
+                  return (
+                    <DatePicker
+                      {...fieldProps}
+                      onSelect={onChange}
+                      defaultValue={defaultValue}
+                    />
+                  );
                 case 'sexSelect':
-                  return <SexSelect {...fieldProps} onChange={onChange} />;
+                  return (
+                    <SexSelect
+                      {...fieldProps}
+                      onChange={onChange}
+                      defaultValue={defaultValue}
+                    />
+                  );
                 default:
                   return null;
               }

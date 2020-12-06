@@ -93,10 +93,8 @@ export class AccountController extends AbstractController {
 
   @Put('update/:_id')
   @Middleware([
-    check('name', 'Name is a required field').not().isEmpty(),
-    check('phone').isMobilePhone('ru-RU'),
-    check('email').isEmail(),
-    check('password', 'Password is a required field').not().isEmpty(),
+    check('phone').optional().isMobilePhone('ru-RU'),
+    check('email').optional().isEmail(),
   ])
   private async update(req: Request<RegisterDto>, res: Response) {
     const errors = validationResult(req);
