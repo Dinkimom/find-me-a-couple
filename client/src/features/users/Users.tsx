@@ -32,7 +32,7 @@ export const Users: React.FC = () => {
     <>
       <Form layout="inline" className={styles.controls} onFinish={handleSearch}>
         <Form.Item label="Age from" name="age">
-          <InputNumber min={18} defaultValue={18} style={{ width: 100 }} />
+          <InputNumber min={18} style={{ width: 100 }} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
