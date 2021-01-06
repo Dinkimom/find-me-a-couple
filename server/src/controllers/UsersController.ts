@@ -16,25 +16,23 @@ export class UsersController extends AbstractController {
   private async getUsers(req: any, res: Response) {
     const collection = this.getCollection();
 
-    let filter: any = null;
+    let filter: any = {
+      email: { $ne: (req as any).user.email },
+    };
 
     const filterKeys = Object.keys(req.query);
 
     if (filterKeys.length) {
-      filter = {};
-
-      filterKeys.forEach(
-        (key) => (filter[key] = { $gte: Number(req.query[key]) })
-      );
+      filterKeys.forEach((key) => {
+        if (key === 'sex') {
+          filter[key] = Number(req.query[key]);
+        } else {
+          filter[key] = { $gte: Number(req.query[key]) };
+        }
+      });
     }
 
     let users = await collection.find(filter).toArray();
-
-    users = users.filter(
-      (user: any) =>
-        user.email !== (req as any).user.email &&
-        user.sex !== (req as any).user.sex
-    );
 
     const dates = await getCollection(EntityEnum.Dates).find().toArray();
 

@@ -9,6 +9,8 @@ import { toggleCreateForm } from '../dates/datesSlice';
 import styles from './Users.module.css';
 import { fetch } from './usersSlice';
 
+const { Option } = Select;
+
 export const Users: React.FC = () => {
   const { list, isFetching } = useSelector((state: RootState) => state).users;
 
@@ -34,6 +36,14 @@ export const Users: React.FC = () => {
         <Form.Item label="Age from" name="age">
           <InputNumber min={18} style={{ width: 100 }} />
         </Form.Item>
+
+        <Form.Item label="Sex" name="sex">
+          <Select style={{ width: 100 }}>
+            <Option value={0}>Male</Option>
+            <Option value={1}>Female</Option>
+          </Select>
+        </Form.Item>
+
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Search
