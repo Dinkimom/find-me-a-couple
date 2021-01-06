@@ -1,5 +1,5 @@
 import { Button, Card, Form, InputNumber, List, Select } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { UserCard } from '../../components/UserCard/UserCard';
@@ -45,11 +45,11 @@ export const Users: React.FC = () => {
         form={form}
       >
         <Form.Item label="Age from" name="age">
-          <InputNumber min={18} style={{ width: 100 }} />
+          <InputNumber min={18} className={styles.filterField} />
         </Form.Item>
 
         <Form.Item label="Sex" name="sex">
-          <Select style={{ width: 100 }}>
+          <Select className={styles.filterField}>
             <Option value={0}>Male</Option>
             <Option value={1}>Female</Option>
           </Select>
@@ -59,14 +59,18 @@ export const Users: React.FC = () => {
           <Button
             htmlType="button"
             onClick={handleReset}
-            style={{ width: 100 }}
+            className={styles.filterField}
           >
             Reset
           </Button>
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ width: 100 }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={styles.filterField}
+          >
             Search
           </Button>
         </Form.Item>
