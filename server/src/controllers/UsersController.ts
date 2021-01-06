@@ -16,15 +16,19 @@ export class UsersController extends AbstractController {
   private async getUsers(req: any, res: Response) {
     const collection = this.getCollection();
 
-    console.log(req.query);
+    let filter: any = null;
 
-    let users = await collection
-      .find(
-        Object.keys(req.query).length
-          ? { ...req.query, age: { $gte: Number(req.query.age) || 18 } }
-          : undefined
-      )
-      .toArray();
+    const filterKeys = Object.keys(req.query);
+
+    if (filterKeys.length) {
+      filter = {};
+
+      filterKeys.forEach(
+        (key) => (filter[key] = { $gte: Number(req.query[key]) })
+      );
+    }
+
+    let users = await collection.find(filter).toArray();
 
     users = users.filter(
       (user: any) =>
