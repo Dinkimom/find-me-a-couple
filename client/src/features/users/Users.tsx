@@ -1,5 +1,5 @@
 import { Button, Card, Form, InputNumber, List, Select } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { UserCard } from '../../components/UserCard/UserCard';
@@ -16,6 +16,8 @@ export const Users: React.FC = () => {
 
   const [filter, setFilter] = useState<Filter>();
 
+  const [form] = Form.useForm();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,9 +32,18 @@ export const Users: React.FC = () => {
     dispatch(toggleCreateForm(receiver));
   };
 
+  const handleReset = () => {
+    form.resetFields();
+  };
+
   return (
     <>
-      <Form layout="inline" className={styles.controls} onFinish={handleSearch}>
+      <Form
+        layout="inline"
+        className={styles.controls}
+        onFinish={handleSearch}
+        form={form}
+      >
         <Form.Item label="Age from" name="age">
           <InputNumber min={18} style={{ width: 100 }} />
         </Form.Item>
@@ -45,7 +56,17 @@ export const Users: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button
+            htmlType="button"
+            onClick={handleReset}
+            style={{ width: 100 }}
+          >
+            Reset
+          </Button>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: 100 }}>
             Search
           </Button>
         </Form.Item>
