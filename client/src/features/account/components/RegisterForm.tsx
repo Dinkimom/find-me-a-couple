@@ -30,8 +30,8 @@ export const RegisterForm: React.FC<BaseFormProps> = (props) => {
         rules={[{ required: true, message: 'Please select your sex!' }]}
       >
         <Select style={{ width: 100, float: 'left' }}>
-          <Option value="0">Male</Option>
-          <Option value="1">Female</Option>
+          <Option value={0}>Male</Option>
+          <Option value={1}>Female</Option>
         </Select>
       </Form.Item>
 
