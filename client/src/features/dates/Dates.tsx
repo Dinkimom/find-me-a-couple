@@ -95,7 +95,7 @@ export const Dates: React.FC = () => {
 
         return (
           <List.Item>
-            <Card style={{ minHeight: 550 }}>
+            <Card style={{ minHeight: 510 }}>
               <Tag
                 color={tagsColors[item.status]}
                 style={{ marginBottom: 16, marginRight: 0 }}

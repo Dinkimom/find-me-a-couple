@@ -7,4 +7,5 @@ export interface UserDto {
   phone: string;
   age: number;
   sex: SexEnum;
+  image?: string;
 }

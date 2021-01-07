@@ -1,6 +1,7 @@
 import { Divider, Form, Input, InputNumber, Select } from 'antd';
 import React from 'react';
 import { BaseForm, BaseFormProps } from '../../../components/BaseForm';
+import { ImageLoader } from '../../../components/ImageLoader/ImageLoader';
 import { phoneRegex } from '../../../constants/phoneRegex';
 
 const { Option } = Select;
@@ -34,6 +35,8 @@ export const RegisterForm: React.FC<BaseFormProps> = (props) => {
           <Option value={1}>Female</Option>
         </Select>
       </Form.Item>
+
+      <ImageLoader />
 
       <Divider />
 

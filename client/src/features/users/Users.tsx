@@ -49,7 +49,7 @@ export const Users: React.FC = () => {
         </Form.Item>
 
         <Form.Item label="Sex" name="sex">
-          <Select className={styles.filterField}>
+          <Select style={{ width: 100 }}>
             <Option value={0}>Male</Option>
             <Option value={1}>Female</Option>
           </Select>

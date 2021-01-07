@@ -8,4 +8,5 @@ export interface UserDto {
   phone: string;
   email: string;
   isInvited?: boolean;
+  image?: string;
 }
