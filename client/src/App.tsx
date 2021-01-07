@@ -8,11 +8,13 @@ import { Dates } from './features/dates/Dates';
 import { Users } from './features/users/Users';
 import { AccountControl } from './services/AccountControl';
 import { DatesControl } from './services/DatesControl';
+import { ImageControl } from './services/ImageControl';
 import { UsersControl } from './services/UsersControl';
 
 export const accountControl = new AccountControl();
 export const usersControl = new UsersControl();
 export const datesControl = new DatesControl();
+export const imageControl = new ImageControl();
 
 const App: React.FC = () => {
   return (

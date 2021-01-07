@@ -1,7 +1,10 @@
 import { Button, Form } from 'antd';
-import React, { ReactNode, useRef } from 'react';
+import { useForm } from 'antd/lib/form/Form';
+import React, { createContext, ReactNode, useRef } from 'react';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { useFormErrors } from '../hooks/useFormErrors';
+
+export const BaseFormContext = createContext<{ form: any }>({ form: null });
 
 export interface BaseFormProps {
   isFetching: boolean;
@@ -21,6 +24,8 @@ export const BaseForm: React.FC<BaseFormProps> = ({
   footer,
 }) => {
   const formRef: any = useRef();
+
+  const [form] = useForm();
 
   const errorMessage = useFormErrors(error, formRef);
 
@@ -45,12 +50,15 @@ export const BaseForm: React.FC<BaseFormProps> = ({
       onFinish={onSubmit}
       initialValues={defaultValues as any}
       ref={formRef}
+      form={form}
     >
-      {children}
+      <BaseFormContext.Provider value={{ form }}>
+        {children}
 
-      {errorMessage}
+        {errorMessage}
 
-      {renderFooter()}
+        {renderFooter()}
+      </BaseFormContext.Provider>
     </Form>
   );
 };

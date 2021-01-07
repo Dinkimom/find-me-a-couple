@@ -62,11 +62,7 @@ export const RegisterForm: React.FC<BaseFormProps> = (props) => {
         <Input />
       </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
+      <Form.Item label="New password" name="password">
         <Input.Password />
       </Form.Item>
     </BaseForm>

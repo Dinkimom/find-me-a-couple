@@ -1,1 +1,1 @@
-export const imageApiEntryPoint = 'https://api.imgur.com/3';
+export const imageApiEntryPoint = 'https://api.imgur.com/3/image';

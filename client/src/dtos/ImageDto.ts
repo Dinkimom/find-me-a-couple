@@ -1,3 +1,5 @@
 export interface ImageDto {
-  link: string;
+  data: {
+    link: string;
+  };
 }

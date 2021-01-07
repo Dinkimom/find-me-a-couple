@@ -12,15 +12,19 @@ interface Props {
 }
 
 export const UserCard: React.FC<Props> = ({ user }) => {
+  console.log(user);
+
+  let imageSrc = SexTypeEnum.Male ? maleImage : femaleImage;
+
+  if (user.image) {
+    imageSrc = user.image;
+  }
+
   return (
     <div>
       <h3>{user.name}</h3>
 
-      <img
-        src={user.sex === SexTypeEnum.Male ? maleImage : femaleImage}
-        alt={user.name}
-        className={styles.image}
-      />
+      <img src={imageSrc} alt={user.name} className={styles.image} />
 
       <p>
         {SexTypeEnum[user.sex]}, {user.age} years
