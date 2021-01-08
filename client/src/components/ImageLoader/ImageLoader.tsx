@@ -1,15 +1,14 @@
 import { Form, Input, notification, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import React, { createRef, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { imageControl } from '../../App';
 import { BaseFormContext } from '../BaseForm';
-import styles from './ImageLoader.module.css';
 
 export const ImageLoader: React.FC = () => {
   const { form, defaultValues, extra } = useContext(BaseFormContext);
 
   useEffect(() => {
-    if (defaultValues.image) {
+    if (defaultValues?.image) {
       setFileList([
         {
           uid: '1',
@@ -18,7 +17,7 @@ export const ImageLoader: React.FC = () => {
         },
       ]);
     }
-  }, [defaultValues, extra.opened]);
+  }, [defaultValues, extra]);
 
   const [fileList, setFileList] = useState<any>([]);
 
