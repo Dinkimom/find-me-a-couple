@@ -1,10 +1,15 @@
-import { Button, Card, Divider, List, Tag } from 'antd';
+import { Button, Image, List, Tag, Typography } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { UserCard } from '../../components/UserCard/UserCard';
+import femaleImage from '../../assets/images/female.png';
+import maleImage from '../../assets/images/male.png';
 import { DateStatusEnum } from '../../enums/DateStatusEnum';
-import { fetch, update } from './datesSlice';
+import { SexTypeEnum } from '../../enums/SexTypeEnum';
+import styles from './Dates.module.css';
+import { fetch, remove, update } from './datesSlice';
+
+const { Title } = Typography;
 
 const tagsColors = {
   0: '#108ee9',
@@ -26,100 +31,118 @@ export const Dates: React.FC = () => {
 
   return (
     <List
-      grid={{
-        gutter: 16,
-        xs: 1,
-        sm: 2,
-        md: 4,
-        lg: 4,
-        xl: 6,
-        xxl: 3,
-      }}
+      className={styles.dates}
+      itemLayout="horizontal"
       dataSource={list}
       loading={isFetching}
       renderItem={(item) => {
         const isInviter = user?._id === item.inviter._id;
 
-        const title = isInviter ? `You invited` : `You've been invited by`;
+        const title = isInviter ? `You invited` : `You've been invited`;
 
         const userData = isInviter ? item.receiver : item.inviter;
+
+        let imageSrc =
+          item.receiver.image ||
+          (item.receiver.sex === SexTypeEnum.Male ? maleImage : femaleImage);
 
         const handleStatusChange = (id: string, status: DateStatusEnum) => {
           dispatch(update(id, { status }));
         };
 
+        const handleDateRemove = (id: string) => [dispatch(remove(id))];
+
         const renderStatusButton = (id: string, status: DateStatusEnum) => {
           switch (status) {
             case DateStatusEnum.Opened:
               if (isInviter) {
-                return (
+                return [
                   <Button
                     onClick={() =>
                       handleStatusChange(id, DateStatusEnum.Canceled)
                     }
-                    block
+                    className={styles.actionButton}
                   >
                     Cancel
-                  </Button>
-                );
+                  </Button>,
+                ];
               } else {
-                return (
-                  <>
-                    <Button
-                      onClick={() =>
-                        handleStatusChange(id, DateStatusEnum.Accepted)
-                      }
-                      style={{ width: 100, marginRight: 8 }}
-                    >
-                      Accept
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        handleStatusChange(id, DateStatusEnum.Declined)
-                      }
-                      style={{
-                        width: 100,
-                        marginLeft: 8,
-                      }}
-                    >
-                      Decline
-                    </Button>
-                  </>
-                );
+                return [
+                  <Button
+                    onClick={() =>
+                      handleStatusChange(id, DateStatusEnum.Accepted)
+                    }
+                    className={styles.actionButton}
+                    type="primary"
+                    style={{ marginRight: 8 }}
+                  >
+                    Accept
+                  </Button>,
+                  <Button
+                    onClick={() =>
+                      handleStatusChange(id, DateStatusEnum.Declined)
+                    }
+                    className={styles.actionButton}
+                    danger
+                  >
+                    Decline
+                  </Button>,
+                ];
               }
 
             default:
-              return null;
+              return [
+                <Button
+                  onClick={() => handleDateRemove(id)}
+                  className={styles.actionButton}
+                  danger
+                >
+                  Delete
+                </Button>,
+              ];
           }
         };
 
         return (
-          <List.Item>
-            <Card style={{ minHeight: 510 }}>
+          <List.Item className={styles.listItem}>
+            <h3>
+              {title}
               <Tag
                 color={tagsColors[item.status]}
-                style={{ marginBottom: 16, marginRight: 0 }}
+                className={styles.listItemTag}
               >
                 {DateStatusEnum[Number(item.status)]}
               </Tag>
-              <h3>{title}</h3>
-              <UserCard user={userData} />
+            </h3>
 
-              {item.status === DateStatusEnum.Accepted && (
-                <>
-                  <h3>Contact info</h3>
-                  <p>
-                    {userData.email}, {userData.phone}
-                  </p>
-                </>
-              )}
+            <div className={styles.listItemContent}>
+              <Image src={imageSrc} className={styles.listItemAvatar} />
 
-              <h3>When?</h3>
+              <div className={styles.listItemInfo}>
+                <div className={styles.listItemInfoBox}>
+                  <Title level={5}>{item.receiver.name}</Title>
+                  <span>123</span>
+                </div>
 
-              <p>{new Date(item.date).toLocaleDateString()}</p>
+                <div className={styles.listItemInfoBox}>
+                  <h3>When?</h3>
 
-              {renderStatusButton(item._id, item.status)}
-            </Card>
+                  <p>{new Date(item.date).toLocaleDateString()}</p>
+                </div>
+
+                {item.status === DateStatusEnum.Accepted && (
+                  <div className={styles.listItemInfoBox}>
+                    <h3>Contact info</h3>
+                    <p>
+                      {userData.email}, {userData.phone}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <div className={styles.listItemControls}>
+                {renderStatusButton(item._id, item.status)}
+              </div>
+            </div>
           </List.Item>
         );
       }}

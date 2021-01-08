@@ -6,6 +6,7 @@ import maleImage from '../../assets/images/male.png';
 import femaleImage from '../../assets/images/female.png';
 
 import styles from './UserCard.module.css';
+import { Image } from 'antd';
 
 interface Props {
   user: UserDto;
@@ -19,14 +20,15 @@ export const UserCard: React.FC<Props> = ({ user }) => {
   }
 
   return (
-    <div>
-      <h3>{user.name}</h3>
+    <div className={styles.userCard}>
+      <Image src={imageSrc} className={styles.userAvatar} />
+      <div className={styles.userCardInfo}>
+        <h3>{user.name}</h3>
 
-      <img src={imageSrc} alt={user.name} className={styles.image} />
-
-      <p>
-        {SexTypeEnum[user.sex]}, {user.age} years
-      </p>
+        <p>
+          {SexTypeEnum[user.sex]}, {user.age} years
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put } from '@overnightjs/core';
+import { Controller, Delete, Get, Post, Put } from '@overnightjs/core';
 import { EntityEnum } from '../enums/EntityEnum';
 import { AbstractController } from './AbstractController';
 import { Request, Response } from 'express';
@@ -56,6 +56,17 @@ export class DatesController extends AbstractController {
     const collection = this.getCollection();
 
     collection.findOneAndUpdate({ _id }, { $set: { ...req.body } }, () => {
+      return res.status(200).send();
+    });
+  }
+
+  @Delete(':_id')
+  private async removeDate(req: Request<Partial<DateDto>>, res: Response) {
+    const _id = new ObjectID(req.params._id);
+
+    const collection = this.getCollection();
+
+    collection.findOneAndDelete({ _id }, () => {
       return res.status(200).send();
     });
   }

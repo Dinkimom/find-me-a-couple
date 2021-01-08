@@ -97,6 +97,7 @@ export const Users: React.FC = () => {
                 block
                 onClick={() => handleInvite(item)}
                 disabled={item.isInvited}
+                style={{ marginTop: 16 }}
               >
                 {item.isInvited ? 'Invited' : 'Invite'}
               </Button>

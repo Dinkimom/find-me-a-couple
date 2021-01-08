@@ -40,24 +40,10 @@ export const CreateDateForm: React.FC = () => {
       <BaseForm
         onSubmit={handleSubmit}
         {...formState}
-        footer={
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              loading={formState.isFetching}
-              style={{ marginRight: 16 }}
-            >
-              Submit
-            </Button>
-            <Button htmlType="button" onClick={handleToggle}>
-              Cancel
-            </Button>
-          </Form.Item>
-        }
+        footer={null}
         extra={{ opened }}
       >
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
           {receiver && <UserCard user={receiver} />}
         </div>
 
@@ -74,8 +60,22 @@ export const CreateDateForm: React.FC = () => {
               message: 'Please, input date',
             },
           ]}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
         >
-          <DatePicker placeholder="Select date" />
+          <DatePicker placeholder="Select date" style={{ width: 200 }} />
+
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={formState.isFetching}
+            style={{ marginLeft: 16, width: 100 }}
+          >
+            Submit
+          </Button>
         </Form.Item>
       </BaseForm>
     </Modal>

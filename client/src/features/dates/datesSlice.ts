@@ -138,4 +138,16 @@ export const update = (id: string, data: Partial<DateDto>): AppThunk => async (
   }
 };
 
+export const remove = (id: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(updateStart());
+
+    await datesControl.remove(id);
+
+    dispatch(fetch());
+  } catch (error) {
+    dispatch(updateFailure(error));
+  }
+};
+
 export const datesReducer = datesSlice.reducer;
