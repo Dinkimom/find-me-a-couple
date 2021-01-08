@@ -1,6 +1,8 @@
 .image {
   width: 200px;
   height: 200px;
+  background: rgb(238, 238, 238);
+  border-radius: 5px;
   object-fit: contain;
   margin-bottom: 16px;
 }

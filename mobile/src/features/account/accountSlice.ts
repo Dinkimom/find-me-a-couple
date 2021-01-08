@@ -196,7 +196,6 @@ export const login = (data: LoginDto): AppThunk => async (dispatch) => {
 
 export const register = (data: RegisterDto): AppThunk => async (dispatch) => {
   try {
-    console.log(data);
     dispatch(registerStart());
 
     const response = await accountControl.register(data);

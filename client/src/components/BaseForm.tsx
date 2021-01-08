@@ -1,10 +1,18 @@
 import { Button, Form } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
-import React, { createContext, ReactNode, useRef } from 'react';
+import React, { createContext, ReactNode, useEffect, useRef } from 'react';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { useFormErrors } from '../hooks/useFormErrors';
 
-export const BaseFormContext = createContext<{ form: any }>({ form: null });
+export const BaseFormContext = createContext<{
+  form: any;
+  extra: any;
+  defaultValues: any;
+}>({
+  form: null,
+  extra: null,
+  defaultValues: null,
+});
 
 export interface BaseFormProps {
   isFetching: boolean;
@@ -13,6 +21,7 @@ export interface BaseFormProps {
   children?: ReactNode | null;
   defaultValues?: { [key: string]: any } | null;
   footer?: ReactNode;
+  extra?: any;
 }
 
 export const BaseForm: React.FC<BaseFormProps> = ({
@@ -22,6 +31,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
   children,
   defaultValues,
   footer,
+  extra,
 }) => {
   const formRef: any = useRef();
 
@@ -43,16 +53,20 @@ export const BaseForm: React.FC<BaseFormProps> = ({
     return footer;
   };
 
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue(defaultValues);
+  }, [defaultValues, extra, form]);
+
   return (
     <Form
       layout="vertical"
       name="basic"
       onFinish={onSubmit}
-      initialValues={defaultValues as any}
       ref={formRef}
       form={form}
     >
-      <BaseFormContext.Provider value={{ form }}>
+      <BaseFormContext.Provider value={{ form, defaultValues, extra }}>
         {children}
 
         {errorMessage}

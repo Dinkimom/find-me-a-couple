@@ -55,6 +55,7 @@ export const CreateDateForm: React.FC = () => {
             </Button>
           </Form.Item>
         }
+        extra={{ opened }}
       >
         <div style={{ textAlign: 'center' }}>
           {receiver && <UserCard user={receiver} />}
@@ -67,6 +68,10 @@ export const CreateDateForm: React.FC = () => {
               type: 'date',
               min: Number(new Date()),
               message: 'Selected date must be valid',
+            },
+            {
+              required: true,
+              message: 'Please, input date',
             },
           ]}
         >

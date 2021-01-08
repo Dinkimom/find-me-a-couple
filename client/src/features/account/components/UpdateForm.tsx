@@ -1,15 +1,16 @@
 import { Button, Divider, Form, Modal } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { RegisterDto } from '../../../dtos/RegisterDto';
-import { remove, toggleUpdateForm, update } from '../accountSlice';
+import { check, remove, toggleUpdateForm, update } from '../accountSlice';
 import { RegisterForm } from './RegisterForm';
 
 export const UpdateForm = () => {
   const { opened, ...formState } = useSelector(
     (state: RootState) => state.account.updateForm
   );
+
   const { user } = useSelector((state: RootState) => state.account);
 
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ export const UpdateForm = () => {
         <RegisterForm
           defaultValues={user}
           onSubmit={handleSubmit}
+          extra={{ opened }}
           {...formState}
           footer={
             <>
@@ -63,8 +65,6 @@ export const UpdateForm = () => {
 
               <Form.Item
                 style={{
-                  background: '#f0f0f0',
-                  padding: 12,
                   textAlign: 'center',
                 }}
               >

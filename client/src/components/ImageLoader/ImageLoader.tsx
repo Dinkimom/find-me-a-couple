@@ -1,78 +1,84 @@
-import { Form, Input, notification } from 'antd';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Form, Input, notification, Upload } from 'antd';
+import ImgCrop from 'antd-img-crop';
+import React, { createRef, useContext, useEffect, useState } from 'react';
 import { imageControl } from '../../App';
 import { BaseFormContext } from '../BaseForm';
 import styles from './ImageLoader.module.css';
 
 export const ImageLoader: React.FC = () => {
-  const [imageLink, setImageLink] = useState('');
-  const [isFetching, setFetching] = useState(false);
-
-  const ref = useRef<any>();
-
-  const { form } = useContext(BaseFormContext);
-
-  const { image } = form.getFieldsValue();
+  const { form, defaultValues, extra } = useContext(BaseFormContext);
 
   useEffect(() => {
-    setImageLink(image);
-  }, [image]);
+    if (defaultValues.image) {
+      setFileList([
+        {
+          uid: '1',
+          url: defaultValues.image,
+          status: 'done',
+        },
+      ]);
+    }
+  }, [defaultValues, extra.opened]);
 
-  const handleUploadClick = () => {
-    ref.current.value = '';
+  const [fileList, setFileList] = useState<any>([]);
 
-    ref.current?.click();
+  const onChange = ({ fileList }: any) => {
+    setFileList(fileList);
   };
 
-  const handleUploadFile = async () => {
+  const handleImageUpload = async (payload: { file: File }) => {
     try {
-      setFetching(true);
+      const response = await imageControl.uploadImage(payload.file);
 
-      const response = await imageControl.uploadImage(ref.current.files[0]);
+      const url = response.data.data.link;
 
-      setImageLink(response.data.data.link);
-
-      const values = form.getFieldsValue();
-
-      form.setFieldsValue({ ...values, image: response.data.data.link });
+      setFileList([
+        {
+          uid: '1',
+          url,
+          status: 'done',
+        },
+      ]);
     } catch {
       notification.error({
         message: 'Could not save selected image. Please, try again',
       });
-    } finally {
-      setFetching(false);
+      setFileList([]);
     }
   };
 
   useEffect(() => {
-    console.log(form.getFieldsValue());
-  }, [form]);
+    console.log(fileList);
+
+    const values = form.getFieldsValue();
+
+    form.setFieldsValue({
+      ...values,
+      image: fileList.length ? fileList[0].url : '',
+    });
+  }, [fileList]);
 
   return (
     <>
-      <Form.Item name="image" label="Avatar">
+      <Form.Item
+        name="image"
+        label="Avatar"
+        style={{ float: 'left' }}
+        shouldUpdate={true}
+      >
         <Input type="hidden" />
 
-        <button type="button" onClick={handleUploadClick} disabled={isFetching}>
-          {imageLink ? 'Update image' : 'Upload image'}
-        </button>
+        <ImgCrop rotate>
+          <Upload
+            listType="picture-card"
+            onChange={onChange}
+            fileList={fileList}
+            customRequest={handleImageUpload}
+          >
+            {fileList.length !== 1 && '+ Upload'}
+          </Upload>
+        </ImgCrop>
       </Form.Item>
-
-      <input
-        type="file"
-        className={styles.imageField}
-        ref={ref}
-        onChange={handleUploadFile}
-        accept="image/x-png,image/gif,image/jpeg"
-      />
-
-      {imageLink && (
-        <img
-          src={imageLink}
-          alt="profile-avatar"
-          style={{ width: 200, height: 'auto' }}
-        />
-      )}
     </>
   );
 };
