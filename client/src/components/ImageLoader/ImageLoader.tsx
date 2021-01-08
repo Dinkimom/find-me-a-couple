@@ -5,7 +5,7 @@ import { imageControl } from '../../App';
 import { BaseFormContext } from '../BaseForm';
 
 export const ImageLoader: React.FC = () => {
-  const { form, defaultValues, extra } = useContext(BaseFormContext);
+  const { form, defaultValues } = useContext(BaseFormContext);
 
   useEffect(() => {
     if (defaultValues?.image) {
@@ -17,7 +17,7 @@ export const ImageLoader: React.FC = () => {
         },
       ]);
     }
-  }, [defaultValues, extra]);
+  }, [defaultValues]);
 
   const [fileList, setFileList] = useState<any>([]);
 

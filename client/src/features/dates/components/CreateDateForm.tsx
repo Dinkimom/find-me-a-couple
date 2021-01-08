@@ -5,7 +5,6 @@ import { RootState } from '../../../app/store';
 import { BaseForm } from '../../../components/BaseForm';
 import { UserCard } from '../../../components/UserCard/UserCard';
 import { NewDateDto } from '../../../dtos/NewDateDto';
-import { SexTypeEnum } from '../../../enums/SexTypeEnum';
 import { create, toggleCreateForm } from '../datesSlice';
 
 export const CreateDateForm: React.FC = () => {
@@ -20,7 +19,7 @@ export const CreateDateForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleToggle = () => {
-    dispatch(toggleCreateForm(null));
+    dispatch(toggleCreateForm());
   };
 
   const handleSubmit = (data: NewDateDto) => {
@@ -36,6 +35,7 @@ export const CreateDateForm: React.FC = () => {
       onCancel={handleToggle}
       footer={null}
       style={{ maxWidth: 400, textAlign: 'center' }}
+      destroyOnClose={true}
     >
       <BaseForm
         onSubmit={handleSubmit}

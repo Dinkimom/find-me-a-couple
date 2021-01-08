@@ -48,8 +48,10 @@ const datesSlice = createSlice({
       state.isFetching = false;
       state.error = action.payload;
     },
-    toggleCreateForm: (state, action: PayloadAction<UserDto | null>) => {
-      state.createForm.receiver = action.payload;
+    toggleCreateForm: (state, action: PayloadAction<UserDto | undefined>) => {
+      if (action.payload) {
+        state.createForm.receiver = action.payload;
+      }
       state.createForm.opened = !state.createForm.opened;
       state.createForm.error = null;
       state.createForm.isFetching = false;

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { PrivateRoute } from './components/PrivateRoute';
 import { AccountForm } from './features/account/AccountForm';
+import { Chats } from './features/chats/Chats';
 import { CreateDateForm } from './features/dates/components/CreateDateForm';
 import { Dates } from './features/dates/Dates';
 import { Users } from './features/users/Users';
@@ -27,6 +28,9 @@ const App: React.FC = () => {
           </PrivateRoute>
           <PrivateRoute exact path="/dates">
             <Dates />
+          </PrivateRoute>
+          <PrivateRoute exact path="/chats">
+            <Chats />
           </PrivateRoute>
         </Switch>
       </Router>

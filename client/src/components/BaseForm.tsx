@@ -6,11 +6,9 @@ import { useFormErrors } from '../hooks/useFormErrors';
 
 export const BaseFormContext = createContext<{
   form: any;
-  extra: any;
   defaultValues: any;
 }>({
   form: null,
-  extra: null,
   defaultValues: null,
 });
 
@@ -56,7 +54,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(defaultValues);
-  }, [defaultValues, extra, form]);
+  }, [defaultValues]);
 
   return (
     <Form
@@ -66,7 +64,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
       ref={formRef}
       form={form}
     >
-      <BaseFormContext.Provider value={{ form, defaultValues, extra }}>
+      <BaseFormContext.Provider value={{ form, defaultValues }}>
         {children}
 
         {errorMessage}

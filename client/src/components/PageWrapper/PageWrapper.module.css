@@ -1,5 +1,5 @@
 .layout {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .header {
@@ -16,19 +16,38 @@
   align-items: center;
 }
 
-.userButton {
-  margin-left: 32px;
+.userIcon {
+  margin-right: 16px;
 }
 
 .content {
-  padding: 0 50px;
   margin-top: 84px;
-  min-height: calc(100vh - 128px);
+  padding-left: 216px;
+  position: relative;
+  min-height: calc(100vh - 100px);
+}
+
+.main {
+  max-height: 100%;
+}
+
+.navigation {
+  font-size: 1rem;
+  position: absolute;
+  width: 200px;
+  left: 0;
+}
+
+.icon * {
+  font-size: 1.2rem;
 }
 
 .footer {
   height: 64px;
   text-align: center;
-
   width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }

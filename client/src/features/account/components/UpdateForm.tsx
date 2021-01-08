@@ -1,9 +1,10 @@
+import { ProfileOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { RegisterDto } from '../../../dtos/RegisterDto';
-import { check, remove, toggleUpdateForm, update } from '../accountSlice';
+import { remove, toggleUpdateForm, update } from '../accountSlice';
 import { RegisterForm } from './RegisterForm';
 
 export const UpdateForm = () => {
@@ -31,7 +32,13 @@ export const UpdateForm = () => {
 
   return (
     <>
-      <Button block style={{ marginBottom: 16 }} onClick={handleToggle}>
+      <Button
+        block
+        style={{ marginBottom: 16 }}
+        onClick={handleToggle}
+        type="text"
+        icon={<ProfileOutlined />}
+      >
         Profile
       </Button>
 
@@ -40,6 +47,7 @@ export const UpdateForm = () => {
         visible={opened}
         onCancel={handleToggle}
         footer={null}
+        destroyOnClose={true}
       >
         <RegisterForm
           defaultValues={user}
