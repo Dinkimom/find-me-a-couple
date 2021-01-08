@@ -43,8 +43,8 @@ export const Dates: React.FC = () => {
         const userData = isInviter ? item.receiver : item.inviter;
 
         let imageSrc =
-          item.receiver.image ||
-          (item.receiver.sex === SexTypeEnum.Male ? maleImage : femaleImage);
+          userData.image ||
+          (userData.sex === SexTypeEnum.Male ? maleImage : femaleImage);
 
         const handleStatusChange = (id: string, status: DateStatusEnum) => {
           dispatch(update(id, { status }));
@@ -120,7 +120,7 @@ export const Dates: React.FC = () => {
 
               <div className={styles.listItemInfo}>
                 <div className={styles.listItemInfoBox}>
-                  <Title level={5}>{item.receiver.name}</Title>
+                  <Title level={5}>{userData.name}</Title>
                   <span>123</span>
                 </div>
 
