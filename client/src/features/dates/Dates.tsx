@@ -7,7 +7,7 @@ import maleImage from '../../assets/images/male.png';
 import { DateStatusEnum } from '../../enums/DateStatusEnum';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import styles from './Dates.module.css';
-import { fetch, remove, update } from './datesSlice';
+import { fetch, update } from './datesSlice';
 
 const { Title } = Typography;
 
@@ -50,8 +50,6 @@ export const Dates: React.FC = () => {
           dispatch(update(id, { status }));
         };
 
-        const handleDateRemove = (id: string) => [dispatch(remove(id))];
-
         const renderStatusButton = (id: string, status: DateStatusEnum) => {
           switch (status) {
             case DateStatusEnum.Opened:
@@ -91,15 +89,7 @@ export const Dates: React.FC = () => {
               }
 
             default:
-              return [
-                <Button
-                  onClick={() => handleDateRemove(id)}
-                  className={styles.actionButton}
-                  danger
-                >
-                  Delete
-                </Button>,
-              ];
+              return null;
           }
         };
 

@@ -47,26 +47,27 @@ export const CreateDateForm: React.FC = () => {
           {receiver && <UserCard user={receiver} />}
         </div>
 
-        <Form.Item
-          name="date"
-          rules={[
-            {
-              type: 'date',
-              min: Number(new Date()),
-              message: 'Selected date must be valid',
-            },
-            {
-              required: true,
-              message: 'Please, input date',
-            },
-          ]}
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-          <DatePicker placeholder="Select date" style={{ width: 200 }} />
+        <div style={{ display: 'flex' }}>
+          <Form.Item
+            name="date"
+            rules={[
+              {
+                type: 'date',
+                min: Number(new Date()),
+                message: 'Selected date must be valid',
+              },
+              {
+                required: true,
+                message: 'Please, input date',
+              },
+            ]}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <DatePicker placeholder="Select date" style={{ width: 200 }} />
+          </Form.Item>
 
           <Button
             type="primary"
@@ -76,7 +77,7 @@ export const CreateDateForm: React.FC = () => {
           >
             Submit
           </Button>
-        </Form.Item>
+        </div>
       </BaseForm>
     </Modal>
   );
