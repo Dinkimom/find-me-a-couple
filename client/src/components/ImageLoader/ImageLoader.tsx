@@ -3,6 +3,7 @@ import ImgCrop from 'antd-img-crop';
 import React, { useContext, useEffect, useState } from 'react';
 import { imageControl } from '../../App';
 import { BaseFormContext } from '../BaseForm';
+import styles from './ImageLoader.module.css';
 
 export const ImageLoader: React.FC = () => {
   const { form, defaultValues } = useContext(BaseFormContext);
@@ -47,8 +48,6 @@ export const ImageLoader: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(fileList);
-
     const values = form.getFieldsValue();
 
     form.setFieldsValue({
@@ -58,26 +57,24 @@ export const ImageLoader: React.FC = () => {
   }, [fileList]);
 
   return (
-    <>
-      <Form.Item
-        name="image"
-        label="Avatar"
-        style={{ float: 'left' }}
-        shouldUpdate={true}
-      >
-        <Input type="hidden" />
+    <Form.Item
+      name="image"
+      label="Avatar"
+      className={styles.root}
+      shouldUpdate={true}
+    >
+      <Input type="hidden" />
 
-        <ImgCrop rotate>
-          <Upload
-            listType="picture-card"
-            onChange={onChange}
-            fileList={fileList}
-            customRequest={handleImageUpload}
-          >
-            {fileList.length !== 1 && '+ Upload'}
-          </Upload>
-        </ImgCrop>
-      </Form.Item>
-    </>
+      <ImgCrop rotate>
+        <Upload
+          listType="picture-card"
+          onChange={onChange}
+          fileList={fileList}
+          customRequest={handleImageUpload}
+        >
+          {fileList.length !== 1 && '+ Upload'}
+        </Upload>
+      </ImgCrop>
+    </Form.Item>
   );
 };

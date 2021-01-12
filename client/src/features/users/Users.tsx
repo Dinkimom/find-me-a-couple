@@ -44,36 +44,32 @@ export const Users: React.FC = () => {
         onFinish={handleSearch}
         form={form}
       >
-        <Form.Item label="Age from" name="age">
-          <InputNumber min={18} className={styles.filterField} />
+        <Form.Item name="age">
+          <InputNumber
+            min={18}
+            className={styles.filterField}
+            placeholder="Age from"
+          />
         </Form.Item>
 
-        <Form.Item label="Sex" name="sex">
-          <Select style={{ width: 100 }}>
+        <Form.Item name="sex">
+          <Select style={{ width: 100 }} placeholder="Sex">
             <Option value={0}>Male</Option>
             <Option value={1}>Female</Option>
           </Select>
         </Form.Item>
 
-        <Form.Item>
-          <Button
-            htmlType="button"
-            onClick={handleReset}
-            className={styles.filterField}
-          >
-            Reset
-          </Button>
-        </Form.Item>
+        <Button
+          htmlType="button"
+          onClick={handleReset}
+          className={styles.filterField}
+        >
+          Reset
+        </Button>
 
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.filterField}
-          >
-            Search
-          </Button>
-        </Form.Item>
+        <Button type="primary" htmlType="submit" className={styles.filterField}>
+          Search
+        </Button>
       </Form>
 
       <List
@@ -92,12 +88,13 @@ export const Users: React.FC = () => {
           <List.Item>
             <Card>
               <UserCard user={item} />
+
               <Button
                 type="primary"
                 block
                 onClick={() => handleInvite(item)}
                 disabled={item.isInvited}
-                style={{ marginTop: 16 }}
+                className={styles.inviteButton}
               >
                 {item.isInvited ? 'Invited' : 'Invite'}
               </Button>

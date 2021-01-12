@@ -1,6 +1,6 @@
 import { Form, Input } from 'antd';
 import React from 'react';
-import { BaseForm, BaseFormProps } from '../../../components/BaseForm';
+import { BaseForm, BaseFormProps } from '../../../../components/BaseForm';
 
 export const LoginForm: React.FC<BaseFormProps> = (props) => {
   return (

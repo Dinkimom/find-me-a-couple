@@ -1,8 +1,9 @@
 import { Divider, Form, Input, InputNumber, Select } from 'antd';
 import React from 'react';
-import { BaseForm, BaseFormProps } from '../../../components/BaseForm';
-import { ImageLoader } from '../../../components/ImageLoader/ImageLoader';
-import { phoneRegex } from '../../../constants/phoneRegex';
+import { BaseForm, BaseFormProps } from '../../../../components/BaseForm';
+import { ImageLoader } from '../../../../components/ImageLoader/ImageLoader';
+import { phoneRegex } from '../../../../constants/phoneRegex';
+import styles from './RegisterForm.module.css';
 
 const { Option } = Select;
 
@@ -22,7 +23,7 @@ export const RegisterForm: React.FC<BaseFormProps> = (props) => {
         name="age"
         rules={[{ required: true, message: 'Please input your age!' }]}
       >
-        <InputNumber min={18} style={{ width: 100, float: 'left' }} />
+        <InputNumber min={18} className={styles.field} />
       </Form.Item>
 
       <Form.Item
@@ -30,7 +31,7 @@ export const RegisterForm: React.FC<BaseFormProps> = (props) => {
         name="sex"
         rules={[{ required: true, message: 'Please select your sex!' }]}
       >
-        <Select style={{ width: 100, float: 'left' }}>
+        <Select className={styles.field}>
           <Option value={0}>Male</Option>
           <Option value={1}>Female</Option>
         </Select>

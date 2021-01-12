@@ -229,7 +229,6 @@ export const remove = (id: string): AppThunk => async (dispatch) => {
 
     dispatch(removeSuccess());
   } catch (error) {
-    console.error(error);
     notification.error({
       message: 'User delete fail! Try operation later',
     });

@@ -54,7 +54,7 @@ export const BaseForm: React.FC<BaseFormProps> = ({
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(defaultValues);
-  }, [defaultValues]);
+  }, [defaultValues, form]);
 
   return (
     <Form

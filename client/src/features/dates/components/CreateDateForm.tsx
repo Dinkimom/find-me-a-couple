@@ -6,6 +6,7 @@ import { BaseForm } from '../../../components/BaseForm';
 import { UserCard } from '../../../components/UserCard/UserCard';
 import { NewDateDto } from '../../../dtos/NewDateDto';
 import { create, toggleCreateForm } from '../datesSlice';
+import styles from './CreateDateForm.module.css';
 
 export const CreateDateForm: React.FC = () => {
   const { opened, ...formState } = useSelector(
@@ -34,7 +35,7 @@ export const CreateDateForm: React.FC = () => {
       visible={opened}
       onCancel={handleToggle}
       footer={null}
-      style={{ maxWidth: 400, textAlign: 'center' }}
+      className={styles.modal}
       destroyOnClose={true}
     >
       <BaseForm
@@ -43,11 +44,13 @@ export const CreateDateForm: React.FC = () => {
         footer={null}
         extra={{ opened }}
       >
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          {receiver && <UserCard user={receiver} />}
-        </div>
+        {receiver && (
+          <div className={styles.receiverBlock}>
+            <UserCard user={receiver} />
+          </div>
+        )}
 
-        <div style={{ display: 'flex' }}>
+        <div className={styles.controlsBlock}>
           <Form.Item
             name="date"
             rules={[
@@ -61,10 +64,6 @@ export const CreateDateForm: React.FC = () => {
                 message: 'Please, input date',
               },
             ]}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
           >
             <DatePicker placeholder="Select date" style={{ width: 200 }} />
           </Form.Item>
@@ -73,7 +72,7 @@ export const CreateDateForm: React.FC = () => {
             type="primary"
             htmlType="submit"
             loading={formState.isFetching}
-            style={{ marginLeft: 16, width: 100 }}
+            className={styles.submitButton}
           >
             Submit
           </Button>

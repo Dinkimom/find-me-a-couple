@@ -2,10 +2,11 @@ import { ProfileOutlined } from '@ant-design/icons';
 import { Button, Divider, Form, Modal } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
-import { RegisterDto } from '../../../dtos/RegisterDto';
-import { remove, toggleUpdateForm, update } from '../accountSlice';
-import { RegisterForm } from './RegisterForm';
+import { RootState } from '../../../../app/store';
+import { RegisterDto } from '../../../../dtos/RegisterDto';
+import { remove, toggleUpdateForm, update } from '../../accountSlice';
+import { RegisterForm } from '../RegisterForm/RegisterForm';
+import styles from './UpdateForm.module.css';
 
 export const UpdateForm = () => {
   const { opened, ...formState } = useSelector(
@@ -34,7 +35,7 @@ export const UpdateForm = () => {
     <>
       <Button
         block
-        style={{ marginBottom: 16 }}
+        className={styles.toggleButton}
         onClick={handleToggle}
         type="text"
         icon={<ProfileOutlined />}
@@ -61,7 +62,7 @@ export const UpdateForm = () => {
                   type="primary"
                   htmlType="submit"
                   loading={formState.isFetching}
-                  style={{ marginRight: 16 }}
+                  className={styles.submitButton}
                 >
                   Submit
                 </Button>
@@ -71,21 +72,13 @@ export const UpdateForm = () => {
               </Form.Item>
               <Divider />
 
-              <Form.Item
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                <p style={{ margin: 0 }}>
+              <Form.Item className={styles.deleteUserBlock}>
+                <span>
                   You can{' '}
-                  <Button
-                    type="link"
-                    onClick={handleRemove}
-                    style={{ padding: 0 }}
-                  >
+                  <Button type="link" onClick={handleRemove}>
                     delete your account
                   </Button>
-                </p>
+                </span>
               </Form.Item>
             </>
           }

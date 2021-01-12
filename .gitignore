@@ -89,3 +89,4 @@ typings/
 
 .DS_Store
 mobile/.expo/web/cache/
+client/package-lock.json

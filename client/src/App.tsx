@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import { PrivateRoute } from './components/PrivateRoute';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 import { AccountForm } from './features/account/AccountForm';
 import { Chats } from './features/chats/Chats';
 import { CreateDateForm } from './features/dates/components/CreateDateForm';

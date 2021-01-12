@@ -15,7 +15,7 @@ import femaleImage from '../../assets/images/female.png';
 import maleImage from '../../assets/images/male.png';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import { logout } from '../../features/account/accountSlice';
-import { UpdateForm } from '../../features/account/components/UpdateForm';
+import { UpdateForm } from '../../features/account/components/UpdateForm/UpdateForm';
 import { Container } from '../Container/Container';
 import styles from './PageWrapper.module.css';
 
@@ -39,6 +39,24 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
   };
 
   const history = useHistory();
+
+  const UserButton = useMemo(() => {
+    let imageUrl = user?.image;
+
+    if (!imageUrl) {
+      imageUrl = user?.sex === SexTypeEnum.Male ? maleImage : femaleImage;
+    }
+
+    return (
+      <Button type="link" className={styles.userButton}>
+        <CaretDownOutlined />
+
+        {user?.name}
+
+        <Avatar src={imageUrl} className={styles.userIcon} />
+      </Button>
+    );
+  }, [user]);
 
   const PopoverContent = useMemo(() => {
     if (!user) {
@@ -67,19 +85,7 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
           <Link to="/">FindMeCouple</Link>
 
           <Popover content={PopoverContent} trigger="focus">
-            <Button type="link">
-              <Avatar
-                src={
-                  user?.image ||
-                  (user?.sex === SexTypeEnum.Male ? maleImage : femaleImage)
-                }
-                className={styles.userIcon}
-              />
-
-              {user?.name}
-
-              <CaretDownOutlined />
-            </Button>
+            {UserButton}
           </Popover>
         </Container>
       </Header>

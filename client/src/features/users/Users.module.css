@@ -14,3 +14,11 @@
 .filterField {
   width: 100px;
 }
+
+button[type='submit'].filterField {
+  margin-left: auto;
+}
+
+.inviteButton {
+  margin-top: 16px;
+}
