@@ -9,7 +9,6 @@
     "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.7",
     "@types/react-router-dom": "^5.1.6",
@@ -21,7 +20,8 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
-    "typescript": "~3.8.2"
+    "typescript": "~3.8.2",
+    "websocket": "^1.0.33"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/websocket": "^1.0.1"
   }
 }

@@ -27,7 +27,7 @@ export const Dates: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetch());
-  }, []);
+  }, [dispatch]);
 
   return (
     <List

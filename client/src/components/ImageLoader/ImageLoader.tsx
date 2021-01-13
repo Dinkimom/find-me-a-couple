@@ -54,7 +54,7 @@ export const ImageLoader: React.FC = () => {
       ...values,
       image: fileList.length ? fileList[0].url : '',
     });
-  }, [fileList]);
+  }, [fileList, form]);
 
   return (
     <Form.Item

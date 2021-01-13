@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Button, Layout, Menu, Popover } from 'antd';
 import { Footer } from 'antd/lib/layout/layout';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { RootState } from '../../app/store';
@@ -19,9 +19,7 @@ import { UpdateForm } from '../../features/account/components/UpdateForm/UpdateF
 import { Container } from '../Container/Container';
 import styles from './PageWrapper.module.css';
 
-const { SubMenu } = Menu;
-
-const { Header, Content } = Layout;
+const { Header } = Layout;
 
 interface Props {
   children: ReactNode;
@@ -32,11 +30,11 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
 
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     if (window.confirm('Do you want to logout?')) {
       dispatch(logout());
     }
-  };
+  }, [dispatch]);
 
   const history = useHistory();
 
@@ -76,7 +74,7 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
         </Button>
       </div>
     );
-  }, [user]);
+  }, [user, handleLogout]);
 
   return (
     <Layout className={styles.layout}>
