@@ -91,3 +91,5 @@ typings/
 mobile/.expo/web/cache/
 src/pre-start/env/
 dist/
+
+dist/

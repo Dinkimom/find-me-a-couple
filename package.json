@@ -26,6 +26,7 @@
     "@middleware": "dist/middleware",
     "@server": "dist/Server",
     "@utils": "dist/utils"
+    "@chats": "dist/chats",
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
