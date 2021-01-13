@@ -12,7 +12,8 @@ import BaseRouter from './routes';
 
 const bearerToken = require('express-bearer-token');
 
-const app = express();
+const app: any = express();
+
 const { BAD_REQUEST } = StatusCodes;
 
 app.use(express.json());
@@ -45,6 +46,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     error: err.message,
   });
 });
+
+// WebSockets
 
 // Export express instance
 export default app;
