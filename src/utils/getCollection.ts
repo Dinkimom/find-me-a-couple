@@ -1,8 +1,8 @@
+import { mongoClient } from '@db/mongoClient';
 import { EntityEnum } from '../enums/EntityEnum';
-import { server } from '../start';
 
 export const getCollection = (collection: EntityEnum) => {
-  const db = server.mongoClient.db('ConfigurationModule');
+  const db = mongoClient.db('ConfigurationModule');
 
   return db.collection(collection);
 };

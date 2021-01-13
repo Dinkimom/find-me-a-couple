@@ -1,34 +1,26 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Middleware,
-  Post,
-  Put,
-} from '@overnightjs/core';
-import { JwtManager } from '@overnightjs/jwt';
-import { Request, Response } from 'express';
-import { check, validationResult } from 'express-validator';
-import { EntityEnum } from '../enums/EntityEnum';
 import { LoginDto } from '../dtos/LoginDto';
 import { RegisterDto } from '../dtos/RegisterDto';
-import { AbstractController } from './AbstractController';
-import { secret } from '../constants/secret';
+import { EntityEnum } from '@enums/EntityEnum';
+import { getCollection } from '@utils/getCollection';
+import * as express from 'express';
+import { Request, Response } from 'express';
+import { check, validationResult } from 'express-validator';
+import * as jwt from 'jsonwebtoken';
 import { ObjectID } from 'mongodb';
-const jwt = require('jsonwebtoken');
 
-@Controller('api/account')
-export class AccountController extends AbstractController {
-  constructor() {
-    super(EntityEnum.Users);
-  }
+export const accountRouter = express.Router();
 
-  @Put('login')
-  @Middleware([
+const secret = process.env.SECRET || '';
+
+const entity = EntityEnum.Users;
+
+accountRouter.put(
+  'login',
+  [
     check('email').isEmail(),
     check('password', 'Password is a required field').not().isEmpty(),
-  ])
-  private login(req: Request<LoginDto>, res: Response) {
+  ],
+  (req: Request<LoginDto>, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -37,9 +29,9 @@ export class AccountController extends AbstractController {
         errors: errors.array(),
       });
     } else {
-      const collection = this.getCollection();
+      const collection = getCollection(entity);
 
-      collection.findOne({ ...req.body }, (err, result) => {
+      collection.findOne({ ...req.body }, (err: Error, result: any) => {
         if (result) {
           const token = jwt.sign({ _id: result._id }, secret);
 
@@ -54,15 +46,15 @@ export class AccountController extends AbstractController {
       });
     }
   }
+);
 
-  @Post('register')
-  @Middleware([
-    check('name', 'Name is a required field').not().isEmpty(),
-    check('phone').isMobilePhone('ru-RU'),
-    check('email').isEmail(),
-    check('password', 'Password is a required field').not().isEmpty(),
-  ])
-  private register(req: Request<RegisterDto>, res: Response) {
+accountRouter.post(
+  'register',
+  check('name', 'Name is a required field').not().isEmpty(),
+  check('phone').isMobilePhone('ru-RU'),
+  check('email').isEmail(),
+  check('password', 'Password is a required field').not().isEmpty(),
+  (req: Request<RegisterDto>, res: Response) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -71,7 +63,7 @@ export class AccountController extends AbstractController {
         errors: errors.array(),
       });
     } else {
-      const collection = this.getCollection();
+      const collection = getCollection(entity);
 
       collection.findOne({ email: req.body.email }, (err, result) => {
         if (result) {
@@ -93,13 +85,15 @@ export class AccountController extends AbstractController {
       });
     }
   }
+);
 
-  @Put('update/:_id')
-  @Middleware([
+accountRouter.put(
+  'update/:_id',
+  [
     check('phone').optional().isMobilePhone('ru-RU'),
     check('email').optional().isEmail(),
-  ])
-  private async update(req: Request<RegisterDto>, res: Response) {
+  ],
+  async (req: Request<RegisterDto>, res: Response) => {
     const errors = validationResult(req);
     const _id = new ObjectID((req.params as any)._id);
 
@@ -109,7 +103,7 @@ export class AccountController extends AbstractController {
         errors: errors.array(),
       });
     } else {
-      const collection = this.getCollection();
+      const collection = getCollection(entity);
 
       if (req.body.sex) {
         req.body.sex = Number(req.body.sex);
@@ -142,22 +136,20 @@ export class AccountController extends AbstractController {
       );
     }
   }
+);
 
-  @Delete('delete/:_id')
-  private delete(req: Request<LoginDto>, res: Response) {
-    const _id = new ObjectID((req.params as any)._id);
+accountRouter.delete('delete/:_id', (req: Request<LoginDto>, res: Response) => {
+  const _id = new ObjectID((req.params as any)._id);
 
-    const collection = this.getCollection();
+  const collection = getCollection(entity);
 
-    collection.findOneAndDelete({ _id }, (err, result) => {
-      if (result) {
-        return res.status(200).send();
-      }
-    });
-  }
+  collection.findOneAndDelete({ _id }, (err, result) => {
+    if (result) {
+      return res.status(200).send();
+    }
+  });
+});
 
-  @Get('/')
-  private getInfo(req: any, res: Response) {
-    return res.status(200).send({ result: { user: req.user } });
-  }
-}
+accountRouter.get('/', (req: any, res: Response) => {
+  return res.status(200).send({ result: { user: req.user } });
+});

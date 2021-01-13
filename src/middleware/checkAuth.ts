@@ -1,12 +1,13 @@
+import { noCheckPaths } from '@shared/constants';
 import { Request, Response } from 'express';
+import * as jwt from 'jsonwebtoken';
 import { ObjectID } from 'mongodb';
-import { noCheckPaths } from '../constants/noCheckPaths';
-import { secret } from '../constants/secret';
 import { EntityEnum } from '../enums/EntityEnum';
 import { getCollection } from '../utils/getCollection';
-const jwt = require('jsonwebtoken');
 
-export const checkAuth = (req: Request, res: Response, next: Function) => {
+const secret = process.env.SECRET || '';
+
+export const checkAuth = (req: Request, res: Response, next: any) => {
   const token = (req as any).token;
 
   if (noCheckPaths.includes(req.path)) {
@@ -14,18 +15,21 @@ export const checkAuth = (req: Request, res: Response, next: Function) => {
   }
 
   if (token) {
-    const { _id } = jwt.verify(token, secret);
+    const { _id } = jwt.verify(token, secret) as { _id: string };
 
     const users = getCollection(EntityEnum.Users);
 
-    return users.findOne({ _id: new ObjectID(_id) }, (err, result) => {
-      if (result) {
-        delete result.password;
+    return users.findOne(
+      { _id: new ObjectID(_id) },
+      (err: Error, result: any) => {
+        if (result) {
+          delete result.password;
 
-        (req as any).user = result;
-        next();
+          (req as any).user = result;
+          next();
+        }
       }
-    });
+    );
   }
 
   return res.status(401).send({ errorMessage: 'Invalid credentials' });
