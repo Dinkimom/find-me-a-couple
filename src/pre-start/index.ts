@@ -17,11 +17,15 @@ import commandLineArgs, { CommandLineOptions } from 'command-line-args';
       type: String,
     },
   ]);
+
   // Set the env file
-  const result2 = dotenv.config({
-    path: path.join(__dirname, `env/${options.env as string}.env`),
-  });
-  if (result2.error) {
-    throw result2.error;
+  if (options.env !== 'production') {
+    const result2 = dotenv.config({
+      path: path.join(__dirname, `env/${options.env as string}.env`),
+    });
+
+    if (result2.error) {
+      throw result2.error;
+    }
   }
 })();
