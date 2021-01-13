@@ -1,8 +1,8 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import { ObjectID } from 'mongodb';
-import { EntityEnum } from 'src/enums/EntityEnum';
-import { getCollection } from 'src/utils/getCollection';
+import { EntityEnum } from '@enums/EntityEnum';
+import { getCollection } from '@utils/getCollection';
 
 export const usersRouter = express.Router();
 
@@ -11,8 +11,8 @@ const entity = EntityEnum.Users;
 usersRouter.get('/', async (req: any, res: Response) => {
   const collection = getCollection(entity);
 
-  let filter: any = {
-    email: { $ne: (req as any).user.email },
+  const filter: any = {
+    email: { $ne: req.user.email },
   };
 
   const filterKeys = Object.keys(req.query);
@@ -27,11 +27,11 @@ usersRouter.get('/', async (req: any, res: Response) => {
     });
   }
 
-  let users = await collection.find(filter).toArray();
+  const users = await collection.find(filter).toArray();
 
   const dates = await getCollection(EntityEnum.Dates).find().toArray();
 
-  users.forEach(async (user) => {
+  users.forEach((user) => {
     delete user.password;
 
     user.isInvited = Boolean(

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Response } from 'express';
-import { EntityEnum } from 'src/enums/EntityEnum';
-import { getCollection } from 'src/utils/getCollection';
+import { EntityEnum } from '@enums/EntityEnum';
+import { getCollection } from '@utils/getCollection';
 
 export const datesRouter = express.Router();
 

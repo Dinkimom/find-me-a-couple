@@ -1,5 +1,5 @@
-import { LoginDto } from '../dtos/LoginDto';
-import { RegisterDto } from '../dtos/RegisterDto';
+import { LoginDto } from '@dtos/LoginDto';
+import { RegisterDto } from '@dtos/RegisterDto';
 import { EntityEnum } from '@enums/EntityEnum';
 import { getCollection } from '@utils/getCollection';
 import * as express from 'express';

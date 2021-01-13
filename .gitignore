@@ -90,3 +90,4 @@ typings/
 .DS_Store
 mobile/.expo/web/cache/
 src/pre-start/env/
+dist/
