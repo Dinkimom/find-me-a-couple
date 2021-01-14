@@ -15,7 +15,7 @@ const secret = process.env.SECRET || '';
 const entity = EntityEnum.Users;
 
 accountRouter.put(
-  'login',
+  '/',
   [
     check('email').isEmail(),
     check('password', 'Password is a required field').not().isEmpty(),
@@ -49,7 +49,7 @@ accountRouter.put(
 );
 
 accountRouter.post(
-  'register',
+  '/',
   check('name', 'Name is a required field').not().isEmpty(),
   check('phone').isMobilePhone('ru-RU'),
   check('email').isEmail(),
@@ -88,7 +88,7 @@ accountRouter.post(
 );
 
 accountRouter.put(
-  'update/:_id',
+  '/:_id',
   [
     check('phone').optional().isMobilePhone('ru-RU'),
     check('email').optional().isEmail(),
@@ -138,7 +138,7 @@ accountRouter.put(
   }
 );
 
-accountRouter.delete('delete/:_id', (req: Request<LoginDto>, res: Response) => {
+accountRouter.delete('/:_id', (req: Request<LoginDto>, res: Response) => {
   const _id = new ObjectID((req.params as any)._id);
 
   const collection = getCollection(entity);

@@ -10,7 +10,11 @@ const secret = process.env.SECRET || '';
 export const checkAuth = (req: Request, res: Response, next: any) => {
   const token = (req as any).token;
 
-  if (noCheckPaths.includes(req.path)) {
+  if (
+    noCheckPaths.filter(
+      (path) => path.url === req.url && path.method === req.method
+    ).length
+  ) {
     return next();
   }
 

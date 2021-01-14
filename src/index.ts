@@ -7,11 +7,11 @@ const ws = require('ws');
 const port = Number(process.env.PORT || 5000);
 
 // Setup WebSockets
-const wsServer = new ws.Server({ noServer: true });
+// const wsServer = new ws.Server({ noServer: true });
 
-wsServer.on('connection', (socket: any) => {
-  socket.on('message', (message: any) => console.log(message));
-});
+// wsServer.on('connection', (socket: any) => {
+//   socket.on('message', (message: any) => console.log(message));
+// });
 
 // Export server instance
 export const server = app.listen(port, () => {
