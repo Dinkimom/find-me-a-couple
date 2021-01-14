@@ -76,9 +76,11 @@ chatsRouter.get('/:receiver', async (req: UserRequest, res: Response) => {
 
   if (user) {
     res.status(200).send({
-      companion: { name: user.name, image: user.image },
-      lastMessage: chat.messages[chat.messages.length - 1],
-      messages: chat.messages,
+      result: {
+        companion: { name: user.name, image: user.image },
+        lastMessage: chat.messages[chat.messages.length - 1],
+        messages: chat.messages,
+      },
     });
   } else {
     res.status(404).send();
