@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { notification } from 'antd';
 import { chatsControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { ChatDto } from '../../dtos/ChatDto';
+import { MessageDto } from '../../dtos/MessageDto';
 
 interface ChatsState {
   list: ChatDto[];
@@ -103,6 +105,21 @@ export const fetchChat = (id: string): AppThunk => async (dispatch) => {
     dispatch(fetchChatSuccess(response.data.result));
   } catch (error) {
     dispatch(fetchChatFailure(error));
+  }
+};
+
+export const sendMessage = (
+  receiver: string,
+  data: MessageDto
+): AppThunk => async (dispatch) => {
+  try {
+    dispatch(fetchChatStart());
+
+    const response = await chatsControl.sendMessage(receiver, data);
+
+    dispatch(fetchChatSuccess(response.data.result));
+  } catch {
+    notification.error({ message: 'Could not send message, try again...' });
   }
 };
 

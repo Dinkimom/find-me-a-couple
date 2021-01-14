@@ -32,7 +32,7 @@ export const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
           return (
             <Redirect
               to={{
-                pathname: 'account/form',
+                pathname: '/account/form',
                 state: { from: location },
               }}
             />

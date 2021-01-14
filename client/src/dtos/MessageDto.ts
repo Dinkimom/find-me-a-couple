@@ -1,4 +1,5 @@
 export interface MessageDto {
+  user_id?: string;
   text: string;
-  date: string;
+  date: Date;
 }

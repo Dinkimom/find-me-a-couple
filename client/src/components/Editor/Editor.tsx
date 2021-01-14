@@ -1,33 +1,32 @@
 import { Button, Form, Input } from 'antd';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
+import { MessageDto } from '../../dtos/MessageDto';
+import styles from './Editor.module.css';
+
 const { TextArea } = Input;
 
 interface Props {
-  onChange: (e: ChangeEvent) => void;
-  onSubmit: () => void;
+  onSubmit: (data: MessageDto) => void;
   submitting: boolean;
-  value: string;
 }
 
-export const Editor: React.FC<Props> = ({
-  onChange,
-  onSubmit,
-  submitting,
-  value,
-}) => (
-  <>
-    <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} />
-    </Form.Item>
-    <Form.Item>
-      <Button
-        htmlType="submit"
-        loading={submitting}
-        onClick={onSubmit}
-        type="primary"
-      >
-        Add Comment
-      </Button>
-    </Form.Item>
-  </>
-);
+export const Editor: React.FC<Props> = ({ onSubmit, submitting }) => {
+  const handleSubmit = (data: { text: string }) => {
+    if (data.text) {
+      onSubmit({ date: new Date(), text: data.text });
+    }
+  };
+
+  return (
+    <Form className={styles.root} onFinish={handleSubmit}>
+      <Form.Item className={styles.control} name="text">
+        <TextArea rows={2} maxLength={1000} />
+      </Form.Item>
+      <Form.Item className={styles.control}>
+        <Button htmlType="submit" loading={submitting} type="primary" block>
+          Send
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
