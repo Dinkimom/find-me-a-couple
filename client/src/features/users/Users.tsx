@@ -1,6 +1,7 @@
 import { Button, Card, Form, InputNumber, List, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import { UserCard } from '../../components/UserCard/UserCard';
 import { UserDto } from '../../dtos/UserDto';
@@ -20,6 +21,8 @@ export const Users: React.FC = () => {
 
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   useEffect(() => {
     dispatch(fetch(filter));
   }, [dispatch, filter]);
@@ -30,6 +33,10 @@ export const Users: React.FC = () => {
 
   const handleInvite = (receiver: UserDto) => {
     dispatch(toggleCreateForm(receiver));
+  };
+
+  const handleOpenChat = ({ _id }: UserDto) => {
+    history.push(`/chats/${_id}`);
   };
 
   const handleReset = () => {
@@ -89,15 +96,17 @@ export const Users: React.FC = () => {
             <Card>
               <UserCard user={item} />
 
-              <Button
-                type="primary"
-                block
-                onClick={() => handleInvite(item)}
-                disabled={item.isInvited}
-                className={styles.inviteButton}
-              >
-                {item.isInvited ? 'Invited' : 'Invite'}
-              </Button>
+              <div className={styles.cardControls}>
+                <Button
+                  type="primary"
+                  block
+                  onClick={() => handleInvite(item)}
+                  disabled={item.isInvited}
+                >
+                  {item.isInvited ? 'Invited' : 'Invite'}
+                </Button>
+                <Button onClick={() => handleOpenChat(item)}>Message</Button>
+              </div>
             </Card>
           </List.Item>
         )}

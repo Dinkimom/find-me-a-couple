@@ -1,1 +1,1 @@
-export const serverEntryPoint = 'https://find-me-a-couple.herokuapp.com/api';
+export const serverEntryPoint = 'http://localhost:3000/api';

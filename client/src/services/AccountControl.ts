@@ -9,19 +9,19 @@ export class AccountControl extends AbstractControl {
   }
 
   public login = (data: LoginDto) => {
-    return this.axios.put('/login', data);
+    return this.axios.put('/', data);
   };
 
   public register = (data: RegisterDto) => {
-    return this.axios.post('/register', data);
+    return this.axios.post('/', data);
   };
 
   public update = (id: string, data: RegisterDto) => {
-    return this.axios.put(`/update/${id}`, data);
+    return this.axios.put(`/${id}`, data);
   };
 
   public remove = (id: string) => {
-    return this.axios.delete(`/delete/${id}`);
+    return this.axios.delete(`/${id}`);
   };
 
   public check = () => {

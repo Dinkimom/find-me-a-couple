@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { accountReducer } from '../features/account/accountSlice';
+import { chatsReducer } from '../features/chats/chatsSlice';
 import { datesReducer } from '../features/dates/datesSlice';
 import { usersReducer } from '../features/users/usersSlice';
 
@@ -8,6 +9,7 @@ export const store = configureStore({
     account: accountReducer,
     users: usersReducer,
     dates: datesReducer,
+    chats: chatsReducer,
   },
 });
 
