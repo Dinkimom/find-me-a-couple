@@ -11,8 +11,6 @@ export const chatsRouter = express.Router();
 const entity = EntityEnum.Chats;
 
 chatsRouter.get('/', async (req: UserRequest, res: Response) => {
-  const user_id = req.user._id;
-
   const collection = getCollection(entity);
 
   const chats = await collection
@@ -23,7 +21,7 @@ chatsRouter.get('/', async (req: UserRequest, res: Response) => {
 
   chats.forEach(async (chat) => {
     const companionId = chat.participants.filter(
-      (userId: string) => user_id !== req.user._id
+      (userId: string) => userId !== req.user._id
     )[0];
 
     const usersCollection = getCollection(EntityEnum.Users);
