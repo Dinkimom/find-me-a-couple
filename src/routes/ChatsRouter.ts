@@ -1,7 +1,6 @@
-import { MessageDto } from '@dtos/MessageDto';
-import { UserRequest } from '@types/UserRequest';
+import { ChatsDto } from '@dtos/ChatsDto';
 import * as express from 'express';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { EntityEnum } from 'src/enums/EntityEnum';
 import { getCollection } from 'src/utils/getCollection';
@@ -10,18 +9,18 @@ export const chatsRouter = express.Router();
 
 const entity = EntityEnum.Chats;
 
-chatsRouter.get('/', async (req: UserRequest, res: Response) => {
+chatsRouter.get('/', async (req: Request, res: Response) => {
   const collection = getCollection(entity);
 
   const chats = await collection
-    .find({ participants: { $all: [user_id] } })
+    .find({ participants: { $all: [(req as any).user._id] } })
     .toArray();
 
-  const completeChats = [];
+  const completeChats: ChatsDto = [];
 
   chats.forEach(async (chat) => {
     const companionId = chat.participants.filter(
-      (userId: string) => userId !== req.user._id
+      (userId: string) => userId !== (req as any).user._id
     )[0];
 
     const usersCollection = getCollection(EntityEnum.Users);
@@ -42,10 +41,10 @@ chatsRouter.get('/', async (req: UserRequest, res: Response) => {
   res.status(200).send({ result: completeChats });
 });
 
-chatsRouter.get('/:receiver', async (req: UserRequest, res: Response) => {
+chatsRouter.get('/:receiver', async (req: Request, res: Response) => {
   const { receiver } = req.params;
 
-  if (receiver === req.user._id) {
+  if (receiver === (req as any).user._id) {
     return res.status(404).send();
   }
 
@@ -53,13 +52,13 @@ chatsRouter.get('/:receiver', async (req: UserRequest, res: Response) => {
 
   const chat = (
     await collection
-      .find({ participants: { $all: [receiver, req.user._id] } })
+      .find({ participants: { $all: [receiver, (req as any).user._id] } })
       .toArray()
   )[0];
 
   if (chat) {
     return collection.insertOne({
-      participants: [receiver, req.user._id],
+      participants: [receiver, (req as any).user._id],
       messages: [],
     });
   }
@@ -85,32 +84,29 @@ chatsRouter.get('/:receiver', async (req: UserRequest, res: Response) => {
   }
 });
 
-chatsRouter.post(
-  '/:receiver',
-  async (req: UserRequest<MessageDto>, res: Response) => {
-    const { receiver } = req.params;
+chatsRouter.post('/:receiver', async (req: Request, res: Response) => {
+  const { receiver } = req.params;
 
-    const collection = getCollection(entity);
+  const collection = getCollection(entity);
 
-    const chat = (
-      await collection
-        .find({ participants: { $all: [receiver, req.user._id] } })
-        .toArray()
-    )[0];
+  const chat = (
+    await collection
+      .find({ participants: { $all: [receiver, (req as any).user._id] } })
+      .toArray()
+  )[0];
 
-    if (chat) {
-      const { messages } = chat;
+  if (chat) {
+    const { messages } = chat;
 
-      messages.push({ user_id: req.user._id, ...req.body });
+    messages.push({ user_id: (req as any).user._id, ...req.body });
 
-      collection.updateOne(
-        { participants: { $all: [receiver, req.user._id] } },
-        { $set: { messages } }
-      );
+    collection.updateOne(
+      { participants: { $all: [receiver, (req as any).user._id] } },
+      { $set: { messages } }
+    );
 
-      res.status(200).send();
-    }
-
-    res.status(404).send();
+    res.status(200).send();
   }
-);
+
+  res.status(404).send();
+});

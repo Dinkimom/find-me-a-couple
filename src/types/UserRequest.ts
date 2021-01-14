@@ -1,6 +1,6 @@
 import { UserDto } from '@dtos/UserDto';
 import { Request } from 'express';
 
-export type UserRequest = Request & {
+export interface UserRequest extends Request {
   user: UserDto;
-};
+}

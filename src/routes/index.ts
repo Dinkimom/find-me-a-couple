@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { accountRouter } from './AccountRouter';
+import { chatsRouter } from './ChatsRouter';
 import { datesRouter } from './DatesRouter';
 import { usersRouter } from './UsersRouter';
 
@@ -10,6 +11,7 @@ const router = Router();
 router.use('/users', usersRouter);
 router.use('/account', accountRouter);
 router.use('/dates', datesRouter);
+router.use('/chats', chatsRouter);
 
 // Export the base-router
 export default router;
