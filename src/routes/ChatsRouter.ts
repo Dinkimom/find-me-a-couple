@@ -47,6 +47,10 @@ chatsRouter.get('/', async (req: UserRequest, res: Response) => {
 chatsRouter.get('/:receiver', async (req: UserRequest, res: Response) => {
   const { receiver } = req.params;
 
+  if (receiver === req.user._id) {
+    return res.status(404).send();
+  }
+
   let collection = getCollection(entity);
 
   const chat = (
