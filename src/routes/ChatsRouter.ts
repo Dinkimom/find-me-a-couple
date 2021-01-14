@@ -18,7 +18,7 @@ chatsRouter.get('/', async (req: Request, res: Response) => {
 
   const completeChats: ChatsDto = [];
 
-  chats.forEach(async (chat) => {
+  chats.forEach(async (chat, index) => {
     const companionId = chat.participants.filter(
       (userId: string) => userId !== (req as any).user._id
     )[0];
@@ -31,14 +31,19 @@ chatsRouter.get('/', async (req: Request, res: Response) => {
 
     if (companion) {
       completeChats.push({
-        companion,
+        companion: {
+          name: companion.name,
+          image: companion.image,
+        },
         lastMessage: chat.messages[chat.messages.length - 1],
         messages: chat.messages,
       });
     }
-  });
 
-  res.status(200).send({ result: completeChats });
+    if (index === chats.length - 1) {
+      res.status(200).send({ result: completeChats });
+    }
+  });
 });
 
 chatsRouter.get('/:receiver', async (req: Request, res: Response) => {
@@ -48,22 +53,22 @@ chatsRouter.get('/:receiver', async (req: Request, res: Response) => {
     return res.status(404).send();
   }
 
-  let collection = getCollection(entity);
+  const collection = getCollection(entity);
 
-  const chat = (
-    await collection
-      .find({ participants: { $all: [receiver, (req as any).user._id] } })
-      .toArray()
-  )[0];
+  let chat = await collection.findOne({
+    participants: { $all: [receiver, (req as any).user._id] },
+  });
 
-  if (chat) {
-    return collection.insertOne({
+  if (!chat) {
+    await collection.insertOne({
       participants: [receiver, (req as any).user._id],
       messages: [],
     });
-  }
 
-  collection = getCollection(entity);
+    chat = await collection.findOne({
+      participants: { $all: [receiver, (req as any).user._id] },
+    });
+  }
 
   const usersCollection = getCollection(EntityEnum.Users);
 
