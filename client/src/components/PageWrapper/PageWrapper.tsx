@@ -118,10 +118,6 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
         </Menu>
 
         <div className={styles.main}>{children}</div>
-
-        <Footer className={styles.footer}>
-          <Container>Web Maker ©2020 Created by Nikita Dmitriev</Container>
-        </Footer>
       </Container>
     </Layout>
   );

@@ -1,30 +1,27 @@
 import { Avatar, List, Typography } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 import styles from './Chats.module.css';
+import { fetchChats } from './chatsSlice';
 
 const { Title } = Typography;
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
-
 export const Chats: React.FC = () => {
+  const { list, isFetching } = useSelector((state: RootState) => state.chats);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchChats());
+  }, [dispatch]);
+
   return (
     <List
       className={styles.chat}
       itemLayout="horizontal"
-      dataSource={data}
+      dataSource={list}
+      loading={isFetching}
       renderItem={(item) => (
         <List.Item className={styles.listItem}>
           <Avatar

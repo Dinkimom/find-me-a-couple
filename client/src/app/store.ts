@@ -1,6 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { accountReducer } from '../features/account/accountSlice';
-import { chatsReducer } from '../features/chats/chatsSlice';
+import { chatsReducer } from '../features/chat/chatsSlice';
 import { datesReducer } from '../features/dates/datesSlice';
 import { usersReducer } from '../features/users/usersSlice';
 
