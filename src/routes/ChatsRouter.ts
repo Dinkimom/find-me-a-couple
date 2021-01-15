@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 import { EntityEnum } from 'src/enums/EntityEnum';
 import { getCollection } from 'src/utils/getCollection';
 
-export const chatsRouter = express.Router();
+export const chatsRouter: any = express.Router();
 
 const entity = EntityEnum.Chats;
 

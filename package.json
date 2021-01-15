@@ -85,6 +85,7 @@
     "mongodb": "^3.6.3",
     "morgan": "^1.10.0",
     "semver": "^7.3.4",
+    "websocket": "^1.0.33",
     "ws": "^7.4.2"
   },
   "devDependencies": {

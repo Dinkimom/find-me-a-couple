@@ -47,7 +47,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// WebSockets
-
 // Export express instance
 export default app;
