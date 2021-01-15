@@ -1,6 +1,7 @@
 import { LoginDto } from '@dtos/LoginDto';
 import { RegisterDto } from '@dtos/RegisterDto';
 import { EntityEnum } from '@enums/EntityEnum';
+import { secret } from '@middleware/checkAuth';
 import { getCollection } from '@utils/getCollection';
 import * as express from 'express';
 import { Request, Response } from 'express';
@@ -9,8 +10,6 @@ import * as jwt from 'jsonwebtoken';
 import { ObjectID } from 'mongodb';
 
 export const accountRouter = express.Router();
-
-const secret = process.env.SECRET || '';
 
 const entity = EntityEnum.Users;
 

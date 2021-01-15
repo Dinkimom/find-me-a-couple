@@ -3,5 +3,5 @@ export const paramMissingError =
 
 export const noCheckPaths = [
   { url: '/api/account/', method: 'PUT' },
-  { url: '/api/account/register', method: 'POST' },
+  { url: '/api/account/', method: 'POST' },
 ];
