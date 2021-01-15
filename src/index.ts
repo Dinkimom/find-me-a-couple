@@ -26,7 +26,7 @@ function originIsAllowed(origin: string) {
   return true;
 }
 
-const clients: any = {};
+const clients: { [key: string]: any[] } = {};
 
 wsServer.on('request', function (request: any) {
   if (!originIsAllowed(request.origin)) {
@@ -42,22 +42,32 @@ wsServer.on('request', function (request: any) {
     if (message.type === 'utf8') {
       const data: {
         user_id: string;
-        type: 'GET' | 'POST';
+        type: 'GET' | 'POST' | 'INIT';
         payload: {
           receiver: string;
           message: MessageDto;
         };
       } = JSON.parse(message.utf8Data);
 
-      const { receiver } = data.payload;
       const { user_id } = data;
 
-      clients[data.user_id] = connection;
-
       switch (data.type) {
+        case 'INIT':
+          {
+            if (!clients[user_id]) {
+              clients[user_id] = [];
+            }
+
+            clients[user_id].push(connection);
+            console.log(clients[user_id]);
+          }
+          break;
+
         case 'GET':
           {
-            if (receiver === data.user_id) {
+            const { receiver } = data.payload;
+
+            if (receiver === user_id) {
               return connection.sendUTF;
             }
 
@@ -88,30 +98,38 @@ wsServer.on('request', function (request: any) {
               });
 
               if (companion) {
-                connection.sendUTF(
-                  JSON.stringify({
-                    status: 200,
-                    result: {
-                      companion: {
-                        name: companion.name,
-                        image: companion.image,
+                clients[user_id].forEach((item) =>
+                  item.sendUTF(
+                    JSON.stringify({
+                      status: 200,
+                      result: {
+                        companion: {
+                          name: companion.name,
+                          image: companion.image,
+                        },
+                        lastMessage: chat.messages[chat.messages.length - 1],
+                        messages: chat.messages,
                       },
-                      lastMessage: chat.messages[chat.messages.length - 1],
-                      messages: chat.messages,
-                    },
-                  })
+                    })
+                  )
                 );
               } else {
-                connection.sendUTF(JSON.stringify({ status: 404 }));
+                clients[user_id].forEach((item) =>
+                  item.sendUTF(JSON.stringify({ status: 404 }))
+                );
               }
             } catch {
-              connection.sendUTF(JSON.stringify({ status: 404 }));
+              clients[user_id].forEach((item) =>
+                item.sendUTF(JSON.stringify({ status: 404 }))
+              );
             }
           }
 
           break;
         case 'POST':
           {
+            const { receiver } = data.payload;
+
             const user = String(user_id);
 
             const collection = getCollection(EntityEnum.Chats);
@@ -132,13 +150,25 @@ wsServer.on('request', function (request: any) {
                 { $set: { messages } }
               );
 
-              connection.sendUTF(JSON.stringify({ status: 201 }));
+              if (!clients[user_id]) {
+                clients[user_id] = [];
+
+                clients[user_id].push(connection);
+              }
+
+              clients[user_id].forEach((item) =>
+                item.sendUTF(JSON.stringify({ status: 201 }))
+              );
 
               if (clients[receiver]) {
-                clients[receiver].sendUTF(JSON.stringify({ status: 201 }));
+                clients[receiver].forEach((item) =>
+                  item.sendUTF(JSON.stringify({ status: 201 }))
+                );
               }
             } else {
-              connection.sendUTF(JSON.stringify({ status: 404 }));
+              clients[user_id].forEach((item) =>
+                item.sendUTF(JSON.stringify({ status: 404 }))
+              );
             }
           }
           break;
