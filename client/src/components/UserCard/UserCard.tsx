@@ -1,23 +1,16 @@
+import { Image } from 'antd';
 import React from 'react';
 import { UserDto } from '../../dtos/UserDto';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
-
-import maleImage from '../../assets/images/male.png';
-import femaleImage from '../../assets/images/female.png';
-
+import { useUserAvatar } from '../../hooks/useUserAvatar';
 import styles from './UserCard.module.css';
-import { Image } from 'antd';
 
 interface Props {
   user: UserDto;
 }
 
 export const UserCard: React.FC<Props> = ({ user }) => {
-  let imageSrc = user.sex === SexTypeEnum.Male ? maleImage : femaleImage;
-
-  if (user.image) {
-    imageSrc = user.image;
-  }
+  let imageSrc = useUserAvatar(user);
 
   return (
     <div className={styles.userCard}>

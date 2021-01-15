@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import './App.css';
 import { NotFound } from './components/NotFound/NotFound';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
+import { webSocketsEntryPoint } from './constants/webSocketsEntryPoint';
 import { AccountForm } from './features/account/AccountForm';
 import { Chat } from './features/chat/Chat';
 import { Chats } from './features/chat/Chats';
@@ -15,8 +17,7 @@ import { DatesControl } from './services/DatesControl';
 import { ImageControl } from './services/ImageControl';
 import { UsersControl } from './services/UsersControl';
 
-const socket = new WebSocket('ws://localhost:3000/echo');
-
+export const socket = new W3CWebSocket(webSocketsEntryPoint, 'echo-protocol');
 export const accountControl = new AccountControl();
 export const usersControl = new UsersControl();
 export const datesControl = new DatesControl();
@@ -24,27 +25,6 @@ export const imageControl = new ImageControl();
 export const chatsControl = new ChatsControl();
 
 const App: React.FC = () => {
-  useEffect(() => {
-    // socket.onopen = function () {
-    //   alert('Соединение установлено.');
-    //   socket.send('Hello!');
-    // };
-    // socket.onclose = function (event) {
-    //   if (event.wasClean) {
-    //     alert('Соединение закрыто чисто');
-    //   } else {
-    //     alert('Обрыв соединения'); // например, "убит" процесс сервера
-    //   }
-    //   alert('Код: ' + event.code + ' причина: ' + event.reason);
-    // };
-    // socket.onmessage = function (event) {
-    //   alert('Получены данные ' + event.data);
-    // };
-    // socket.onerror = function (error: any) {
-    //   alert('Ошибка ' + error.message);
-    // };
-  }, []);
-
   return (
     <div className="App">
       <Router>

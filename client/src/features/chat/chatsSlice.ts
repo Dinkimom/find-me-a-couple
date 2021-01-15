@@ -84,9 +84,11 @@ export const {
   fetchChatFailure,
 } = chatsSlice.actions;
 
-export const fetchChats = (): AppThunk => async (dispatch) => {
+export const fetchChats = (silent: boolean = false): AppThunk => async (
+  dispatch
+) => {
   try {
-    dispatch(fetchChatsStart());
+    !silent && dispatch(fetchChatsStart());
 
     const response = await chatsControl.getChats();
 
@@ -96,9 +98,12 @@ export const fetchChats = (): AppThunk => async (dispatch) => {
   }
 };
 
-export const fetchChat = (id: string): AppThunk => async (dispatch) => {
+export const fetchChat = (
+  id: string,
+  silent: boolean = false
+): AppThunk => async (dispatch) => {
   try {
-    dispatch(fetchChatStart());
+    !silent && dispatch(fetchChatStart());
 
     const response = await chatsControl.getChat(id);
 

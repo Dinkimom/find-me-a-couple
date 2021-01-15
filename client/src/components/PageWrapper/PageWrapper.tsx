@@ -1,12 +1,11 @@
 import {
   CalendarOutlined,
+  CaretDownOutlined,
   LogoutOutlined,
   SearchOutlined,
   WechatOutlined,
-  CaretDownOutlined,
 } from '@ant-design/icons';
 import { Avatar, Button, Layout, Menu, Popover } from 'antd';
-import { Footer } from 'antd/lib/layout/layout';
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';

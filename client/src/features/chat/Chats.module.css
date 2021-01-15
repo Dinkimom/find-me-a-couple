@@ -2,30 +2,3 @@
   background: white;
   padding: 8px 16px;
 }
-
-.listItem {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.listItem:hover {
-  background: rgb(248, 248, 248);
-  cursor: pointer;
-}
-
-.listItemAvatar {
-  width: 64px;
-  height: 64px;
-  margin-left: 8px;
-}
-
-.listItemContent {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 16px;
-}
-
-.listItemDate {
-  font-size: 0.7rem;
-}
