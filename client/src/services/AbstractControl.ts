@@ -42,9 +42,9 @@ export class AbstractControl {
         window.location.href = '/not-found';
         break;
 
-      // case 401:
-      //   window.location.href = '/account/form';
-      //   break;
+      case 401:
+        window.location.href = '/account/form';
+        break;
 
       case 403:
         throw res.data;
