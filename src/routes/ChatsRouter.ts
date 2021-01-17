@@ -3,7 +3,7 @@ import * as express from 'express';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { EntityEnum } from '@enums/EntityEnum';
-import { getCollection } from 'src/utils/getCollection';
+import { getCollection } from '@utils/getCollection';
 
 export const chatsRouter: any = express.Router();
 
