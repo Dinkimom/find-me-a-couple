@@ -1,1 +1,2 @@
-export const webSocketsEntryPoint = 'ws://192.168.0.62:3000';
+export const webSocketsEntryPoint =
+  'ws://find-me-a-couple-server.herokuapp.com/api';
