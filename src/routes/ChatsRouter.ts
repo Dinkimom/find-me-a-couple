@@ -2,7 +2,7 @@ import { ChatsDto } from '@dtos/ChatsDto';
 import * as express from 'express';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
-import { EntityEnum } from 'src/enums/EntityEnum';
+import { EntityEnum } from '@enums/EntityEnum';
 import { getCollection } from 'src/utils/getCollection';
 
 export const chatsRouter: any = express.Router();
