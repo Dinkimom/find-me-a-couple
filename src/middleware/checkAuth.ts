@@ -18,27 +18,23 @@ export const checkAuth = (req: Request, res: Response, next: any) => {
     return next();
   }
 
-  if (token) {
-    try {
-      const { _id } = jwt.verify(token, secret) as { _id: string };
+  try {
+    const { _id } = jwt.verify(token, secret) as { _id: string };
 
-      const users = getCollection(EntityEnum.Users);
+    const users = getCollection(EntityEnum.Users);
 
-      return users.findOne(
-        { _id: new ObjectID(_id) },
-        (err: Error, result: any) => {
-          if (result) {
-            delete result.password;
+    return users.findOne(
+      { _id: new ObjectID(_id) },
+      (err: Error, result: any) => {
+        if (result) {
+          delete result.password;
 
-            (req as any).user = result;
-            next();
-          }
+          (req as any).user = result;
+          next();
         }
-      );
-    } catch {
-      return res.status(401).send({ errorMessage: 'Invalid credentials' });
-    }
+      }
+    );
+  } catch {
+    return res.status(401).send({ errorMessage: 'Invalid credentials' });
   }
-
-  return res.status(401).send({ errorMessage: 'Invalid credentials' });
 };
