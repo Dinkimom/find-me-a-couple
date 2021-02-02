@@ -48,7 +48,9 @@ export const fetch = (filter?: Filter): AppThunk => async (dispatch) => {
     const response = await usersControl.getUsers(filter);
 
     dispatch(fetchSuccess(response.data.result));
-  } catch (error) {}
+  } catch (error) {
+    dispatch(fetchFailure(error));
+  }
 };
 
 export const usersReducer = usersSlice.reducer;

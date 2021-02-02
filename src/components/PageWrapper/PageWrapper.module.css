@@ -2,6 +2,12 @@
   height: 100vh;
 }
 
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .header {
   position: fixed;
   z-index: 1;
@@ -14,6 +20,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  composes: container;
 }
 
 .userButton {
@@ -29,6 +36,7 @@
   padding-left: 216px;
   position: relative;
   min-height: calc(100vh - 100px);
+  composes: container;
 }
 
 .main {

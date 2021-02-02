@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { RootState } from '../../app/store';
+import { Container } from '../../components/Container/Container';
 import { UserCard } from '../../components/UserCard/UserCard';
 import { UserDto } from '../../dtos/UserDto';
 import { Filter } from '../../types/Filter';
@@ -13,7 +14,9 @@ import { fetch } from './usersSlice';
 const { Option } = Select;
 
 export const Users: React.FC = () => {
-  const { list, isFetching } = useSelector((state: RootState) => state).users;
+  const { list, isFetching, error } = useSelector(
+    (state: RootState) => state
+  ).users;
 
   const [filter, setFilter] = useState<Filter>();
 
@@ -44,7 +47,7 @@ export const Users: React.FC = () => {
   };
 
   return (
-    <>
+    <Container error={error}>
       <Form
         layout="inline"
         className={styles.controls}
@@ -111,6 +114,6 @@ export const Users: React.FC = () => {
           </List.Item>
         )}
       />
-    </>
+    </Container>
   );
 };

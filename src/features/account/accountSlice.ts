@@ -187,6 +187,7 @@ export const login = (data: LoginDto): AppThunk => async (dispatch) => {
 
     dispatch(loginSuccess(response.data.result.user));
   } catch (error) {
+    console.log(error);
     dispatch(loginFailure(error));
   }
 };

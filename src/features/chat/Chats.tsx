@@ -1,16 +1,19 @@
-import { Avatar, List, Typography } from 'antd';
+import { List } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { socket } from '../../App';
 import { RootState } from '../../app/store';
+import { Container } from '../../components/Container/Container';
 import { ChatDto } from '../../dtos/ChatDto';
 import styles from './Chats.module.css';
-import { fetchChats } from './chatsSlice';
+import { fetchChats, fetchChatsFailure } from './chatsSlice';
 import { ChatsItem } from './components/ChatsItem';
 
 export const Chats: React.FC = () => {
-  const { list, isFetching } = useSelector((state: RootState) => state.chats);
+  const { list, isFetching, error } = useSelector(
+    (state: RootState) => state.chats
+  );
 
   const { user } = useSelector((state: RootState) => state.account);
 
@@ -42,21 +45,29 @@ export const Chats: React.FC = () => {
       }
     };
 
-    socket.send(
-      JSON.stringify({
-        type: 'INIT',
-        user_id: user?._id,
-      })
-    );
-  }, [socket, user, history]);
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          type: 'INIT',
+          user_id: user?._id,
+        })
+      );
+    };
+
+    socket.onerror = () => {
+      dispatch(fetchChatsFailure({ errorMessage: 'Could not fetch chats' }));
+    };
+  }, [user, history, dispatch]);
 
   return (
-    <List
-      className={styles.chat}
-      itemLayout="horizontal"
-      dataSource={list}
-      loading={isFetching}
-      renderItem={(item) => <ChatsItem {...item} onClick={handleChatClick} />}
-    />
+    <Container error={error}>
+      <List
+        className={styles.chat}
+        itemLayout="horizontal"
+        dataSource={list}
+        loading={isFetching}
+        renderItem={(item) => <ChatsItem {...item} onClick={handleChatClick} />}
+      />
+    </Container>
   );
 };

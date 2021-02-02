@@ -28,11 +28,9 @@ export class AbstractControl {
     if (error.response) {
       return this.handleErrorResponse(error.response);
     } else if (error.request) {
-      console.log(error.request);
-      throw new Error('No response from the server');
+      throw { errorMessage: 'No response from the server' };
     } else {
-      console.log('Error', error.message);
-      throw new Error(error.message);
+      throw { errorMessage: error.message };
     }
   };
 

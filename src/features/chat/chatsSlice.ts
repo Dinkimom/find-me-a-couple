@@ -3,16 +3,17 @@ import { notification } from 'antd';
 import { chatsControl } from '../../App';
 import { AppThunk } from '../../app/store';
 import { ChatDto } from '../../dtos/ChatDto';
+import { ErrorDto } from '../../dtos/ErrorDto';
 import { MessageDto } from '../../dtos/MessageDto';
 
 interface ChatsState {
   list: ChatDto[];
   isFetching: boolean;
-  error: null | string;
+  error: null | ErrorDto;
   chat: {
     chatData: null | ChatDto;
     isFetching: boolean;
-    error: null | string;
+    error: null | ErrorDto;
   };
 }
 
@@ -46,7 +47,7 @@ const chatsSlice = createSlice({
       state.isFetching = false;
       state.error = null;
     },
-    fetchChatsFailure: (state, action: PayloadAction<string>) => {
+    fetchChatsFailure: (state, action: PayloadAction<ErrorDto>) => {
       state.list = [];
       state.isFetching = false;
       state.error = action.payload;
@@ -65,7 +66,7 @@ const chatsSlice = createSlice({
         error: null,
       };
     },
-    fetchChatFailure: (state, action: PayloadAction<string>) => {
+    fetchChatFailure: (state, action: PayloadAction<ErrorDto>) => {
       state.chat = {
         chatData: null,
         isFetching: false,
