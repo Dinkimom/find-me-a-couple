@@ -30,19 +30,22 @@ accountRouter.put(
     } else {
       const collection = getCollection(entity);
 
-      collection.findOne({ ...req.body }, (err: Error, result: any) => {
-        if (result) {
-          const token = jwt.sign({ _id: result._id }, secret);
+      collection.findOne(
+        { ...req.body, email: new RegExp(req.body.email, 'i') },
+        (err: Error, result: any) => {
+          if (result) {
+            const token = jwt.sign({ _id: result._id }, secret);
 
-          delete result.password;
+            delete result.password;
 
-          return res.status(200).send({ result: { token, user: result } });
+            return res.status(200).send({ result: { token, user: result } });
+          }
+
+          return res
+            .status(422)
+            .send({ errorMessage: 'Invalid email or password' });
         }
-
-        return res
-          .status(422)
-          .send({ errorMessage: 'Invalid email or password' });
-      });
+      );
     }
   }
 );
@@ -64,24 +67,27 @@ accountRouter.post(
     } else {
       const collection = getCollection(entity);
 
-      collection.findOne({ email: req.body.email }, (err, result) => {
-        if (result) {
-          return res.status(422).send({
-            errors: [{ msg: 'Email must be unique', param: 'email' }],
-          });
-        }
-
-        collection.insertOne(
-          { ...req.body, sex: Number(req.body.sex) },
-          (err, result) => {
-            const token = jwt.sign({ _id: result.ops[0]._id }, secret);
-
-            return res
-              .status(200)
-              .send({ result: { token, user: result.ops[0] } });
+      collection.findOne(
+        { email: new RegExp(req.body.email, 'i') },
+        (err, result) => {
+          if (result) {
+            return res.status(422).send({
+              errors: [{ msg: 'Email must be unique', param: 'email' }],
+            });
           }
-        );
-      });
+
+          collection.insertOne(
+            { ...req.body, sex: Number(req.body.sex) },
+            (err, result) => {
+              const token = jwt.sign({ _id: result.ops[0]._id }, secret);
+
+              return res
+                .status(200)
+                .send({ result: { token, user: result.ops[0] } });
+            }
+          );
+        }
+      );
     }
   }
 );
@@ -110,7 +116,7 @@ accountRouter.put(
 
       const isValid =
         (await collection
-          .find({ _id: { $ne: _id }, email: req.body.email })
+          .find({ _id: { $ne: _id }, email: new RegExp(req.body.email, 'i') })
           .count()) > 0
           ? false
           : true;
