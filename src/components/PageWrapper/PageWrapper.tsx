@@ -15,7 +15,6 @@ import maleImage from '../../assets/images/male.png';
 import { SexTypeEnum } from '../../enums/SexTypeEnum';
 import { logout } from '../../features/account/accountSlice';
 import { UpdateForm } from '../../features/account/components/UpdateForm/UpdateForm';
-import { Container } from '../Container/Container';
 import styles from './PageWrapper.module.css';
 
 const { Header } = Layout;
@@ -78,16 +77,16 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
-        <Container className={styles.headerContainer}>
+        <div className={styles.headerContainer}>
           <Link to="/">FindMeCouple</Link>
 
           <Popover content={PopoverContent} trigger="focus">
             {UserButton}
           </Popover>
-        </Container>
+        </div>
       </Header>
 
-      <Container className={styles.content}>
+      <div className={styles.content}>
         <Menu
           mode="inline"
           className={styles.navigation}
@@ -117,7 +116,7 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
         </Menu>
 
         <div className={styles.main}>{children}</div>
-      </Container>
+      </div>
     </Layout>
   );
 };
