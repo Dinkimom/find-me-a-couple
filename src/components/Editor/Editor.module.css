@@ -1,0 +1,12 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  grid-column-gap: 16px;
+  padding: 16px;
+  border-top: 1px solid rgb(240, 240, 240);
+  height: auto;
+}
+
+.control {
+  margin: 0;
+}

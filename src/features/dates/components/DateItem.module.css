@@ -1,0 +1,38 @@
+.listItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.listItemTag {
+  margin-left: 16px;
+}
+
+.listItemAvatar {
+  margin-right: 24px;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}
+
+.listItemContent {
+  width: 100%;
+  display: flex;
+  padding: 8px;
+  align-items: center;
+}
+
+.listItemInfo {
+  text-align: left;
+  display: flex;
+}
+
+.listItemInfoBox {
+  display: flex;
+  flex-direction: column;
+  margin-right: 24px;
+}
+
+.listItemControls {
+  margin-left: auto;
+}
