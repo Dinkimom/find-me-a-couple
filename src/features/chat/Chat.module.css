@@ -1,0 +1,53 @@
+.root {
+  background: white;
+  height: calc(100vh - 104px);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding-top: 16px;
+}
+
+.companionBlock {
+  border-bottom: 1px solid rgb(240, 240, 240);
+}
+
+.companionBlock h3 {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.messages {
+  width: 100%;
+  overflow: scroll;
+}
+
+.messageRoot {
+  display: flex;
+  align-items: flex-start;
+}
+
+.message {
+  margin: 16px;
+  padding: 8px 16px;
+  background: rgb(208, 240, 255);
+  max-width: 50%;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.message * {
+  color: black;
+}
+
+.messageTime {
+  opacity: 0.8;
+}
+
+.messageOutput {
+  background: rgb(240, 240, 240);
+  margin-left: auto;
+}
+
+.messageText {
+  text-align: left;
+}
