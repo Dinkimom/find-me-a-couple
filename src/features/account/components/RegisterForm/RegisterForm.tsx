@@ -2,7 +2,7 @@ import { Divider, Form, Input, InputNumber, Select } from 'antd';
 import React from 'react';
 import { BaseForm, BaseFormProps } from '../../../../components/BaseForm';
 import { ImageLoader } from '../../../../components/ImageLoader/ImageLoader';
-import { phoneRegex } from '../../../../constants/phoneRegex';
+import { PHONE_REGEX } from '../../../../constants/phoneRegex';
 import styles from './RegisterForm.module.css';
 
 const { Option } = Select;
@@ -46,7 +46,7 @@ export const RegisterForm: React.FC<BaseFormProps> = (props) => {
         name="phone"
         rules={[
           { required: true, message: 'Please input your phone!' },
-          { pattern: phoneRegex, message: 'Please input valid phone' },
+          { pattern: PHONE_REGEX, message: 'Please input valid phone' },
         ]}
       >
         <Input />

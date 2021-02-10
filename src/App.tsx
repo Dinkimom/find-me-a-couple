@@ -4,7 +4,7 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import './App.css';
 import { NotFound } from './components/NotFound/NotFound';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
-import { webSocketsEntryPoint } from './constants/webSocketsEntryPoint';
+import { WEB_SOCKETS_ENTRY_POINT } from './constants/webSocketsEntryPoint';
 import { AccountForm } from './features/account/AccountForm';
 import { Chat } from './features/chat/Chat';
 import { Chats } from './features/chat/Chats';
@@ -17,7 +17,10 @@ import { DatesControl } from './services/DatesControl';
 import { ImageControl } from './services/ImageControl';
 import { UsersControl } from './services/UsersControl';
 
-export const socket = new W3CWebSocket(webSocketsEntryPoint, 'echo-protocol');
+export const socket = new W3CWebSocket(
+  WEB_SOCKETS_ENTRY_POINT,
+  'echo-protocol'
+);
 export const accountControl = new AccountControl();
 export const usersControl = new UsersControl();
 export const datesControl = new DatesControl();

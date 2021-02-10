@@ -1,6 +1,6 @@
 import { List, Avatar, Typography } from 'antd';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { ChatDto } from '../../../dtos/ChatDto';
 import { useUserAvatar } from '../../../hooks/useUserAvatar';

@@ -4,7 +4,7 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
 } from 'axios';
-import { serverEntryPoint } from '../constants/serverEntryPoint';
+import { SERVER_ENTRY_POINT } from '../constants/serverEntryPoint';
 import { ErrorDto } from '../dtos/ErrorDto';
 import { EntityEnum } from '../enums/EntityEnum';
 
@@ -13,7 +13,7 @@ export class AbstractControl {
 
   public constructor(entity: EntityEnum) {
     this.axios = axios.create({
-      baseURL: `${serverEntryPoint}/${entity}`,
+      baseURL: `${SERVER_ENTRY_POINT}/${entity}`,
       timeout: 20000,
     });
     this.axios.interceptors.request.use(this.useRequestToken);
