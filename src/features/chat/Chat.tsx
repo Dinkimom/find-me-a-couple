@@ -55,7 +55,7 @@ export const Chat: React.FC = () => {
   );
 
   useEffect(() => {
-    socket.onmessage = (message) => {
+    socket.onmessage = (message: any) => {
       const data: { status: 404 | 200 | 201; result: ChatDto } = JSON.parse(
         message.data as string
       );

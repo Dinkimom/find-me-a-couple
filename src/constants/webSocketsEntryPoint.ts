@@ -1,1 +1,2 @@
-export const WEB_SOCKETS_ENTRY_POINT = 'wss://localhost:5000/api';
+export const WEB_SOCKETS_ENTRY_POINT =
+  process.env.REACT_APP_WEB_SOCKETS_ENTRY_POINT || '';

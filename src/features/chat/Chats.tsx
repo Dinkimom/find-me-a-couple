@@ -2,6 +2,7 @@ import { List } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { IMessageEvent } from 'websocket';
 import { socket } from '../../App';
 import { RootState } from '../../app/store';
 import { Container } from '../../components/Container/Container';
@@ -30,7 +31,7 @@ export const Chats: React.FC = () => {
   };
 
   useEffect(() => {
-    socket.onmessage = (message) => {
+    socket.onmessage = (message: IMessageEvent) => {
       const data: { status: 404 | 200 | 201; result: ChatDto } = JSON.parse(
         message.data as string
       );

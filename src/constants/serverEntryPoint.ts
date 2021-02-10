@@ -1,1 +1,1 @@
-export const SERVER_ENTRY_POINT = 'http://localhost:5000/api';
+export const SERVER_ENTRY_POINT = process.env.REACT_APP_SERVER_ENTRY_POINT;
