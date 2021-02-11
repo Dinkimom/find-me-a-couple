@@ -1,8 +1,8 @@
 import Alert from 'antd/lib/alert';
 import { FormInstance } from 'antd/lib/form';
 import React, { useEffect, useMemo } from 'react';
-import { ErrorDto } from '../dtos/ErrorDto';
-import { LoginDto } from '../dtos/LoginDto';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { LoginDto } from 'dtos/LoginDto';
 
 export const useFormErrors = (error: ErrorDto | null, ref: any) => {
   useEffect(() => {

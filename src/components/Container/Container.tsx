@@ -1,6 +1,6 @@
 import { Button, Result } from 'antd';
+import { ErrorDto } from 'dtos/ErrorDto';
 import React, { memo, ReactNode } from 'react';
-import { ErrorDto } from '../../dtos/ErrorDto';
 
 interface Props {
   children: ReactNode;

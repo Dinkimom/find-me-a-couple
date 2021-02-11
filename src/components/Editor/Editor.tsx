@@ -1,9 +1,9 @@
+import { SendOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
+import { MessageDto } from 'dtos/MessageDto';
 import React from 'react';
-import { MessageDto } from '../../dtos/MessageDto';
 import styles from './Editor.module.css';
-import { SendOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 

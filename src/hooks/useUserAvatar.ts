@@ -1,8 +1,8 @@
-import { UserDto } from '../dtos/UserDto';
-import { SexTypeEnum } from '../enums/SexTypeEnum';
+import { UserDto } from 'dtos/UserDto';
+import { SexTypeEnum } from 'enums/SexTypeEnum';
 
-import maleImage from '../assets/images/male.png';
-import femaleImage from '../assets/images/female.png';
+import maleImage from 'assets/images/male.png';
+import femaleImage from 'assets/images/female.png';
 
 export const useUserAvatar = (user: UserDto | null | undefined) => {
   if (!user) {

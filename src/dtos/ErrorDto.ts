@@ -1,4 +1,4 @@
-import { Error } from '../types/Error';
+import { Error } from 'types/Error';
 
 export interface ErrorDto {
   errorMessage: string;

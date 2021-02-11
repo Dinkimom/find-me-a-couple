@@ -1,9 +1,9 @@
 import { List } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { Container } from '../../components/Container/Container';
-import { DateStatusEnum } from '../../enums/DateStatusEnum';
+import { RootState } from 'app/store';
+import { Container } from 'components/Container/Container';
+import { DateStatusEnum } from 'enums/DateStatusEnum';
 import { DateItem } from './components/DateItem';
 import styles from './Dates.module.css';
 import { fetch, update } from './datesSlice';

@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { notification } from 'antd';
-import { accountControl } from '../../App';
-import { AppThunk } from '../../app/store';
-import { ErrorDto } from '../../dtos/ErrorDto';
-import { LoginDto } from '../../dtos/LoginDto';
-import { RegisterDto } from '../../dtos/RegisterDto';
-import { UserDto } from '../../dtos/UserDto';
-import { FormState } from '../../types/FormState';
-import { ModalFormState } from '../../types/ModalFormState';
+import { accountControl } from 'App';
+import { AppThunk } from 'app/store';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { LoginDto } from 'dtos/LoginDto';
+import { RegisterDto } from 'dtos/RegisterDto';
+import { UserDto } from 'dtos/UserDto';
+import { FormState } from 'types/FormState';
+import { ModalFormState } from 'types/ModalFormState';
 
 interface AccountState {
   user: UserDto | null;

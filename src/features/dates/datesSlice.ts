@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { datesControl } from '../../App';
-import { AppThunk } from '../../app/store';
-import { DateDto } from '../../dtos/DateDto';
-import { ErrorDto } from '../../dtos/ErrorDto';
-import { NewDateDto } from '../../dtos/NewDateDto';
-import { UserDto } from '../../dtos/UserDto';
-import { ModalFormState } from '../../types/ModalFormState';
+import { datesControl } from 'App';
+import { AppThunk } from 'app/store';
+import { DateDto } from 'dtos/DateDto';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { NewDateDto } from 'dtos/NewDateDto';
+import { UserDto } from 'dtos/UserDto';
+import { ModalFormState } from 'types/ModalFormState';
 import { fetch as fetchUsers } from '../users/usersSlice';
 
 interface DatesState {

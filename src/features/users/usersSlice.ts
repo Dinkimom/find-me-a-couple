@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { usersControl } from '../../App';
-import { AppThunk } from '../../app/store';
-import { ErrorDto } from '../../dtos/ErrorDto';
-import { UserDto } from '../../dtos/UserDto';
-import { Filter } from '../../types/Filter';
+import { usersControl } from 'App';
+import { AppThunk } from 'app/store';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { UserDto } from 'dtos/UserDto';
+import { Filter } from 'types/Filter';
 
 interface UsersState {
   list: UserDto[];

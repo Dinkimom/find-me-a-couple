@@ -4,9 +4,9 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
 } from 'axios';
-import { SERVER_ENTRY_POINT } from '../constants/serverEntryPoint';
-import { ErrorDto } from '../dtos/ErrorDto';
-import { EntityEnum } from '../enums/EntityEnum';
+import { SERVER_ENTRY_POINT } from 'constants/serverEntryPoint';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { EntityEnum } from 'enums/EntityEnum';
 
 export class AbstractControl {
   protected axios: AxiosInstance;

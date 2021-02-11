@@ -1,6 +1,6 @@
-import { LoginDto } from '../dtos/LoginDto';
-import { RegisterDto } from '../dtos/RegisterDto';
-import { EntityEnum } from '../enums/EntityEnum';
+import { LoginDto } from 'dtos/LoginDto';
+import { RegisterDto } from 'dtos/RegisterDto';
+import { EntityEnum } from 'enums/EntityEnum';
 import { AbstractControl } from './AbstractControl';
 
 export class AccountControl extends AbstractControl {

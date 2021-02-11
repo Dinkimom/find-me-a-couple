@@ -1,4 +1,4 @@
-import { DateStatusEnum } from '../enums/DateStatusEnum';
+import { DateStatusEnum } from 'enums/DateStatusEnum';
 
 export interface NewDateDto {
   _id: string;

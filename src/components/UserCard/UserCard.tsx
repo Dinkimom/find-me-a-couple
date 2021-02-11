@@ -1,8 +1,8 @@
 import { Image } from 'antd';
 import React from 'react';
-import { UserDto } from '../../dtos/UserDto';
-import { SexTypeEnum } from '../../enums/SexTypeEnum';
-import { useUserAvatar } from '../../hooks/useUserAvatar';
+import { UserDto } from 'dtos/UserDto';
+import { SexTypeEnum } from 'enums/SexTypeEnum';
+import { useUserAvatar } from 'hooks/useUserAvatar';
 import styles from './UserCard.module.css';
 
 interface Props {

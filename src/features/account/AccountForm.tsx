@@ -2,7 +2,7 @@ import { Tabs } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { RootState } from '../../app/store';
+import { RootState } from 'app/store';
 import styles from './AccountForm.module.css';
 import { login, register } from './accountSlice';
 import { LoginForm } from './components/LoginForm/LoginForm';

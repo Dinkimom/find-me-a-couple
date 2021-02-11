@@ -1,5 +1,5 @@
-import { EntityEnum } from '../enums/EntityEnum';
-import { Filter } from '../types/Filter';
+import { EntityEnum } from 'enums/EntityEnum';
+import { Filter } from 'types/Filter';
 import { AbstractControl } from './AbstractControl';
 
 export class UsersControl extends AbstractControl {

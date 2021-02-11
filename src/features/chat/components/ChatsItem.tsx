@@ -1,9 +1,9 @@
 import { List, Avatar, Typography } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
-import { ChatDto } from '../../../dtos/ChatDto';
-import { useUserAvatar } from '../../../hooks/useUserAvatar';
+import { RootState } from 'app/store';
+import { ChatDto } from 'dtos/ChatDto';
+import { useUserAvatar } from 'hooks/useUserAvatar';
 import styles from './ChatsItem.module.css';
 
 const { Title } = Typography;

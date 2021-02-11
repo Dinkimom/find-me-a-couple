@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { notification } from 'antd';
-import { chatsControl } from '../../App';
-import { AppThunk } from '../../app/store';
-import { ChatDto } from '../../dtos/ChatDto';
-import { ErrorDto } from '../../dtos/ErrorDto';
-import { MessageDto } from '../../dtos/MessageDto';
+import { chatsControl } from 'App';
+import { AppThunk } from 'app/store';
+import { ChatDto } from 'dtos/ChatDto';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { MessageDto } from 'dtos/MessageDto';
 
 interface ChatsState {
   list: ChatDto[];

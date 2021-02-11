@@ -1,8 +1,8 @@
 import { Button, Form } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import React, { createContext, ReactNode, useEffect, useRef } from 'react';
-import { ErrorDto } from '../dtos/ErrorDto';
-import { useFormErrors } from '../hooks/useFormErrors';
+import { ErrorDto } from 'dtos/ErrorDto';
+import { useFormErrors } from 'hooks/useFormErrors';
 
 export const BaseFormContext = createContext<{
   form: any;

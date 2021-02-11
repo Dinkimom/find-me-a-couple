@@ -9,12 +9,12 @@ import { Avatar, Button, Layout, Menu, Popover } from 'antd';
 import React, { ReactNode, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { RootState } from '../../app/store';
-import femaleImage from '../../assets/images/female.png';
-import maleImage from '../../assets/images/male.png';
-import { SexTypeEnum } from '../../enums/SexTypeEnum';
-import { logout } from '../../features/account/accountSlice';
-import { UpdateForm } from '../../features/account/components/UpdateForm/UpdateForm';
+import { RootState } from 'app/store';
+import femaleImage from 'assets/images/female.png';
+import maleImage from 'assets/images/male.png';
+import { SexTypeEnum } from 'enums/SexTypeEnum';
+import { logout } from 'features/account/accountSlice';
+import { UpdateForm } from 'features/account/components/UpdateForm/UpdateForm';
 import styles from './PageWrapper.module.css';
 
 const { Header } = Layout;

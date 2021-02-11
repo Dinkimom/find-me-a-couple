@@ -1,11 +1,11 @@
 import { Button, Image, List, Tag, Typography } from 'antd';
 import React, { memo } from 'react';
-import { DateDto } from '../../../dtos/DateDto';
-import { UserDto } from '../../../dtos/UserDto';
-import { DateStatusEnum } from '../../../enums/DateStatusEnum';
-import { SexTypeEnum } from '../../../enums/SexTypeEnum';
-import femaleImage from '../../../assets/images/female.png';
-import maleImage from '../../../assets/images/male.png';
+import { DateDto } from 'dtos/DateDto';
+import { UserDto } from 'dtos/UserDto';
+import { DateStatusEnum } from 'enums/DateStatusEnum';
+import { SexTypeEnum } from 'enums/SexTypeEnum';
+import femaleImage from 'assets/images/female.png';
+import maleImage from 'assets/images/male.png';
 import styles from './DateItem.module.css';
 
 const { Title } = Typography;

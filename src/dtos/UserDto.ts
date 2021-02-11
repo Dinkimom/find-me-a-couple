@@ -1,4 +1,4 @@
-import { SexTypeEnum } from '../enums/SexTypeEnum';
+import { SexTypeEnum } from 'enums/SexTypeEnum';
 
 export interface UserDto {
   _id: string;

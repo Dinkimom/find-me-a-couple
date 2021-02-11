@@ -1,7 +1,7 @@
 import { Form, Input, notification, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import React, { useContext, useEffect, useState } from 'react';
-import { imageControl } from '../../App';
+import { imageControl } from 'App';
 import { BaseFormContext } from '../BaseForm';
 import styles from './ImageLoader.module.css';
 

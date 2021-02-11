@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { IMAGE_API_ENTRY_POINT } from '../constants/imageApiEntryPoint';
-import { ImageDto } from '../dtos/ImageDto';
+import { IMAGE_API_ENTRY_POINT } from 'constants/imageApiEntryPoint';
+import { ImageDto } from 'dtos/ImageDto';
 
 export class ImageControl {
   public uploadImage = (image: File): Promise<AxiosResponse<ImageDto>> => {

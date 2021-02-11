@@ -1,15 +1,16 @@
 import { Comment, List } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
+import { socket } from 'App';
+import { RootState } from 'app/store';
+import { Container } from 'components/Container/Container';
+import { Editor } from 'components/Editor/Editor';
+import { ChatDto } from 'dtos/ChatDto';
+import { MessageDto } from 'dtos/MessageDto';
+import { useUserAvatar } from 'hooks/useUserAvatar';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { socket } from '../../App';
-import { RootState } from '../../app/store';
-import { Container } from '../../components/Container/Container';
-import { Editor } from '../../components/Editor/Editor';
-import { ChatDto } from '../../dtos/ChatDto';
-import { MessageDto } from '../../dtos/MessageDto';
-import { useUserAvatar } from '../../hooks/useUserAvatar';
+import { SocketData } from 'types/SocketData';
 import styles from './Chat.module.css';
 import { fetchChat, fetchChatFailure } from './chatsSlice';
 
@@ -56,9 +57,7 @@ export const Chat: React.FC = () => {
 
   useEffect(() => {
     socket.onmessage = (message: any) => {
-      const data: { status: 404 | 200 | 201; result: ChatDto } = JSON.parse(
-        message.data as string
-      );
+      const data: SocketData = JSON.parse(message.data as string);
 
       switch (data.status) {
         case 201:

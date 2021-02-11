@@ -1,5 +1,5 @@
-import { MessageDto } from '../dtos/MessageDto';
-import { EntityEnum } from '../enums/EntityEnum';
+import { MessageDto } from 'dtos/MessageDto';
+import { EntityEnum } from 'enums/EntityEnum';
 import { AbstractControl } from './AbstractControl';
 
 export class ChatsControl extends AbstractControl {

@@ -1,6 +1,6 @@
-import { DateDto } from '../dtos/DateDto';
-import { NewDateDto } from '../dtos/NewDateDto';
-import { EntityEnum } from '../enums/EntityEnum';
+import { DateDto } from 'dtos/DateDto';
+import { NewDateDto } from 'dtos/NewDateDto';
+import { EntityEnum } from 'enums/EntityEnum';
 import { AbstractControl } from './AbstractControl';
 
 export class DatesControl extends AbstractControl {
