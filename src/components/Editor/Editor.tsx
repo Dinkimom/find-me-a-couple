@@ -10,9 +10,10 @@ const { TextArea } = Input;
 interface Props {
   onSubmit: (data: MessageDto) => void;
   submitting: boolean;
+  disabled?: boolean;
 }
 
-export const Editor: React.FC<Props> = ({ onSubmit, submitting }) => {
+export const Editor: React.FC<Props> = ({ onSubmit, submitting, disabled }) => {
   const [form] = useForm();
 
   const handleSubmit = (data: { text: string }) => {
@@ -37,6 +38,7 @@ export const Editor: React.FC<Props> = ({ onSubmit, submitting }) => {
           autoSize={{ minRows: 1, maxRows: 3 }}
           maxLength={1000}
           onPressEnter={handleFormEnter}
+          disabled={disabled}
         />
       </Form.Item>
 
@@ -47,6 +49,7 @@ export const Editor: React.FC<Props> = ({ onSubmit, submitting }) => {
           type="primary"
           icon={<SendOutlined />}
           block
+          disabled={disabled}
         />
       </Form.Item>
     </Form>

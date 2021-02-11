@@ -1,18 +1,17 @@
 import { Comment, List } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
-import { socket } from 'App';
 import { RootState } from 'app/store';
 import { Container } from 'components/Container/Container';
 import { Editor } from 'components/Editor/Editor';
 import { ChatDto } from 'dtos/ChatDto';
 import { MessageDto } from 'dtos/MessageDto';
+import { useSocket } from 'hooks/useSocket';
 import { useUserAvatar } from 'hooks/useUserAvatar';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import { SocketData } from 'types/SocketData';
+import { useParams } from 'react-router-dom';
 import styles from './Chat.module.css';
-import { fetchChat, fetchChatFailure } from './chatsSlice';
+import { fetchChat } from './chatsSlice';
 
 export const Chat: React.FC = () => {
   const { receiver } = useParams<{ receiver: string }>();
@@ -21,11 +20,11 @@ export const Chat: React.FC = () => {
 
   const { user } = useSelector((state: RootState) => state.account);
 
-  const history = useHistory();
-
   const dispatch = useDispatch();
 
   const endMessageRef = useRef<any>();
+
+  const { actions } = useSocket();
 
   const scrollToBottom = () => {
     if (endMessageRef.current) {
@@ -41,51 +40,12 @@ export const Chat: React.FC = () => {
 
   const handleMessageSend = useCallback(
     (message: MessageDto) => {
-      socket.send(
-        JSON.stringify({
-          user_id: user?._id,
-          type: 'POST',
-          payload: {
-            receiver,
-            message,
-          },
-        })
-      );
+      if (user) {
+        actions.sendMessage(user._id, receiver, message);
+      }
     },
     [receiver, user?._id]
   );
-
-  useEffect(() => {
-    socket.onmessage = (message: any) => {
-      const data: SocketData = JSON.parse(message.data as string);
-
-      switch (data.status) {
-        case 201:
-          dispatch(fetchChat(receiver, true));
-          break;
-        case 404:
-          history.push('/not-found');
-          break;
-      }
-    };
-
-    socket.onclose = () => {
-      socket.send(JSON.stringify({ user_id: user?._id }));
-    };
-
-    socket.onopen = () => {
-      socket.send(
-        JSON.stringify({
-          type: 'INIT',
-          user_id: user?._id,
-        })
-      );
-    };
-
-    socket.onerror = () => {
-      dispatch(fetchChatFailure({ errorMessage: 'Could not fetch chat' }));
-    };
-  }, [dispatch, history, receiver, user?._id]);
 
   const { companion } = chat.chatData || {};
 

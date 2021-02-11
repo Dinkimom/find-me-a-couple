@@ -1,9 +1,9 @@
 import { Spin } from 'antd';
+import { RootState } from 'app/store';
+import { check } from 'features/account/accountSlice';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { RootState } from '../../app/store';
-import { check } from '../../features/account/accountSlice';
 import { PageWrapper } from '../PageWrapper/PageWrapper';
 import styles from './PrivateRoute.module.css';
 
