@@ -1,4 +1,4 @@
 export interface Error {
-  msg: string;
-  param: string;
+    msg: string;
+    param: string;
 }

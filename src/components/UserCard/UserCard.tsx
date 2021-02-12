@@ -6,22 +6,24 @@ import { useUserAvatar } from 'hooks/useUserAvatar';
 import styles from './UserCard.module.css';
 
 interface Props {
-  user: UserDto;
+    user: UserDto;
 }
 
 export const UserCard: React.FC<Props> = ({ user }) => {
-  let imageSrc = useUserAvatar(user);
+    const imageSrc = useUserAvatar(user);
 
-  return (
-    <div className={styles.userCard}>
-      <Image src={imageSrc} className={styles.userAvatar} />
-      <div className={styles.userCardInfo}>
-        <h3>{user.name}</h3>
+    return (
+        <div className={styles.userCard}>
+            <Image src={imageSrc} className={styles.userAvatar} />
+            <div className={styles.userCardInfo}>
+                <h3>{user.name}</h3>
 
-        <p>
-          {SexTypeEnum[user.sex]}, {user.age} years
-        </p>
-      </div>
-    </div>
-  );
+                <p>
+                    {SexTypeEnum[user.sex]}, {user.age} years
+                </p>
+            </div>
+        </div>
+    );
 };
+
+UserCard.displayName = 'UserCard';

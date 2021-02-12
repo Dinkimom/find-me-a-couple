@@ -8,39 +8,39 @@ import { PageWrapper } from '../PageWrapper/PageWrapper';
 import styles from './PrivateRoute.module.css';
 
 export const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
-  const { isLogged, isChecked } = useSelector(
-    (state: RootState) => state.account
-  );
+    const { isLogged, isChecked } = useSelector((state: RootState) => state.account);
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!isChecked) {
-      dispatch(check());
-    }
-  }, [dispatch, isChecked]);
-
-  return (
-    <Route
-      {...rest}
-      render={({ location }) => {
-        if (isChecked) {
-          if (isLogged) {
-            return <PageWrapper>{children}</PageWrapper>;
-          }
-
-          return (
-            <Redirect
-              to={{
-                pathname: '/account/form',
-                state: { from: location },
-              }}
-            />
-          );
+    useEffect(() => {
+        if (!isChecked) {
+            dispatch(check());
         }
+    }, [dispatch, isChecked]);
 
-        return <Spin size="large" className={styles.spin} />;
-      }}
-    />
-  );
+    return (
+        <Route
+            {...rest}
+            render={({ location }) => {
+                if (isChecked) {
+                    if (isLogged) {
+                        return <PageWrapper>{children}</PageWrapper>;
+                    }
+
+                    return (
+                        <Redirect
+                            to={{
+                                pathname: '/account/form',
+                                state: { from: location },
+                            }}
+                        />
+                    );
+                }
+
+                return <Spin size="large" className={styles.spin} />;
+            }}
+        />
+    );
 };
+
+PrivateRoute.displayName = 'PageWrapper';

@@ -1,5 +1,5 @@
 export enum SocketStatusEnum {
-  OPENED,
-  CLOSING,
-  CLOSED,
+    OPENED,
+    CLOSING,
+    CLOSED,
 }

@@ -1,2 +1,1 @@
-export const WEB_SOCKETS_ENTRY_POINT =
-  process.env.REACT_APP_WEB_SOCKETS_ENTRY_POINT || '';
+export const WEB_SOCKETS_ENTRY_POINT = process.env.REACT_APP_WEB_SOCKETS_ENTRY_POINT || '';

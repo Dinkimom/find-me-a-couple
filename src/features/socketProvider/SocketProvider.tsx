@@ -8,57 +8,57 @@ import { connectToWebSocket } from 'utils/connectToWebSocket';
 import { w3cwebsocket } from 'websocket';
 
 export const SocketContext = createContext<{
-  socket: w3cwebsocket | null;
+    socket: w3cwebsocket | null;
 }>({ socket: null });
 
 interface Props {
-  reducers: SocketReducer[];
-  children: ReactNode;
+    reducers: SocketReducer[];
+    children: ReactNode;
 }
 
 export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
-  const [api, contextHolder] = notification.useNotification();
+    const [api, contextHolder] = notification.useNotification();
 
-  const [socket, setSocket] = useState<w3cwebsocket | null>(null);
+    const [socket, setSocket] = useState<w3cwebsocket | null>(null);
 
-  const { user } = useSelector((state: RootState) => state.account);
+    const { user } = useSelector((state: RootState) => state.account);
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    setSocket(connectToWebSocket());
-  }, []);
+    useEffect(() => {
+        setSocket(connectToWebSocket());
+    }, []);
 
-  useEffect(() => {
-    if (socket) {
-      if (user) {
-        socket.send(
-          JSON.stringify({
-            type: 'INIT',
-            user_id: user._id,
-          })
-        );
-      }
+    useEffect(() => {
+        if (socket) {
+            if (user) {
+                socket.send(
+                    JSON.stringify({
+                        type: 'INIT',
+                        user_id: user._id,
+                    }),
+                );
+            }
 
-      socket.onclose = () => {
-        setTimeout(() => setSocket(connectToWebSocket()), 1000);
-      };
+            socket.onclose = () => {
+                setTimeout(() => setSocket(connectToWebSocket()), 1000);
+            };
 
-      socket.onmessage = (message) => {
-        const action: SocketAction = JSON.parse(message.data as string);
+            socket.onmessage = (message) => {
+                const action: SocketAction = JSON.parse(message.data as string);
 
-        reducers.forEach((reducer) =>
-          reducer({ action, dispatch, notification: api })
-        );
-      };
-    }
-  }, [dispatch, reducers, user, api, socket]);
+                reducers.forEach((reducer) => reducer({ action, dispatch, notification: api }));
+            };
+        }
+    }, [dispatch, reducers, user, api, socket]);
 
-  return (
-    <SocketContext.Provider value={{ socket }}>
-      {children}
+    return (
+        <SocketContext.Provider value={{ socket }}>
+            {children}
 
-      {contextHolder}
-    </SocketContext.Provider>
-  );
+            {contextHolder}
+        </SocketContext.Provider>
+    );
 };
+
+SocketProvider.displayName = 'SocketProvider';

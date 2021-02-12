@@ -14,106 +14,93 @@ import { fetch } from './usersSlice';
 const { Option } = Select;
 
 export const Users: React.FC = () => {
-  const { list, isFetching, error } = useSelector(
-    (state: RootState) => state
-  ).users;
+    const { list, isFetching, error } = useSelector((state: RootState) => state).users;
 
-  const [filter, setFilter] = useState<Filter>();
+    const [filter, setFilter] = useState<Filter>();
 
-  const [form] = Form.useForm();
+    const [form] = Form.useForm();
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const history = useHistory();
+    const history = useHistory();
 
-  useEffect(() => {
-    dispatch(fetch(filter));
-  }, [dispatch, filter]);
+    useEffect(() => {
+        dispatch(fetch(filter));
+    }, [dispatch, filter]);
 
-  const handleSearch = (filter: Filter) => {
-    setFilter(filter);
-  };
+    const handleSearch = (filter: Filter) => {
+        setFilter(filter);
+    };
 
-  const handleInvite = (receiver: UserDto) => {
-    dispatch(toggleCreateForm(receiver));
-  };
+    const handleInvite = (receiver: UserDto) => {
+        dispatch(toggleCreateForm(receiver));
+    };
 
-  const handleOpenChat = ({ _id }: UserDto) => {
-    history.push(`/chats/${_id}`);
-  };
+    const handleOpenChat = ({ _id }: UserDto) => {
+        history.push(`/chats/${_id}`);
+    };
 
-  const handleReset = () => {
-    form.resetFields();
-  };
+    const handleReset = () => {
+        form.resetFields();
+    };
 
-  return (
-    <Container error={error}>
-      <Form
-        layout="inline"
-        className={styles.controls}
-        onFinish={handleSearch}
-        form={form}
-      >
-        <Form.Item name="age">
-          <InputNumber
-            min={18}
-            className={styles.filterField}
-            placeholder="Age from"
-          />
-        </Form.Item>
+    return (
+        <Container error={error}>
+            <Form layout="inline" className={styles.controls} onFinish={handleSearch} form={form}>
+                <Form.Item name="age">
+                    <InputNumber min={18} className={styles.filterField} placeholder="Age from" />
+                </Form.Item>
 
-        <Form.Item name="sex">
-          <Select style={{ width: 100 }} placeholder="Sex">
-            <Option value={0}>Male</Option>
-            <Option value={1}>Female</Option>
-          </Select>
-        </Form.Item>
+                <Form.Item name="sex">
+                    <Select style={{ width: 100 }} placeholder="Sex">
+                        <Option value={0}>Male</Option>
+                        <Option value={1}>Female</Option>
+                    </Select>
+                </Form.Item>
 
-        <Button
-          htmlType="button"
-          onClick={handleReset}
-          className={styles.filterField}
-        >
-          Reset
-        </Button>
-
-        <Button type="primary" htmlType="submit" className={styles.filterField}>
-          Search
-        </Button>
-      </Form>
-
-      <List
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 2,
-          md: 3,
-          lg: 3,
-          xl: 3,
-          xxl: 3,
-        }}
-        dataSource={list}
-        loading={isFetching}
-        renderItem={(item) => (
-          <List.Item>
-            <Card>
-              <UserCard user={item} />
-
-              <div className={styles.cardControls}>
-                <Button
-                  type="primary"
-                  block
-                  onClick={() => handleInvite(item)}
-                  disabled={item.isInvited}
-                >
-                  {item.isInvited ? 'Invited' : 'Invite'}
+                <Button htmlType="button" onClick={handleReset} className={styles.filterField}>
+                    Reset
                 </Button>
-                <Button onClick={() => handleOpenChat(item)}>Message</Button>
-              </div>
-            </Card>
-          </List.Item>
-        )}
-      />
-    </Container>
-  );
+
+                <Button type="primary" htmlType="submit" className={styles.filterField}>
+                    Search
+                </Button>
+            </Form>
+
+            <List
+                grid={{
+                    gutter: 16,
+                    xs: 1,
+                    sm: 2,
+                    md: 3,
+                    lg: 3,
+                    xl: 3,
+                    xxl: 3,
+                }}
+                dataSource={list}
+                loading={isFetching}
+                renderItem={(item) => (
+                    <List.Item>
+                        <Card>
+                            <UserCard user={item} />
+
+                            <div className={styles.cardControls}>
+                                <Button
+                                    type="primary"
+                                    block
+                                    onClick={() => handleInvite(item)}
+                                    disabled={item.isInvited}
+                                >
+                                    {item.isInvited ? 'Invited' : 'Invite'}
+                                </Button>
+                                <Button onClick={() => handleOpenChat(item)}>Message</Button>
+                            </div>
+                        </Card>
+                    </List.Item>
+                )}
+            />
+        </Container>
+    );
 };
+
+Users.displayName = 'Users';

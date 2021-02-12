@@ -1,3 +1,3 @@
 export interface Filter {
-  [key: string]: string;
+    [key: string]: string;
 }

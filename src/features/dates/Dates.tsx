@@ -9,38 +9,33 @@ import styles from './Dates.module.css';
 import { fetch, update } from './datesSlice';
 
 export const Dates: React.FC = () => {
-  const { list, isFetching, error } = useSelector(
-    (state: RootState) => state.dates
-  );
+    const { list, isFetching, error } = useSelector((state: RootState) => state.dates);
 
-  const { user } = useSelector((state: RootState) => state.account);
+    const { user } = useSelector((state: RootState) => state.account);
 
-  const handleStatusChange = (id: string, status: DateStatusEnum) => {
-    dispatch(update(id, { status }));
-  };
+    const handleStatusChange = (id: string, status: DateStatusEnum) => {
+        dispatch(update(id, { status }));
+    };
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetch());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetch());
+    }, [dispatch]);
 
-  return (
-    <Container error={error}>
-      <List
-        className={styles.dates}
-        itemLayout="horizontal"
-        dataSource={list}
-        loading={isFetching}
-        renderItem={(item) => (
-          <DateItem
-            item={item}
-            user={user}
-            onStatusChange={handleStatusChange}
-            key={item._id}
-          />
-        )}
-      />
-    </Container>
-  );
+    return (
+        <Container error={error}>
+            <List
+                className={styles.dates}
+                itemLayout="horizontal"
+                dataSource={list}
+                loading={isFetching}
+                renderItem={(item) => (
+                    <DateItem item={item} user={user} onStatusChange={handleStatusChange} key={item._id} />
+                )}
+            />
+        </Container>
+    );
 };
+
+Dates.displayName = 'Dates';

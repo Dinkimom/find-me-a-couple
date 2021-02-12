@@ -25,33 +25,33 @@ export const imageControl = new ImageControl();
 export const chatsControl = new ChatsControl();
 
 const App: React.FC = () => {
-  return (
-    <div className="App">
-      <Router>
-        <SocketProvider reducers={socketReducers}>
-          <Switch>
-            <Route path={PATHS.LOGIN} component={AccountForm} />
+    return (
+        <div className="App">
+            <Router>
+                <SocketProvider reducers={socketReducers}>
+                    <Switch>
+                        <Route path={PATHS.LOGIN} component={AccountForm} />
 
-            <PrivateRoute exact path={PATHS.HOME}>
-              <Users />
-            </PrivateRoute>
-            <PrivateRoute exact path={PATHS.DATES}>
-              <Dates />
-            </PrivateRoute>
-            <PrivateRoute exact path={PATHS.CHATS}>
-              <Chats />
-            </PrivateRoute>
-            <PrivateRoute exact path={PATHS.CHAT}>
-              <Chat />
-            </PrivateRoute>
+                        <PrivateRoute exact path={PATHS.HOME}>
+                            <Users />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={PATHS.DATES}>
+                            <Dates />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={PATHS.CHATS}>
+                            <Chats />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={PATHS.CHAT}>
+                            <Chat />
+                        </PrivateRoute>
 
-            <Route component={NotFound} />
-          </Switch>
-        </SocketProvider>
-      </Router>
-      <CreateDateForm />
-    </div>
-  );
+                        <Route component={NotFound} />
+                    </Switch>
+                </SocketProvider>
+            </Router>
+            <CreateDateForm />
+        </div>
+    );
 };
 
 export default App;

@@ -9,31 +9,31 @@ import { fetchChats } from './chatsSlice';
 import { ChatsItem } from './components/ChatsItem';
 
 export const Chats: React.FC = () => {
-  const { list, isFetching, error } = useSelector(
-    (state: RootState) => state.chats
-  );
+    const { list, isFetching, error } = useSelector((state: RootState) => state.chats);
 
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const history = useHistory();
+    const history = useHistory();
 
-  useEffect(() => {
-    dispatch(fetchChats());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchChats());
+    }, [dispatch]);
 
-  const handleChatClick = (receiver: string) => {
-    history.push(`/chats/${receiver}`);
-  };
+    const handleChatClick = (receiver: string) => {
+        history.push(`/chats/${receiver}`);
+    };
 
-  return (
-    <Container error={error}>
-      <List
-        className={styles.chat}
-        itemLayout="horizontal"
-        dataSource={list}
-        loading={isFetching}
-        renderItem={(item) => <ChatsItem {...item} onClick={handleChatClick} />}
-      />
-    </Container>
-  );
+    return (
+        <Container error={error}>
+            <List
+                className={styles.chat}
+                itemLayout="horizontal"
+                dataSource={list}
+                loading={isFetching}
+                renderItem={(item) => <ChatsItem {...item} onClick={handleChatClick} />}
+            />
+        </Container>
+    );
 };
+
+Chats.displayName = 'Chats';

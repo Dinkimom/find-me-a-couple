@@ -10,244 +10,242 @@ import { FormState } from 'types/FormState';
 import { ModalFormState } from 'types/ModalFormState';
 
 interface AccountState {
-  user: UserDto | null;
-  isFetching: boolean;
-  isLogged: boolean;
-  isChecked: boolean;
-  loginForm: FormState;
-  registerForm: FormState;
-  updateForm: ModalFormState;
+    user: UserDto | null;
+    isFetching: boolean;
+    isLogged: boolean;
+    isChecked: boolean;
+    loginForm: FormState;
+    registerForm: FormState;
+    updateForm: ModalFormState;
 }
 
 const initialState: AccountState = {
-  user: null,
-  isFetching: false,
-  isLogged: false,
-  isChecked: false,
-  loginForm: {
-    error: null,
+    user: null,
     isFetching: false,
-  },
-  registerForm: {
-    error: null,
-    isFetching: false,
-  },
-  updateForm: {
-    error: null,
-    isFetching: false,
-    opened: false,
-  },
+    isLogged: false,
+    isChecked: false,
+    loginForm: {
+        error: null,
+        isFetching: false,
+    },
+    registerForm: {
+        error: null,
+        isFetching: false,
+    },
+    updateForm: {
+        error: null,
+        isFetching: false,
+        opened: false,
+    },
 };
 
 export const accountSlice = createSlice({
-  name: 'account',
-  initialState,
-  reducers: {
-    loginStart: (state) => {
-      state.user = null;
-      state.isFetching = true;
-      state.isLogged = false;
-      state.isChecked = false;
-      state.loginForm.error = null;
-      state.loginForm.isFetching = true;
+    name: 'account',
+    initialState,
+    reducers: {
+        loginStart: (state) => {
+            state.user = null;
+            state.isFetching = true;
+            state.isLogged = false;
+            state.isChecked = false;
+            state.loginForm.error = null;
+            state.loginForm.isFetching = true;
+        },
+        loginSuccess: (state, action: PayloadAction<UserDto>) => {
+            state.user = action.payload;
+            state.isFetching = false;
+            state.isLogged = true;
+            state.isChecked = true;
+            state.loginForm.error = null;
+            state.loginForm.isFetching = false;
+        },
+        loginFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
+            state.user = null;
+            state.isFetching = false;
+            state.isLogged = false;
+            state.isChecked = true;
+            state.loginForm.error = actionPayload.payload;
+            state.loginForm.isFetching = false;
+        },
+        registerStart: (state) => {
+            state.user = null;
+            state.isFetching = true;
+            state.isLogged = false;
+            state.isChecked = false;
+            state.registerForm.error = null;
+            state.registerForm.isFetching = true;
+        },
+        registerSuccess: (state, action: PayloadAction<UserDto>) => {
+            state.user = action.payload;
+            state.isFetching = false;
+            state.isLogged = true;
+            state.isChecked = true;
+            state.registerForm.error = null;
+            state.registerForm.isFetching = false;
+        },
+        registerFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
+            state.user = null;
+            state.isFetching = false;
+            state.isLogged = false;
+            state.isChecked = true;
+            state.registerForm.error = actionPayload.payload;
+            state.registerForm.isFetching = false;
+        },
+        checkStart: (state) => {
+            state.user = null;
+            state.isFetching = true;
+            state.isLogged = false;
+            state.isChecked = false;
+        },
+        checkSuccess: (state, action: PayloadAction<UserDto>) => {
+            state.user = action.payload;
+            state.isFetching = false;
+            state.isLogged = true;
+            state.isChecked = true;
+        },
+        checkFailure: (state) => {
+            state.user = null;
+            state.isFetching = false;
+            state.isLogged = false;
+            state.isChecked = true;
+        },
+        logout: (state) => {
+            state.user = null;
+            state.isFetching = false;
+            state.isLogged = false;
+            state.isChecked = true;
+            localStorage.clear();
+        },
+        toggleUpdateForm: (state) => {
+            state.updateForm.opened = !state.updateForm.opened;
+        },
+        updateStart: (state) => {
+            state.isFetching = true;
+            state.isLogged = true;
+            state.isChecked = true;
+            state.updateForm.error = null;
+            state.updateForm.isFetching = true;
+        },
+        updateSuccess: (state, action: PayloadAction<UserDto>) => {
+            state.user = action.payload;
+            state.isFetching = false;
+            state.isLogged = true;
+            state.isChecked = true;
+            state.updateForm.error = null;
+            state.updateForm.isFetching = false;
+            state.updateForm.opened = false;
+        },
+        updateFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
+            state.isFetching = false;
+            state.isChecked = true;
+            state.isLogged = true;
+            state.updateForm.error = actionPayload.payload;
+            state.updateForm.isFetching = false;
+        },
+        removeStart: (state) => {
+            state.isFetching = true;
+        },
+        removeSuccess: (state) => {
+            state.user = null;
+            state.isFetching = false;
+            state.isLogged = false;
+            state.isChecked = true;
+        },
+        removeFailure: (state) => {
+            state.isFetching = false;
+            state.isLogged = true;
+            state.isChecked = true;
+        },
     },
-    loginSuccess: (state, action: PayloadAction<UserDto>) => {
-      state.user = action.payload;
-      state.isFetching = false;
-      state.isLogged = true;
-      state.isChecked = true;
-      state.loginForm.error = null;
-      state.loginForm.isFetching = false;
-    },
-    loginFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
-      state.user = null;
-      state.isFetching = false;
-      state.isLogged = false;
-      state.isChecked = true;
-      state.loginForm.error = actionPayload.payload;
-      state.loginForm.isFetching = false;
-    },
-    registerStart: (state) => {
-      state.user = null;
-      state.isFetching = true;
-      state.isLogged = false;
-      state.isChecked = false;
-      state.registerForm.error = null;
-      state.registerForm.isFetching = true;
-    },
-    registerSuccess: (state, action: PayloadAction<UserDto>) => {
-      state.user = action.payload;
-      state.isFetching = false;
-      state.isLogged = true;
-      state.isChecked = true;
-      state.registerForm.error = null;
-      state.registerForm.isFetching = false;
-    },
-    registerFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
-      state.user = null;
-      state.isFetching = false;
-      state.isLogged = false;
-      state.isChecked = true;
-      state.registerForm.error = actionPayload.payload;
-      state.registerForm.isFetching = false;
-    },
-    checkStart: (state) => {
-      state.user = null;
-      state.isFetching = true;
-      state.isLogged = false;
-      state.isChecked = false;
-    },
-    checkSuccess: (state, action: PayloadAction<UserDto>) => {
-      state.user = action.payload;
-      state.isFetching = false;
-      state.isLogged = true;
-      state.isChecked = true;
-    },
-    checkFailure: (state) => {
-      state.user = null;
-      state.isFetching = false;
-      state.isLogged = false;
-      state.isChecked = true;
-    },
-    logout: (state) => {
-      state.user = null;
-      state.isFetching = false;
-      state.isLogged = false;
-      state.isChecked = true;
-      localStorage.clear();
-    },
-    toggleUpdateForm: (state) => {
-      state.updateForm.opened = !state.updateForm.opened;
-    },
-    updateStart: (state) => {
-      state.isFetching = true;
-      state.isLogged = true;
-      state.isChecked = true;
-      state.updateForm.error = null;
-      state.updateForm.isFetching = true;
-    },
-    updateSuccess: (state, action: PayloadAction<UserDto>) => {
-      state.user = action.payload;
-      state.isFetching = false;
-      state.isLogged = true;
-      state.isChecked = true;
-      state.updateForm.error = null;
-      state.updateForm.isFetching = false;
-      state.updateForm.opened = false;
-    },
-    updateFailure: (state, actionPayload: PayloadAction<ErrorDto>) => {
-      state.isFetching = false;
-      state.isChecked = true;
-      state.isLogged = true;
-      state.updateForm.error = actionPayload.payload;
-      state.updateForm.isFetching = false;
-    },
-    removeStart: (state) => {
-      state.isFetching = true;
-    },
-    removeSuccess: (state) => {
-      state.user = null;
-      state.isFetching = false;
-      state.isLogged = false;
-      state.isChecked = true;
-    },
-    removeFailure: (state) => {
-      state.isFetching = false;
-      state.isLogged = true;
-      state.isChecked = true;
-    },
-  },
 });
 
 export const {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  registerStart,
-  registerSuccess,
-  registerFailure,
-  checkStart,
-  checkSuccess,
-  checkFailure,
-  logout,
-  toggleUpdateForm,
-  updateStart,
-  updateSuccess,
-  updateFailure,
-  removeStart,
-  removeSuccess,
-  removeFailure,
+    loginStart,
+    loginSuccess,
+    loginFailure,
+    registerStart,
+    registerSuccess,
+    registerFailure,
+    checkStart,
+    checkSuccess,
+    checkFailure,
+    logout,
+    toggleUpdateForm,
+    updateStart,
+    updateSuccess,
+    updateFailure,
+    removeStart,
+    removeSuccess,
+    removeFailure,
 } = accountSlice.actions;
 
 export const login = (data: LoginDto): AppThunk => async (dispatch) => {
-  try {
-    dispatch(loginStart());
+    try {
+        dispatch(loginStart());
 
-    const response = await accountControl.login(data);
+        const response = await accountControl.login(data);
 
-    dispatch(loginSuccess(response.data.result.user));
-  } catch (error) {
-    console.log(error);
-    dispatch(loginFailure(error));
-  }
+        dispatch(loginSuccess(response.data.result.user));
+    } catch (error) {
+        console.log(error);
+        dispatch(loginFailure(error));
+    }
 };
 
 export const register = (data: RegisterDto): AppThunk => async (dispatch) => {
-  try {
-    dispatch(registerStart());
+    try {
+        dispatch(registerStart());
 
-    const response = await accountControl.register(data);
+        const response = await accountControl.register(data);
 
-    dispatch(registerSuccess(response.data.result.user));
-  } catch (error) {
-    dispatch(registerFailure(error));
-  }
+        dispatch(registerSuccess(response.data.result.user));
+    } catch (error) {
+        dispatch(registerFailure(error));
+    }
 };
 
-export const update = (id: string, data: RegisterDto): AppThunk => async (
-  dispatch
-) => {
-  try {
-    dispatch(updateStart());
+export const update = (id: string, data: RegisterDto): AppThunk => async (dispatch) => {
+    try {
+        dispatch(updateStart());
 
-    const response = await accountControl.update(id, data);
+        const response = await accountControl.update(id, data);
 
-    dispatch(updateSuccess(response.data.result.user));
+        dispatch(updateSuccess(response.data.result.user));
 
-    notification.success({
-      message: 'User data was successfully updated!',
-    });
-  } catch (error) {
-    dispatch(updateFailure(error));
-  }
+        notification.success({
+            message: 'User data was successfully updated!',
+        });
+    } catch (error) {
+        dispatch(updateFailure(error));
+    }
 };
 
 export const remove = (id: string): AppThunk => async (dispatch) => {
-  try {
-    dispatch(removeStart());
+    try {
+        dispatch(removeStart());
 
-    await accountControl.remove(id);
+        await accountControl.remove(id);
 
-    dispatch(removeSuccess());
-  } catch (error) {
-    notification.error({
-      message: 'User delete fail! Try operation later',
-    });
+        dispatch(removeSuccess());
+    } catch (error) {
+        notification.error({
+            message: 'User delete fail! Try operation later',
+        });
 
-    dispatch(removeFailure());
-  }
+        dispatch(removeFailure());
+    }
 };
 
 export const check = (): AppThunk => async (dispatch) => {
-  try {
-    dispatch(checkStart());
+    try {
+        dispatch(checkStart());
 
-    const response = await accountControl.check();
+        const response = await accountControl.check();
 
-    dispatch(checkSuccess(response.data.result.user));
-  } catch {
-    dispatch(checkFailure());
-  }
+        dispatch(checkSuccess(response.data.result.user));
+    } catch {
+        dispatch(checkFailure());
+    }
 };
 
 export const accountReducer = accountSlice.reducer;

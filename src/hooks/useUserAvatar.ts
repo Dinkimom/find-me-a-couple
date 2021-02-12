@@ -4,14 +4,14 @@ import { SexTypeEnum } from 'enums/SexTypeEnum';
 import maleImage from 'assets/images/male.png';
 import femaleImage from 'assets/images/female.png';
 
-export const useUserAvatar = (user: UserDto | null | undefined) => {
-  if (!user) {
-    return undefined;
-  }
+export const useUserAvatar = (user: UserDto | null | undefined): string | undefined => {
+    if (!user) {
+        return undefined;
+    }
 
-  if (user.image) {
-    return user.image;
-  }
+    if (user.image) {
+        return user.image;
+    }
 
-  return user.sex === SexTypeEnum.Male ? maleImage : femaleImage;
+    return user.sex === SexTypeEnum.Male ? maleImage : femaleImage;
 };
