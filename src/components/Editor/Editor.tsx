@@ -1,8 +1,9 @@
 import { SendOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
+import BasicTextArea from 'antd/lib/input/TextArea';
 import { MessageDto } from 'dtos/MessageDto';
-import React, { KeyboardEvent } from 'react';
+import React, { createRef, KeyboardEvent, RefObject, useEffect } from 'react';
 import styles from './Editor.module.css';
 
 const { TextArea } = Input;
@@ -15,6 +16,14 @@ interface Props {
 
 export const Editor: React.FC<Props> = ({ onSubmit, submitting, disabled }) => {
     const [form] = useForm();
+
+    const textareaRef: RefObject<BasicTextArea> = createRef();
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.focus();
+        }
+    }, [textareaRef]);
 
     const handleSubmit = (data: { text: string }) => {
         if (data.text) {
@@ -33,6 +42,7 @@ export const Editor: React.FC<Props> = ({ onSubmit, submitting, disabled }) => {
         <Form className={styles.root} onFinish={handleSubmit} form={form}>
             <Form.Item className={styles.control} name="text">
                 <TextArea
+                    ref={textareaRef}
                     showCount={true}
                     rows={1}
                     autoSize={{ minRows: 1, maxRows: 3 }}
