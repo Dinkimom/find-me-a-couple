@@ -1,3 +1,4 @@
+import notification from 'antd/lib/notification';
 import { RootState } from 'app/store';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +17,8 @@ interface Props {
 }
 
 export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
+  const [api, contextHolder] = notification.useNotification();
+
   const [socket, setSocket] = useState<w3cwebsocket | null>(null);
 
   const { user } = useSelector((state: RootState) => state.account);
@@ -42,9 +45,11 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
       };
 
       socket.onmessage = (message) => {
-        const data: SocketAction = JSON.parse(message.data as string);
+        const action: SocketAction = JSON.parse(message.data as string);
 
-        reducers.forEach((reducer) => reducer(data, dispatch));
+        reducers.forEach((reducer) =>
+          reducer({ action, dispatch, notification: api })
+        );
       };
     }
   }, [dispatch, reducers, user]);
@@ -52,6 +57,8 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
   return (
     <SocketContext.Provider value={{ socket }}>
       {children}
+
+      {contextHolder}
     </SocketContext.Provider>
   );
 };

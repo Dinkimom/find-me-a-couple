@@ -16,6 +16,7 @@ import { SexTypeEnum } from 'enums/SexTypeEnum';
 import { logout } from 'features/account/accountSlice';
 import { UpdateForm } from 'features/account/components/UpdateForm/UpdateForm';
 import styles from './PageWrapper.module.css';
+import { PATHS } from 'utils/route-helpers';
 
 const { Header } = Layout;
 
@@ -93,23 +94,23 @@ export const PageWrapper: React.FC<Props> = ({ children }) => {
           selectedKeys={[window.location.pathname]}
         >
           <Menu.Item
-            key="/"
+            key={PATHS.HOME}
             icon={<SearchOutlined className={styles.icon} />}
-            onClick={() => history.push('/')}
+            onClick={() => history.push(PATHS.HOME)}
           >
             Find a couple
           </Menu.Item>
           <Menu.Item
-            key="/dates"
+            key={PATHS.DATES}
             icon={<CalendarOutlined className={styles.icon} />}
-            onClick={() => history.push('/dates')}
+            onClick={() => history.push(PATHS.DATES)}
           >
             Dates
           </Menu.Item>
           <Menu.Item
-            key="/chats"
+            key={PATHS.CHATS}
             icon={<WechatOutlined className={styles.icon} />}
-            onClick={() => history.push('/chats')}
+            onClick={() => history.push(PATHS.CHATS)}
           >
             Chats
           </Menu.Item>

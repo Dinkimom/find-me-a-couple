@@ -1,0 +1,23 @@
+.root {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  cursor: pointer;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+}
+
+.userInfo p {
+  margin: 0;
+  margin-left: 8px;
+}
+
+.userAvatar {
+  border-radius: 50%;
+}
+
+.messageText {
+  margin-top: 16px;
+}

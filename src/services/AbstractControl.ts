@@ -1,12 +1,13 @@
 import axios, {
-  AxiosResponse,
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
+  AxiosResponse,
 } from 'axios';
 import { SERVER_ENTRY_POINT } from 'constants/serverEntryPoint';
 import { ErrorDto } from 'dtos/ErrorDto';
 import { EntityEnum } from 'enums/EntityEnum';
+import { PATHS } from 'utils/route-helpers';
 
 export class AbstractControl {
   protected axios: AxiosInstance;
@@ -37,11 +38,11 @@ export class AbstractControl {
   private handleErrorResponse = (res: AxiosResponse) => {
     switch (res.status) {
       case 404:
-        window.location.href = '/not-found';
+        window.location.href = PATHS.NOT_FOUND;
         break;
 
       case 401:
-        window.location.href = '/account/form';
+        window.location.href = PATHS.LOGIN;
         break;
 
       case 403:

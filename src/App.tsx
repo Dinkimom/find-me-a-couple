@@ -1,5 +1,10 @@
-import React from 'react';
+import { notification } from 'antd';
+import { NotificationInstance } from 'antd/lib/notification';
+import { SocketProvider } from 'features/socketProvider/SocketProvider';
+import React, { createContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { socketReducers } from 'socket';
+import { PATHS } from 'utils/route-helpers';
 import './App.css';
 import { NotFound } from './components/NotFound/NotFound';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
@@ -25,24 +30,26 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Router>
-        <Switch>
-          <Route path="/account/form" component={AccountForm} />
+        <SocketProvider reducers={socketReducers}>
+          <Switch>
+            <Route path={PATHS.LOGIN} component={AccountForm} />
 
-          <PrivateRoute exact path="/">
-            <Users />
-          </PrivateRoute>
-          <PrivateRoute exact path="/dates">
-            <Dates />
-          </PrivateRoute>
-          <PrivateRoute exact path="/chats">
-            <Chats />
-          </PrivateRoute>
-          <PrivateRoute exact path="/chats/:receiver">
-            <Chat />
-          </PrivateRoute>
+            <PrivateRoute exact path={PATHS.HOME}>
+              <Users />
+            </PrivateRoute>
+            <PrivateRoute exact path={PATHS.DATES}>
+              <Dates />
+            </PrivateRoute>
+            <PrivateRoute exact path={PATHS.CHATS}>
+              <Chats />
+            </PrivateRoute>
+            <PrivateRoute exact path={PATHS.CHAT}>
+              <Chat />
+            </PrivateRoute>
 
-          <Route component={NotFound} />
-        </Switch>
+            <Route component={NotFound} />
+          </Switch>
+        </SocketProvider>
       </Router>
       <CreateDateForm />
     </div>
