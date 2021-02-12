@@ -1,7 +1,5 @@
-import { notification } from 'antd';
-import { NotificationInstance } from 'antd/lib/notification';
 import { SocketProvider } from 'features/socketProvider/SocketProvider';
-import React, { createContext } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { socketReducers } from 'socket';
 import { PATHS } from 'utils/route-helpers';

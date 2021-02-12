@@ -52,7 +52,7 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
         );
       };
     }
-  }, [dispatch, reducers, user]);
+  }, [dispatch, reducers, user, api, socket]);
 
   return (
     <SocketContext.Provider value={{ socket }}>

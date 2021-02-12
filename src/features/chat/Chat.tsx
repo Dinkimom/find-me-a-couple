@@ -44,7 +44,7 @@ export const Chat: React.FC = () => {
         actions.sendMessage(user._id, receiver, message);
       }
     },
-    [receiver, user?._id]
+    [receiver, user, actions]
   );
 
   const { companion } = chat.chatData || {};
