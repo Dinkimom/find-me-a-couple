@@ -14,6 +14,7 @@ export const ImageLoader: React.FC = () => {
         if (defaultValues?.image) {
             setFileList([
                 {
+                    uid: '1',
                     url: defaultValues.image,
                     status: 'done',
                 } as Partial<UploadFile>,
@@ -35,6 +36,7 @@ export const ImageLoader: React.FC = () => {
 
             setFileList([
                 {
+                    uid: '1',
                     url,
                     status: 'done',
                 } as Partial<UploadFile>,
