@@ -3,13 +3,14 @@ import { Button, Form, Input } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import BasicTextArea from 'antd/lib/input/TextArea';
 import { MessageDto } from 'dtos/MessageDto';
+import { NewMessageDto } from 'dtos/NewMessageDto';
 import React, { createRef, KeyboardEvent, RefObject, useEffect } from 'react';
 import styles from './Editor.module.css';
 
 const { TextArea } = Input;
 
 interface Props {
-    onSubmit: (data: MessageDto) => void;
+    onSubmit: (data: NewMessageDto) => void;
     submitting: boolean;
     disabled?: boolean;
 }
@@ -48,7 +49,7 @@ export const Editor: React.FC<Props> = ({ onSubmit, submitting, disabled }) => {
                     autoSize={{ minRows: 1, maxRows: 3 }}
                     maxLength={1000}
                     onPressEnter={handleFormEnter}
-                    disabled={disabled}
+                    disabled={disabled || submitting}
                 />
             </Form.Item>
 

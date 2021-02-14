@@ -9,9 +9,9 @@ export interface SocketAction<T = unknown> {
 
 export interface NewMessageActionPayload {
     user: UserDto;
-    message: MessageDto;
+    lastMessage: MessageDto;
 }
 
 export interface ChatActionPayload {
-    receiver: string;
+    lastMessage: MessageDto;
 }

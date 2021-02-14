@@ -1,17 +1,18 @@
-import { Comment, List } from 'antd';
+import { Comment, List, notification } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import { RootState } from 'app/store';
 import { Container } from 'components/Container/Container';
 import { Editor } from 'components/Editor/Editor';
 import { ChatDto } from 'dtos/ChatDto';
 import { MessageDto } from 'dtos/MessageDto';
+import { NewMessageDto } from 'dtos/NewMessageDto';
 import { useSocket } from 'hooks/useSocket';
 import { useUserAvatar } from 'hooks/useUserAvatar';
 import React, { RefObject, useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styles from './Chat.module.css';
-import { fetchChat } from './chatsSlice';
+import { fetchChat, sendMessage } from './chatsSlice';
 
 export const Chat: React.FC = () => {
     const { receiver } = useParams<{ receiver: string }>();
@@ -20,11 +21,11 @@ export const Chat: React.FC = () => {
 
     const { user } = useSelector((state: RootState) => state.account);
 
+    const socket = useSocket();
+
     const dispatch = useDispatch();
 
     const endMessageRef: RefObject<HTMLParagraphElement> | null = useRef(null);
-
-    const { actions } = useSocket();
 
     const scrollToBottom = () => {
         if (endMessageRef.current) {
@@ -36,15 +37,17 @@ export const Chat: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchChat(receiver));
+
+        notification.destroy();
     }, [dispatch, receiver]);
 
     const handleMessageSend = useCallback(
-        (message: MessageDto) => {
+        (message: NewMessageDto) => {
             if (user) {
-                actions.sendMessage(user._id, receiver, message);
+                dispatch(sendMessage(user._id, receiver, message, socket));
             }
         },
-        [receiver, user, actions],
+        [receiver, user],
     );
 
     const { companion } = chat.chatData || {};
@@ -85,7 +88,7 @@ export const Chat: React.FC = () => {
                     }}
                 />
 
-                {companion && <Editor onSubmit={handleMessageSend} submitting={false} />}
+                {companion && <Editor onSubmit={handleMessageSend} submitting={chat.submitting} />}
             </div>
         </Container>
     );

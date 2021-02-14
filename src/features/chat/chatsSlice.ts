@@ -5,6 +5,9 @@ import { AppThunk } from 'app/store';
 import { ChatDto } from 'dtos/ChatDto';
 import { ErrorDto } from 'dtos/ErrorDto';
 import { MessageDto } from 'dtos/MessageDto';
+import { NewMessageDto } from 'dtos/NewMessageDto';
+import { chatActions } from 'socket/chat/chatActionts';
+import { w3cwebsocket } from 'websocket';
 
 interface ChatsState {
     list: ChatDto[];
@@ -13,6 +16,7 @@ interface ChatsState {
     chat: {
         chatData: null | ChatDto;
         isFetching: boolean;
+        submitting: boolean;
         error: null | ErrorDto;
     };
 }
@@ -24,6 +28,7 @@ const initialState: ChatsState = {
     chat: {
         chatData: null,
         isFetching: false,
+        submitting: false,
         error: null,
     },
 };
@@ -39,6 +44,7 @@ const chatsSlice = createSlice({
             state.chat = {
                 chatData: null,
                 isFetching: false,
+                submitting: false,
                 error: null,
             };
         },
@@ -56,6 +62,7 @@ const chatsSlice = createSlice({
             state.chat = {
                 chatData: null,
                 isFetching: true,
+                submitting: false,
                 error: null,
             };
         },
@@ -63,14 +70,52 @@ const chatsSlice = createSlice({
             state.chat = {
                 chatData: action.payload,
                 isFetching: false,
+                submitting: false,
                 error: null,
             };
+        },
+        updateChatHistory: (state, action: PayloadAction<MessageDto>) => {
+            if (state.chat.chatData) {
+                state.chat = {
+                    chatData: {
+                        companion: (state.chat.chatData as ChatDto).companion,
+                        lastMessage: action.payload,
+                        messages: [...(state.chat.chatData as ChatDto).messages, action.payload],
+                    },
+                    isFetching: false,
+                    submitting: false,
+                    error: null,
+                };
+            } else {
+                const newList = [...state.list];
+
+                const newItem = newList.find((item) => item.companion._id === action.payload.user_id);
+
+                if (newItem) {
+                    newItem.lastMessage = action.payload;
+
+                    state.list = newList;
+                }
+            }
         },
         fetchChatFailure: (state, action: PayloadAction<ErrorDto>) => {
             state.chat = {
                 chatData: null,
                 isFetching: false,
+                submitting: false,
                 error: action.payload,
+            };
+        },
+        sendMessageStart: (state) => {
+            state.chat = {
+                ...state.chat,
+                submitting: true,
+            };
+        },
+        sendMessageEnd: (state) => {
+            state.chat = {
+                ...state.chat,
+                submitting: false,
             };
         },
     },
@@ -83,6 +128,9 @@ export const {
     fetchChatStart,
     fetchChatSuccess,
     fetchChatFailure,
+    sendMessageStart,
+    sendMessageEnd,
+    updateChatHistory,
 } = chatsSlice.actions;
 
 export const fetchChats = (silent = false): AppThunk => async (dispatch) => {
@@ -109,15 +157,20 @@ export const fetchChat = (id: string, silent = false): AppThunk => async (dispat
     }
 };
 
-export const sendMessage = (receiver: string, data: MessageDto): AppThunk => async (dispatch) => {
+export const sendMessage = (
+    user_id: string,
+    receiver: string,
+    message: NewMessageDto,
+    socket: w3cwebsocket,
+): AppThunk => async (dispatch) => {
     try {
-        dispatch(fetchChatStart());
+        dispatch(sendMessageStart());
 
-        const response = await chatsControl.sendMessage(receiver, data);
-
-        dispatch(fetchChatSuccess(response.data.result));
+        socket.send(chatActions.sendMessage(user_id, receiver, message));
     } catch {
         notification.error({ message: 'Could not send message, try again...' });
+
+        dispatch(sendMessageEnd());
     }
 };
 

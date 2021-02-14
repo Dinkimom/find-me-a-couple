@@ -1,7 +1,8 @@
-import notification from 'antd/lib/notification';
 import { RootState } from 'app/store';
 import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { mainActions } from 'socket/main/mainActions';
 import { SocketAction } from 'types/SocketAction';
 import { SocketReducer } from 'types/SocketReducer';
 import { connectToWebSocket } from 'utils/connectToWebSocket';
@@ -17,11 +18,11 @@ interface Props {
 }
 
 export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
-    const [api, contextHolder] = notification.useNotification();
-
     const [socket, setSocket] = useState<w3cwebsocket | null>(null);
 
     const { user } = useSelector((state: RootState) => state.account);
+
+    const history = useHistory();
 
     const dispatch = useDispatch();
 
@@ -32,12 +33,7 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
     useEffect(() => {
         if (socket) {
             if (user) {
-                socket.send(
-                    JSON.stringify({
-                        type: 'INIT',
-                        user_id: user._id,
-                    }),
-                );
+                socket.send(mainActions.init(user._id));
             }
 
             socket.onclose = () => {
@@ -47,18 +43,12 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
             socket.onmessage = (message) => {
                 const action: SocketAction = JSON.parse(message.data as string);
 
-                reducers.forEach((reducer) => reducer({ action, dispatch, notification: api }));
+                reducers.forEach((reducer) => reducer({ action, dispatch, history }));
             };
         }
-    }, [dispatch, reducers, user, api, socket]);
+    }, [dispatch, reducers, user, socket]);
 
-    return (
-        <SocketContext.Provider value={{ socket }}>
-            {children}
-
-            {contextHolder}
-        </SocketContext.Provider>
-    );
+    return <SocketContext.Provider value={{ socket }}>{children}</SocketContext.Provider>;
 };
 
 SocketProvider.displayName = 'SocketProvider';

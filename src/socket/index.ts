@@ -1,6 +1,6 @@
 import { SocketReducer } from 'types/SocketReducer';
-import { chatReducer } from './ChatReducer';
-import { chatsReducer } from './ChatsReducer';
-import { mainReducer } from './MainReducer';
+import { chatReducer } from './chat/chatReducer';
+import { chatsReducer } from './chats/chatsReducer';
+import { mainReducer } from './main/mainReducer';
 
 export const socketReducers: SocketReducer[] = [mainReducer, chatReducer, chatsReducer];
