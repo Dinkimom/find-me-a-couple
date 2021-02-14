@@ -2,7 +2,6 @@ import { SendOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { useForm } from 'antd/lib/form/Form';
 import BasicTextArea from 'antd/lib/input/TextArea';
-import { MessageDto } from 'dtos/MessageDto';
 import { NewMessageDto } from 'dtos/NewMessageDto';
 import React, { createRef, KeyboardEvent, RefObject, useEffect } from 'react';
 import styles from './Editor.module.css';

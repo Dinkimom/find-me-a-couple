@@ -1,5 +1,5 @@
-export interface MessageDto {
+import { NewMessageDto } from './NewMessageDto';
+
+export interface MessageDto extends NewMessageDto {
     user_id: string;
-    text: string;
-    date: Date;
 }
