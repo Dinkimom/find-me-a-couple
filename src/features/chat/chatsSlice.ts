@@ -6,11 +6,14 @@ import { ChatDto } from 'dtos/ChatDto';
 import { ErrorDto } from 'dtos/ErrorDto';
 import { MessageDto } from 'dtos/MessageDto';
 import { NewMessageDto } from 'dtos/NewMessageDto';
-import { chatActions } from 'socket/chat/chatActionts';
+import { UsersStateDto } from 'dtos/UsersStateDto';
+import { chatActions } from 'socket/chat/chatActions';
 import { w3cwebsocket } from 'websocket';
 
 interface ChatsState {
     list: ChatDto[];
+    // list of users, that we chatted before
+    users: UsersStateDto;
     isFetching: boolean;
     error: null | ErrorDto;
     chat: {
@@ -23,6 +26,7 @@ interface ChatsState {
 
 const initialState: ChatsState = {
     list: [],
+    users: {},
     isFetching: false,
     error: null,
     chat: {
@@ -118,6 +122,9 @@ const chatsSlice = createSlice({
                 submitting: false,
             };
         },
+        updateUsers: (state, action: PayloadAction<UsersStateDto>) => {
+            state.users = action.payload;
+        },
     },
 });
 
@@ -131,6 +138,7 @@ export const {
     sendMessageStart,
     sendMessageEnd,
     updateChatHistory,
+    updateUsers,
 } = chatsSlice.actions;
 
 export const fetchChats = (silent = false): AppThunk => async (dispatch) => {

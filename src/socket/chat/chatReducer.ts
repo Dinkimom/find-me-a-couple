@@ -1,5 +1,5 @@
 import { updateChatHistory } from 'features/chat/chatsSlice';
-import { ChatActionPayload, NewMessageActionPayload } from 'types/SocketAction';
+import { ChatActionPayload, NewMessageActionPayload } from 'types/socket-actions';
 import { SocketReducer } from 'types/SocketReducer';
 import { ChatActionType } from './ChatActionType';
 
@@ -7,7 +7,7 @@ export const chatReducer: SocketReducer<ChatActionPayload & NewMessageActionPayl
     switch (action.type) {
         case ChatActionType.UPDATE_CHAT:
         case ChatActionType.MESSAGE_RECEIVED:
-            dispatch(updateChatHistory(action.result.lastMessage));
+            dispatch(updateChatHistory(action.payload.lastMessage));
             break;
     }
 };

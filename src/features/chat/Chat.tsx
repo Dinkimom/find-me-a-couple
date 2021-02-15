@@ -1,4 +1,4 @@
-import { Comment, List, notification } from 'antd';
+import { Badge, Comment, List, notification } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import { RootState } from 'app/store';
 import { Container } from 'components/Container/Container';
@@ -6,9 +6,10 @@ import { Editor } from 'components/Editor/Editor';
 import { ChatDto } from 'dtos/ChatDto';
 import { MessageDto } from 'dtos/MessageDto';
 import { NewMessageDto } from 'dtos/NewMessageDto';
+import { UserStateEnum } from 'enums/UserStateEnum';
 import { useSocket } from 'hooks/useSocket';
 import { useUserAvatar } from 'hooks/useUserAvatar';
-import React, { RefObject, useCallback, useEffect, useRef } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styles from './Chat.module.css';
@@ -16,9 +17,7 @@ import { fetchChat, sendMessage } from './chatsSlice';
 
 export const Chat: React.FC = () => {
     const { receiver } = useParams<{ receiver: string }>();
-
-    const { chat } = useSelector((state: RootState) => state.chats);
-
+    const { chat, users } = useSelector((state: RootState) => state.chats);
     const { user } = useSelector((state: RootState) => state.account);
 
     const socket = useSocket();
@@ -52,17 +51,37 @@ export const Chat: React.FC = () => {
 
     const { companion } = chat.chatData || {};
 
-    const companionImage = useUserAvatar(companion);
+    const renderCompanionAvatar = useMemo(() => {
+        if (!companion) {
+            return null;
+        }
+
+        const companionImage = useUserAvatar(companion);
+
+        const statusColor = {
+            [UserStateEnum.OFFLINE]: 'white',
+            [UserStateEnum.ONLINE]: 'green',
+            [UserStateEnum.TYPING]: 'green',
+        }[users[receiver]];
+
+        console.log(users[companion._id], companion._id);
+
+        const isOnline = Boolean(users[receiver] && users[receiver] !== UserStateEnum.OFFLINE);
+
+        return (
+            <div className={styles.companionBlock}>
+                <Badge dot={isOnline} color={statusColor}>
+                    <Avatar src={companionImage} size="large" />
+                </Badge>
+                <h3>{companion?.name}</h3>
+            </div>
+        );
+    }, [companion, users]);
 
     return (
         <Container error={chat.error}>
             <div className={styles.root}>
-                {companion && (
-                    <div className={styles.companionBlock}>
-                        <Avatar src={companionImage} size="large" />
-                        <h3>{companion?.name}</h3>
-                    </div>
-                )}
+                {renderCompanionAvatar}
 
                 <List
                     className={styles.messages}

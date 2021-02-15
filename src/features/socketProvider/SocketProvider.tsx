@@ -3,7 +3,7 @@ import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { mainActions } from 'socket/main/mainActions';
-import { SocketAction } from 'types/SocketAction';
+import { SocketAction } from 'types/socket-actions';
 import { SocketReducer } from 'types/SocketReducer';
 import { connectToWebSocket } from 'utils/connectToWebSocket';
 import { w3cwebsocket } from 'websocket';
@@ -27,7 +27,9 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setSocket(connectToWebSocket());
+        if (!socket) {
+            setSocket(connectToWebSocket());
+        }
     }, []);
 
     useEffect(() => {
