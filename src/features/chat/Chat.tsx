@@ -46,7 +46,7 @@ export const Chat: React.FC = () => {
                 dispatch(sendMessage(user._id, receiver, message, socket));
             }
         },
-        [receiver, user],
+        [receiver, user, socket],
     );
 
     const { companion } = chat.chatData || {};
@@ -59,7 +59,7 @@ export const Chat: React.FC = () => {
         const companionImage = useUserAvatar(companion);
 
         const statusColor = {
-            [UserStateEnum.OFFLINE]: 'white',
+            [UserStateEnum.OFFLINE]: 'grey',
             [UserStateEnum.ONLINE]: 'green',
             [UserStateEnum.TYPING]: 'green',
         }[users[receiver]];

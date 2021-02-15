@@ -17,6 +17,10 @@ export interface UpdateUsersPayload {
     usersState: UsersStateDto;
 }
 
+export interface UpdateUserPayload {
+    userState: UsersStateDto;
+}
+
 export interface ChatActionPayload {
     lastMessage: MessageDto;
 }

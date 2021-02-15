@@ -15,6 +15,7 @@ interface ChatsState {
     // list of users, that we chatted before
     users: UsersStateDto;
     isFetching: boolean;
+    loaded: boolean;
     error: null | ErrorDto;
     chat: {
         chatData: null | ChatDto;
@@ -28,6 +29,7 @@ const initialState: ChatsState = {
     list: [],
     users: {},
     isFetching: false,
+    loaded: false,
     error: null,
     chat: {
         chatData: null,
@@ -44,6 +46,7 @@ const chatsSlice = createSlice({
         fetchChatsStart: (state) => {
             state.list = [];
             state.isFetching = true;
+            state.loaded = false;
             state.error = null;
             state.chat = {
                 chatData: null,
@@ -54,6 +57,7 @@ const chatsSlice = createSlice({
         },
         fetchChatsSuccess: (state, action: PayloadAction<ChatDto[]>) => {
             state.list = action.payload;
+            state.loaded = true;
             state.isFetching = false;
             state.error = null;
         },
@@ -125,6 +129,9 @@ const chatsSlice = createSlice({
         updateUsers: (state, action: PayloadAction<UsersStateDto>) => {
             state.users = action.payload;
         },
+        updateUser: (state, action: PayloadAction<UsersStateDto>) => {
+            state.users = { ...state.users, ...action.payload };
+        },
     },
 });
 
@@ -139,6 +146,7 @@ export const {
     sendMessageEnd,
     updateChatHistory,
     updateUsers,
+    updateUser,
 } = chatsSlice.actions;
 
 export const fetchChats = (silent = false): AppThunk => async (dispatch) => {
@@ -175,7 +183,9 @@ export const sendMessage = (
         dispatch(sendMessageStart());
 
         socket.send(chatActions.sendMessage(user_id, receiver, message));
-    } catch {
+    } catch (error) {
+        console.log(error);
+
         notification.error({ message: 'Could not send message, try again...' });
 
         dispatch(sendMessageEnd());
