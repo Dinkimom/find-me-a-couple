@@ -1,10 +1,5 @@
-import { updateChatHistory, updateUsers, updateUser } from 'features/chat/chatsSlice';
-import {
-    ChatActionPayload,
-    NewMessageActionPayload,
-    UpdateUserPayload,
-    UpdateUsersPayload,
-} from 'types/socket-actions';
+import { updateChatHistory, updateUsers } from 'features/chat/chatsSlice';
+import { ChatActionPayload, NewMessageActionPayload, UpdateUsersPayload } from 'types/socket-actions';
 import { SocketReducer } from 'types/SocketReducer';
 import { ChatActionType } from './ChatActionType';
 
@@ -12,8 +7,6 @@ export const chatReducer: SocketReducer<ChatActionPayload & NewMessageActionPayl
     action,
     dispatch,
 }) => {
-    console.log(action);
-
     switch (action.type) {
         case ChatActionType.UPDATE_CHAT:
         case ChatActionType.MESSAGE_RECEIVED:

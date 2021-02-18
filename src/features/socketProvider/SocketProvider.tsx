@@ -1,6 +1,6 @@
 import { RootState } from 'app/store';
 import { fetchChats } from 'features/chat/chatsSlice';
-import React, { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { chatActions } from 'socket/chat/chatActions';
@@ -40,22 +40,19 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
 
     useEffect(() => {
         if (socket && user) {
+            const user_id = user._id;
             // need to get chats to retrieve list of companions
             dispatch(fetchChats());
 
             socket.onopen = () => {
-                socket.send(mainActions.init(user._id));
+                socket.send(mainActions.init(user_id));
             };
 
             socket.onmessage = (message: IMessageEvent) => {
                 if (socket && user) {
                     const action: SocketAction = JSON.parse(message.data as string);
 
-                    reducers.forEach((reducer) =>
-                        reducer({ user_id: user._id, action, dispatch, history, users, socket }),
-                    );
-
-                    console.log(users);
+                    reducers.forEach((reducer) => reducer({ user_id, action, dispatch, history, users, socket }));
                 }
             };
         }

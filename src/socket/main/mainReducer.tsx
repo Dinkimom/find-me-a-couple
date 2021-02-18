@@ -2,11 +2,11 @@ import notification from 'antd/lib/notification';
 import { UserMessage } from 'components/UserMessage/UserMessage';
 import React from 'react';
 import { ChatActionType } from 'socket/chat/ChatActionType';
-import { NewMessageActionPayload, UpdateUsersPayload } from 'types/socket-actions';
+import { NewMessageActionPayload } from 'types/socket-actions';
 import { SocketReducer } from 'types/SocketReducer';
 import { checkPathname, PATHS } from 'utils/route-helpers';
 
-export const mainReducer: SocketReducer<NewMessageActionPayload> = ({ action, history, dispatch, users, socket }) => {
+export const mainReducer: SocketReducer<NewMessageActionPayload> = ({ action, history }) => {
     if (action.status === 404) {
         window.location.href = PATHS.NOT_FOUND;
     }

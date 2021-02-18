@@ -1,9 +1,8 @@
 import { NewMessageDto } from 'dtos/NewMessageDto';
-import { ActionCreator } from 'types/ActionCreator';
 import { ChatActionType } from './ChatActionType';
 
 export const chatActions = {
-    sendMessage(user_id: string, receiver: string, message: NewMessageDto) {
+    sendMessage(user_id: string, receiver: string, message: NewMessageDto): string {
         return JSON.stringify({
             user_id,
             type: ChatActionType.CHAT_SEND_MESSAGE,
@@ -13,7 +12,7 @@ export const chatActions = {
             },
         });
     },
-    getUsers(user_id: string, users: string[]) {
+    getUsers(user_id: string, users: string[]): string {
         return JSON.stringify({
             user_id,
             type: ChatActionType.GET_USERS,
@@ -22,7 +21,7 @@ export const chatActions = {
             },
         });
     },
-    updateUsers(user_id: string, users: string[]) {
+    updateUsers(user_id: string, users: string[]): string {
         return JSON.stringify({
             user_id,
             type: ChatActionType.UPDATE_USERS,

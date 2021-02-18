@@ -18,6 +18,7 @@ interface ChatsState {
     loaded: boolean;
     error: null | ErrorDto;
     chat: {
+        typing: boolean;
         chatData: null | ChatDto;
         isFetching: boolean;
         submitting: boolean;
@@ -32,6 +33,7 @@ const initialState: ChatsState = {
     loaded: false,
     error: null,
     chat: {
+        typing: false,
         chatData: null,
         isFetching: false,
         submitting: false,
@@ -48,12 +50,6 @@ const chatsSlice = createSlice({
             state.isFetching = true;
             state.loaded = false;
             state.error = null;
-            state.chat = {
-                chatData: null,
-                isFetching: false,
-                submitting: false,
-                error: null,
-            };
         },
         fetchChatsSuccess: (state, action: PayloadAction<ChatDto[]>) => {
             state.list = action.payload;
@@ -68,6 +64,7 @@ const chatsSlice = createSlice({
         },
         fetchChatStart: (state) => {
             state.chat = {
+                typing: false,
                 chatData: null,
                 isFetching: true,
                 submitting: false,
@@ -76,6 +73,7 @@ const chatsSlice = createSlice({
         },
         fetchChatSuccess: (state, action: PayloadAction<ChatDto>) => {
             state.chat = {
+                typing: false,
                 chatData: action.payload,
                 isFetching: false,
                 submitting: false,
@@ -85,6 +83,7 @@ const chatsSlice = createSlice({
         updateChatHistory: (state, action: PayloadAction<MessageDto>) => {
             if (state.chat.chatData) {
                 state.chat = {
+                    typing: false,
                     chatData: {
                         companion: (state.chat.chatData as ChatDto).companion,
                         lastMessage: action.payload,
@@ -108,6 +107,7 @@ const chatsSlice = createSlice({
         },
         fetchChatFailure: (state, action: PayloadAction<ErrorDto>) => {
             state.chat = {
+                typing: false,
                 chatData: null,
                 isFetching: false,
                 submitting: false,

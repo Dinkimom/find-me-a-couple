@@ -49,7 +49,7 @@ export const Chat: React.FC = () => {
         [receiver, user, socket],
     );
 
-    const { companion } = chat.chatData || {};
+    const companion = chat.chatData?.companion;
 
     const renderCompanionAvatar = useMemo(() => {
         if (!companion) {
@@ -58,13 +58,13 @@ export const Chat: React.FC = () => {
 
         const companionImage = useUserAvatar(companion);
 
-        const statusColor = {
+        const STATUS_COLORS = {
             [UserStateEnum.OFFLINE]: 'grey',
             [UserStateEnum.ONLINE]: 'green',
             [UserStateEnum.TYPING]: 'green',
-        }[users[receiver]];
+        };
 
-        console.log(users[companion._id], companion._id);
+        const statusColor = STATUS_COLORS[users[receiver]] || STATUS_COLORS[UserStateEnum.OFFLINE];
 
         const isOnline = Boolean(users[receiver] && users[receiver] !== UserStateEnum.OFFLINE);
 
@@ -74,6 +74,8 @@ export const Chat: React.FC = () => {
                     <Avatar src={companionImage} size="large" />
                 </Badge>
                 <h3>{companion?.name}</h3>
+
+                <span>Typing...</span>
             </div>
         );
     }, [companion, users]);
