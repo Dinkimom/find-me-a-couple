@@ -22,7 +22,7 @@ interface Props {
 export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
     const [socket, setSocket] = useState<w3cwebsocket | null>(null);
 
-    const { user } = useSelector((state: RootState) => state.account);
+    const { user, isChecked, isLogged } = useSelector((state: RootState) => state.account);
 
     const { loaded, list } = useSelector((state: RootState) => state.chats);
 
@@ -38,26 +38,34 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
         }
     }, [user]);
 
-    if (socket && user) {
-        socket.onopen = () => {
-            socket.send(mainActions.init(user._id));
-        };
-
-        socket.onmessage = (message: IMessageEvent) => {
-            if (socket && user) {
-                const action: SocketAction = JSON.parse(message.data as string);
-
-                reducers.forEach((reducer) => reducer({ user_id: user._id, action, dispatch, history, users, socket }));
-
-                console.log(users);
-            }
-        };
-    }
-
-    // need to get chats to retrieve list of companions
     useEffect(() => {
-        dispatch(fetchChats());
-    }, []);
+        if (socket && user) {
+            // need to get chats to retrieve list of companions
+            dispatch(fetchChats());
+
+            socket.onopen = () => {
+                socket.send(mainActions.init(user._id));
+            };
+
+            socket.onmessage = (message: IMessageEvent) => {
+                if (socket && user) {
+                    const action: SocketAction = JSON.parse(message.data as string);
+
+                    reducers.forEach((reducer) =>
+                        reducer({ user_id: user._id, action, dispatch, history, users, socket }),
+                    );
+
+                    console.log(users);
+                }
+            };
+        }
+    }, [socket, user]);
+
+    useEffect(() => {
+        if (isChecked && !isLogged && socket) {
+            socket.close();
+        }
+    }, [isChecked, isLogged, socket]);
 
     useEffect(() => {
         if (socket && user && loaded) {
