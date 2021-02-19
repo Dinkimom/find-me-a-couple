@@ -41,14 +41,18 @@ export const Editor: React.FC<Props> = ({ onTyping, onSubmit, submitting, disabl
         }
     };
 
-    const handleChangeStart = throttle(10000, () => {
+    const handleChangeStart = throttle(1000, () => {
         onTyping(true);
     });
 
     const handleChangeEnd = debounce(1000, () => {
         onTyping(false);
-        handleChangeStart.cancel();
     });
+
+    const handleChange = () => {
+        handleChangeStart();
+        handleChangeEnd();
+    };
 
     return (
         <Form className={styles.root} onFinish={handleSubmit} form={form}>
@@ -60,8 +64,7 @@ export const Editor: React.FC<Props> = ({ onTyping, onSubmit, submitting, disabl
                     maxLength={1000}
                     onPressEnter={handleFormEnter}
                     disabled={disabled || submitting}
-                    onInput={handleChangeStart}
-                    onChange={handleChangeEnd}
+                    onChange={handleChange}
                 />
             </Form.Item>
 
