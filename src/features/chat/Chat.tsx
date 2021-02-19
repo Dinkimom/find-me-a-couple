@@ -94,7 +94,7 @@ export const Chat: React.FC = () => {
         }
 
         return (
-            <Text type="secondary" className={styles.typingStatus} style={{ opacity: isTyping ? '100%' : '0' }}>
+            <Text type="secondary" style={{ opacity: isTyping ? '100%' : '0' }}>
                 {companion.name} typing...
             </Text>
         );
@@ -127,9 +127,8 @@ export const Chat: React.FC = () => {
                             />
                         );
                     }}
+                    footer={renderTypingState}
                 />
-
-                {renderTypingState}
 
                 {companion && (
                     <Editor onTyping={handleTyping} onSubmit={handleMessageSend} submitting={chat.submitting} />
