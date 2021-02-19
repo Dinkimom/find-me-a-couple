@@ -12,6 +12,7 @@
         "@types/react-dom": "^16.9.0",
         "@types/react-redux": "^7.1.7",
         "@types/react-router-dom": "^5.1.6",
+        "@types/throttle-debounce": "^2.1.0",
         "antd": "^4.8.4",
         "antd-img-crop": "^3.13.2",
         "axios": "^0.21.0",
@@ -20,6 +21,7 @@
         "react-redux": "^7.2.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.0",
+        "throttle-debounce": "^3.0.1",
         "typescript": "~3.8.2",
         "websocket": "^1.0.33"
     },
@@ -48,10 +50,10 @@
         ]
     },
     "devDependencies": {
-        "@types/react": "^17.0.0",
+        "@types/react": "^17.0.2",
         "@types/websocket": "^1.0.1",
         "@typescript-eslint/eslint-plugin": "^4.15.0",
-        "@typescript-eslint/parser": "^4.15.0",
+        "@typescript-eslint/parser": "^4.15.1",
         "eslint": "^7.19.0",
         "eslint-config-prettier": "^7.2.0",
         "eslint-plugin-prettier": "^3.3.1",

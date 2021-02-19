@@ -4,4 +4,5 @@ export enum ChatActionType {
     UPDATE_CHAT = 'UPDATE_CHAT',
     GET_USERS = 'GET_USERS',
     UPDATE_USERS = 'UPDATE_USERS',
+    TYPING_STATUS = 'TYPING_STATUS',
 }

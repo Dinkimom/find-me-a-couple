@@ -7,13 +7,15 @@ import { ErrorDto } from 'dtos/ErrorDto';
 import { MessageDto } from 'dtos/MessageDto';
 import { NewMessageDto } from 'dtos/NewMessageDto';
 import { UsersStateDto } from 'dtos/UsersStateDto';
+import { UsersTypingStateDto } from 'dtos/UsersTypingStateDto';
 import { chatActions } from 'socket/chat/chatActions';
 import { w3cwebsocket } from 'websocket';
 
 interface ChatsState {
     list: ChatDto[];
     // list of users, that we chatted before
-    users: UsersStateDto;
+    usersState: UsersStateDto;
+    usersTypingState: UsersTypingStateDto;
     isFetching: boolean;
     loaded: boolean;
     error: null | ErrorDto;
@@ -28,7 +30,8 @@ interface ChatsState {
 
 const initialState: ChatsState = {
     list: [],
-    users: {},
+    usersState: {},
+    usersTypingState: {},
     isFetching: false,
     loaded: false,
     error: null,
@@ -126,11 +129,14 @@ const chatsSlice = createSlice({
                 submitting: false,
             };
         },
-        updateUsers: (state, action: PayloadAction<UsersStateDto>) => {
-            state.users = action.payload;
+        updateUsersState: (state, action: PayloadAction<UsersStateDto>) => {
+            state.usersState = action.payload;
         },
-        updateUser: (state, action: PayloadAction<UsersStateDto>) => {
-            state.users = { ...state.users, ...action.payload };
+        updateUserState: (state, action: PayloadAction<UsersStateDto>) => {
+            state.usersState = { ...state.usersState, ...action.payload };
+        },
+        updateUserTypingState: (state, action: PayloadAction<UsersTypingStateDto>) => {
+            state.usersTypingState = { ...state.usersTypingState, ...action.payload };
         },
     },
 });
@@ -145,8 +151,9 @@ export const {
     sendMessageStart,
     sendMessageEnd,
     updateChatHistory,
-    updateUsers,
-    updateUser,
+    updateUsersState,
+    updateUserState,
+    updateUserTypingState,
 } = chatsSlice.actions;
 
 export const fetchChats = (silent = false): AppThunk => async (dispatch) => {
@@ -189,6 +196,21 @@ export const sendMessage = (
         notification.error({ message: 'Could not send message, try again...' });
 
         dispatch(sendMessageEnd());
+    }
+};
+
+export const sendTypingStatus = (
+    user_id: string,
+    receiver: string,
+    status: boolean,
+    socket: w3cwebsocket,
+): AppThunk => async (dispatch) => {
+    try {
+        socket.send(chatActions.sendTypingStatus(user_id, receiver, status));
+    } catch (error) {
+        console.log(error);
+
+        notification.error({ message: 'Could not connect to chat server, try again...' });
     }
 };
 

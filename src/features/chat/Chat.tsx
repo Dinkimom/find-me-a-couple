@@ -1,4 +1,4 @@
-import { Badge, Comment, List, notification } from 'antd';
+import { Badge, Comment, List, notification, Typography } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import { RootState } from 'app/store';
 import { Container } from 'components/Container/Container';
@@ -13,11 +13,13 @@ import React, { RefObject, useCallback, useEffect, useMemo, useRef } from 'react
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styles from './Chat.module.css';
-import { fetchChat, sendMessage } from './chatsSlice';
+import { fetchChat, sendMessage, sendTypingStatus } from './chatsSlice';
+
+const { Text } = Typography;
 
 export const Chat: React.FC = () => {
     const { receiver } = useParams<{ receiver: string }>();
-    const { chat, users } = useSelector((state: RootState) => state.chats);
+    const { chat, usersState, usersTypingState } = useSelector((state: RootState) => state.chats);
     const { user } = useSelector((state: RootState) => state.account);
 
     const socket = useSocket();
@@ -49,6 +51,12 @@ export const Chat: React.FC = () => {
         [receiver, user, socket],
     );
 
+    const handleTyping = (status: boolean) => {
+        if (user) {
+            dispatch(sendTypingStatus(user?._id, receiver, status, socket));
+        }
+    };
+
     const companion = chat.chatData?.companion;
 
     const renderCompanionAvatar = useMemo(() => {
@@ -64,9 +72,9 @@ export const Chat: React.FC = () => {
             [UserStateEnum.TYPING]: 'green',
         };
 
-        const statusColor = STATUS_COLORS[users[receiver]] || STATUS_COLORS[UserStateEnum.OFFLINE];
+        const statusColor = STATUS_COLORS[usersState[receiver]] || STATUS_COLORS[UserStateEnum.OFFLINE];
 
-        const isOnline = Boolean(users[receiver] && users[receiver] !== UserStateEnum.OFFLINE);
+        const isOnline = Boolean(usersState[receiver] && usersState[receiver] !== UserStateEnum.OFFLINE);
 
         return (
             <div className={styles.companionBlock}>
@@ -74,11 +82,23 @@ export const Chat: React.FC = () => {
                     <Avatar src={companionImage} size="large" />
                 </Badge>
                 <h3>{companion?.name}</h3>
-
-                <span>Typing...</span>
             </div>
         );
-    }, [companion, users]);
+    }, [companion, usersState, usersTypingState]);
+
+    const renderTypingState = useMemo(() => {
+        const isTyping = usersTypingState[receiver];
+
+        if (!companion) {
+            return null;
+        }
+
+        return (
+            <Text type="secondary" className={styles.typingStatus} style={{ opacity: isTyping ? '100%' : '0' }}>
+                {companion.name} typing...
+            </Text>
+        );
+    }, [receiver, usersTypingState, companion]);
 
     return (
         <Container error={chat.error}>
@@ -109,7 +129,11 @@ export const Chat: React.FC = () => {
                     }}
                 />
 
-                {companion && <Editor onSubmit={handleMessageSend} submitting={chat.submitting} />}
+                {renderTypingState}
+
+                {companion && (
+                    <Editor onTyping={handleTyping} onSubmit={handleMessageSend} submitting={chat.submitting} />
+                )}
             </div>
         </Container>
     );

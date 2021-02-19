@@ -74,7 +74,7 @@ export const SocketProvider: React.FC<Props> = ({ reducers, children }) => {
 
             socket.send(chatActions.getUsers(user._id, newUsers));
 
-            setInterval(() => socket.send(chatActions.updateUsers(user._id, newUsers)), 5000);
+            setInterval(() => socket.send(chatActions.updateUsers(user._id, newUsers)), 20000);
         }
     }, [user, loaded, list]);
 

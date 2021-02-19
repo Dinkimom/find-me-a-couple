@@ -1,6 +1,7 @@
 import { MessageDto } from 'dtos/MessageDto';
 import { UserDto } from 'dtos/UserDto';
 import { UsersStateDto } from 'dtos/UsersStateDto';
+import { UsersTypingStateDto } from 'dtos/UsersTypingStateDto';
 
 export interface SocketAction<T = unknown> {
     type: string;
@@ -15,6 +16,9 @@ export interface NewMessageActionPayload {
 
 export interface UpdateUsersPayload {
     usersState: UsersStateDto;
+}
+export interface UpdateUsersTypingStatePayload {
+    usersTypingState: UsersTypingStateDto;
 }
 
 export interface UpdateUserPayload {

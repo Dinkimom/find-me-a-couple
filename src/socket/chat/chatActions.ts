@@ -30,4 +30,14 @@ export const chatActions = {
             },
         });
     },
+    sendTypingStatus(user_id: string, receiver: string, status: boolean): string {
+        return JSON.stringify({
+            user_id,
+            type: ChatActionType.TYPING_STATUS,
+            payload: {
+                status,
+                receiver,
+            },
+        });
+    },
 };

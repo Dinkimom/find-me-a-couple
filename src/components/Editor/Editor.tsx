@@ -4,6 +4,8 @@ import { useForm } from 'antd/lib/form/Form';
 import BasicTextArea from 'antd/lib/input/TextArea';
 import { NewMessageDto } from 'dtos/NewMessageDto';
 import React, { createRef, KeyboardEvent, RefObject, useEffect } from 'react';
+import { throttle, debounce } from 'throttle-debounce';
+
 import styles from './Editor.module.css';
 
 const { TextArea } = Input;
@@ -12,9 +14,10 @@ interface Props {
     onSubmit: (data: NewMessageDto) => void;
     submitting: boolean;
     disabled?: boolean;
+    onTyping: (status: boolean) => void;
 }
 
-export const Editor: React.FC<Props> = ({ onSubmit, submitting, disabled }) => {
+export const Editor: React.FC<Props> = ({ onTyping, onSubmit, submitting, disabled }) => {
     const [form] = useForm();
 
     const textareaRef: RefObject<BasicTextArea> = createRef();
@@ -38,17 +41,27 @@ export const Editor: React.FC<Props> = ({ onSubmit, submitting, disabled }) => {
         }
     };
 
+    const handleChangeStart = throttle(10000, () => {
+        onTyping(true);
+    });
+
+    const handleChangeEnd = debounce(1000, () => {
+        onTyping(false);
+        handleChangeStart.cancel();
+    });
+
     return (
         <Form className={styles.root} onFinish={handleSubmit} form={form}>
             <Form.Item className={styles.control} name="text">
                 <TextArea
                     ref={textareaRef}
-                    showCount={true}
                     rows={1}
                     autoSize={{ minRows: 1, maxRows: 3 }}
                     maxLength={1000}
                     onPressEnter={handleFormEnter}
                     disabled={disabled || submitting}
+                    onInput={handleChangeStart}
+                    onChange={handleChangeEnd}
                 />
             </Form.Item>
 

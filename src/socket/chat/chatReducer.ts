@@ -1,12 +1,16 @@
-import { updateChatHistory, updateUsers } from 'features/chat/chatsSlice';
-import { ChatActionPayload, NewMessageActionPayload, UpdateUsersPayload } from 'types/socket-actions';
+import { updateChatHistory, updateUsersState, updateUserTypingState } from 'features/chat/chatsSlice';
+import {
+    ChatActionPayload,
+    NewMessageActionPayload,
+    UpdateUsersPayload,
+    UpdateUsersTypingStatePayload,
+} from 'types/socket-actions';
 import { SocketReducer } from 'types/SocketReducer';
 import { ChatActionType } from './ChatActionType';
 
-export const chatReducer: SocketReducer<ChatActionPayload & NewMessageActionPayload & UpdateUsersPayload> = ({
-    action,
-    dispatch,
-}) => {
+export const chatReducer: SocketReducer<
+    ChatActionPayload & NewMessageActionPayload & UpdateUsersPayload & UpdateUsersTypingStatePayload
+> = ({ action, dispatch }) => {
     switch (action.type) {
         case ChatActionType.UPDATE_CHAT:
         case ChatActionType.MESSAGE_RECEIVED:
@@ -15,7 +19,11 @@ export const chatReducer: SocketReducer<ChatActionPayload & NewMessageActionPayl
 
         case ChatActionType.GET_USERS:
         case ChatActionType.UPDATE_USERS:
-            dispatch(updateUsers(action.payload.usersState));
+            dispatch(updateUsersState(action.payload.usersState));
+            break;
+
+        case ChatActionType.TYPING_STATUS:
+            dispatch(updateUserTypingState(action.payload.usersTypingState));
             break;
     }
 };
