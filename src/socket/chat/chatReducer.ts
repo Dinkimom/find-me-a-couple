@@ -13,7 +13,6 @@ export const chatReducer: SocketReducer<
 > = ({ action, dispatch }) => {
     switch (action.type) {
         case ChatActionType.UPDATE_CHAT:
-        case ChatActionType.MESSAGE_RECEIVED:
             dispatch(updateChatHistory(action.payload.lastMessage));
             break;
 

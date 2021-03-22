@@ -1,26 +1,29 @@
+.root {
+    display: grid;
+}
+
 .controls {
-  padding: 16px;
-  background: white;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: flex-end;
+    padding: 16px;
+    background: white;
+    margin-bottom: 16px;
+    display: flex;
 }
 
 .cardContent {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  grid-template-columns: 1fr 1fr;
-  text-align: left;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr 1fr;
+    text-align: left;
 }
 
 .filterField {
-  width: 100px;
-  margin-left: 16px;
+    width: 100px;
+    margin-left: 16px;
 }
 
 .cardControls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 16px;
-  margin-top: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 16px;
+    margin-top: 16px;
 }

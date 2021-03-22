@@ -1,15 +1,16 @@
 .toggleButton {
-  margin-bottom: 16px;
+    margin-bottom: 16px;
 }
 
 .submitButton {
-  margin-right: 16px;
+    margin-right: 16px;
 }
 
 .deleteUserBlock {
-  text-align: center;
+    text-align: center;
+    margin: 0;
 }
 
 .deleteUserBlock button {
-  padding: 0;
+    padding: 0;
 }

@@ -45,7 +45,7 @@ export const Users: React.FC = () => {
     };
 
     return (
-        <Container error={error}>
+        <Container error={error} className={styles.root}>
             <Form layout="inline" className={styles.controls} onFinish={handleSearch} form={form}>
                 <Form.Item name="age">
                     <InputNumber min={18} className={styles.filterField} placeholder="Age from" />
@@ -77,6 +77,7 @@ export const Users: React.FC = () => {
                     xl: 3,
                     xxl: 3,
                 }}
+                className={styles.list}
                 dataSource={list}
                 loading={isFetching}
                 renderItem={(item) => (

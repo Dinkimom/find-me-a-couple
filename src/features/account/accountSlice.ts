@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { notification } from 'antd';
-import { accountControl } from 'App';
+import { accountControl } from 'services';
 import { AppThunk } from 'app/store';
 import { ErrorDto } from 'dtos/ErrorDto';
 import { LoginDto } from 'dtos/LoginDto';

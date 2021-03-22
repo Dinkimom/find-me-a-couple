@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { datesControl } from 'App';
+import { datesControl } from 'services';
 import { AppThunk } from 'app/store';
 import { DateDto } from 'dtos/DateDto';
 import { ErrorDto } from 'dtos/ErrorDto';

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { notification } from 'antd';
-import { chatsControl } from 'App';
+import { chatsControl } from 'services';
 import { AppThunk } from 'app/store';
 import { ChatDto } from 'dtos/ChatDto';
 import { ErrorDto } from 'dtos/ErrorDto';
@@ -204,7 +204,7 @@ export const sendTypingStatus = (
     receiver: string,
     status: boolean,
     socket: w3cwebsocket,
-): AppThunk => async (dispatch) => {
+): AppThunk => async () => {
     try {
         socket.send(chatActions.sendTypingStatus(user_id, receiver, status));
     } catch (error) {

@@ -1,6 +1,7 @@
 import { Button, Result } from 'antd';
 import { ErrorDto } from 'dtos/ErrorDto';
 import React, { memo, ReactNode } from 'react';
+import styles from './Container.module.css';
 
 interface Props {
     children: ReactNode;
@@ -28,7 +29,7 @@ export const Container: React.FC<Props> = memo(({ children, className, error }) 
         );
     }
 
-    return <div className={className}>{children}</div>;
+    return <div className={`${className ? className : ''} ${styles.container}`}>{children}</div>;
 });
 
 Container.displayName = 'Container';

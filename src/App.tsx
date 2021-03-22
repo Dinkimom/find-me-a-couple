@@ -12,17 +12,6 @@ import { Chats } from './features/chat/Chats';
 import { CreateDateForm } from './features/dates/components/CreateDateForm';
 import { Dates } from './features/dates/Dates';
 import { Users } from './features/users/Users';
-import { AccountControl } from './services/AccountControl';
-import { ChatsControl } from './services/ChatsControl';
-import { DatesControl } from './services/DatesControl';
-import { ImageControl } from './services/ImageControl';
-import { UsersControl } from './services/UsersControl';
-
-export const accountControl = new AccountControl();
-export const usersControl = new UsersControl();
-export const datesControl = new DatesControl();
-export const imageControl = new ImageControl();
-export const chatsControl = new ChatsControl();
 
 const App: React.FC = () => {
     return (
